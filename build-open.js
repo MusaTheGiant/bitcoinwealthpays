@@ -323,19 +323,20 @@ const CSS = headSrc.slice(headSrc.indexOf('<style>') + 7, headSrc.indexOf('</sty
 
 .topnav{position:sticky;top:0;z-index:40;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .topnav-in{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.topnav-links{display:none;gap:2px}
-@media(min-width:820px){.topnav-links{display:flex}}
 .topnav a.nl{font-family:var(--disp);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:9px 11px;border-radius:9px;text-decoration:none}
 .topnav a.nl:hover{color:var(--orange);background:rgba(255,161,1,.08);text-decoration:none}
 .topnav a.nl.on{color:var(--orange);background:rgba(255,161,1,.13)}
 .navtoggle{display:grid;place-items:center;width:44px;height:44px;border-radius:11px;border:1px solid var(--line);color:var(--orange);background:rgba(255,161,1,.05);cursor:pointer}
-@media(min-width:820px){.navtoggle{display:none}}
 .navtoggle svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round}
 .drawer{display:none;border-top:1px solid var(--line);background:rgba(4,4,3,.99);padding:10px 16px 16px}
 .drawer.open{display:block}
-@media(min-width:820px){.drawer,.drawer.open{display:none}}
+.drawer-in{max-width:var(--maxw);margin:0 auto}
+@media(min-width:700px){
+  .drawer-in{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+}
 .drawer a{display:block;padding:12px 12px;border-radius:10px;color:var(--text);text-decoration:none;font-size:15px}
 .drawer a:hover{background:rgba(255,161,1,.08);text-decoration:none}
+.drawer a.on{background:rgba(255,161,1,.13);color:var(--orange)}
 .drawer .dl{font-family:var(--disp);font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);padding:14px 12px 6px}
 
 .hero{text-align:center;max-width:760px;margin:0 auto}
@@ -627,8 +628,7 @@ function socialRow() {
 
 function page(o) {
   const canonical = SITE.origin + o.url;
-  const links = NAV.map(n => `<a class="nl${o.nav === n[0] ? ' on' : ''}" href="${n[0]}">${n[1]}</a>`).join("");
-  const drawer = NAV.map(n => `<a href="${n[0]}">${n[1]}</a>`).join("");
+  const drawer = NAV.map(n => `<a href="${n[0]}"${o.nav === n[0] ? ' class="on" aria-current="page"' : ''}>${n[1]}</a>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -673,12 +673,11 @@ ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + 
       <span><span class="wm" style="font-size:14px;display:block"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span>
       <span class="brand-sub">${esc(SITE.tagline)}</span></span>
     </a>
-    <nav class="topnav-links" aria-label="Main">${links}</nav>
     <button class="navtoggle" aria-label="Open menu" aria-expanded="false" onclick="var d=document.getElementById('dr');var o=d.classList.toggle('open');this.setAttribute('aria-expanded',o)">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
-  <nav class="drawer" id="dr" aria-label="Main">${drawer}</nav>
+  <nav class="drawer" id="dr" aria-label="Main"><div class="drawer-in">${drawer}</div></nav>
 </header>
 <main class="wrap" style="padding-top:26px">
 ${o.body}
