@@ -15,6 +15,20 @@ const VIDEO = {
 };
 
 /* Videos attached to specific pages. Add an entry keyed by page slug. */
+/* ---------- TUTORIAL VIDEOS ----------
+   Paste a YouTube id into "id" as each one goes live. Leave "" for the
+   placeholder to keep showing Coming soon.                          */
+const TUTORIALS = [
+  { id: "", title: "Web3 (like SafePal) Wallet Set-Up",
+    blurb: "Creating your first self-custody wallet and protecting the recovery phrase." },
+  { id: "", title: "Funding the Web3 Wallet with BNB",
+    blurb: "Getting BNB into the wallet so you can pay network fees." },
+  { id: "", title: "Swapping BNB for BTCB",
+    blurb: "Turning BNB into BTCB on BNB Smart Chain, step by step." }
+];
+const INTRO_VIDEO = { id: "lAjhtdcncJo", title: "Start here: Bitcoin Wealth explained",
+  blurb: "A short introduction before you work through the tutorials." };
+
 const TOPIC_VIDEOS = {
   "what-is-bitcoin-wealth": {
     id: "Gn1VG9aelYg",
@@ -122,6 +136,85 @@ const CSS = headSrc.slice(headSrc.indexOf('<style>') + 7, headSrc.indexOf('</sty
   .nd-anim,.nd-draw{animation:none}
 }
 /* ================= OPEN SITE ================= */
+/* ---------- FAQ ---------- */
+.faqjump{display:flex;flex-wrap:wrap;gap:8px;max-width:var(--read);margin:0 0 26px}
+.faqjump a{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:rgba(12,19,11,.6);color:var(--muted);text-decoration:none;font-family:var(--disp);font-size:12px;letter-spacing:.05em}
+.faqjump a span{font-family:var(--mono);font-size:11px;color:var(--orange);background:rgba(255,161,1,.13);border-radius:99px;padding:1px 7px}
+.faqjump a:hover{border-color:var(--line-hi);color:var(--text);text-decoration:none}
+.faqhead{display:flex;align-items:baseline;gap:10px;max-width:var(--read);font-family:var(--disp);font-size:16px;color:var(--gold);letter-spacing:.05em;margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:80px}
+.faqhead i{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-left:auto}
+.faqlist{max-width:var(--read);display:grid;gap:8px}
+.faqitem{border:1px solid var(--line);border-radius:13px;background:linear-gradient(170deg,rgba(12,19,11,.72),rgba(5,5,4,.88));overflow:hidden}
+.faqitem summary{display:flex;align-items:center;gap:12px;padding:15px 16px;cursor:pointer;list-style:none}
+.faqitem summary::-webkit-details-marker{display:none}
+.faqn{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700;background:rgba(255,161,1,.12);color:var(--orange)}
+.faqq{flex:1;color:var(--text);font-size:15px;line-height:1.4}
+.faqchev{flex:none;color:var(--dim);transition:transform .2s ease,color .2s ease}
+.faqchev svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.faqitem[open]{border-color:var(--line-hi)}
+.faqitem[open] .faqchev{transform:rotate(180deg);color:var(--orange)}
+.faqitem[open] .faqn{background:var(--orange);color:#140b00}
+.faqa{padding:0 16px 16px 56px}
+.faqa p{margin:0 0 9px;color:#DAD5C9;font-size:14.5px;line-height:1.6}
+.faqshort{color:var(--green)!important;font-weight:600}
+.faqlink a{font-size:13.5px}
+@media (hover:hover) and (pointer:fine){.faqitem summary:hover{background:rgba(255,161,1,.05)}}
+@media(max-width:520px){.faqa{padding-left:16px}}
+@media (prefers-reduced-motion:reduce){.faqchev{transition:none}}
+
+/* ---------- landing secondary row ---------- */
+.btn-sm2{min-height:44px;padding:11px 18px;font-size:12.5px}
+@media(max-width:620px){.secondrow .btn{width:auto;flex:1;min-width:140px}}
+
+/* ---------- previous and next ----------
+   A slow border sweep and a nudging arrow, so the way forward is obvious
+   without shouting.                                                  */
+.pn a{position:relative;display:flex;align-items:center;gap:12px;overflow:hidden}
+.pn a::before{
+  content:"";position:absolute;inset:-1px;border-radius:13px;padding:1px;
+  background:linear-gradient(110deg,rgba(255,161,1,0) 20%,rgba(255,161,1,.85) 50%,rgba(63,193,31,0) 80%);
+  background-size:280% 100%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:pnsweep 3.4s linear infinite;pointer-events:none;
+}
+.pn .pn-tx{flex:1;min-width:0}
+.pn .d{display:block}
+.pn .t{display:block}
+.pn-ar{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,161,1,.13);color:var(--orange)}
+.pn-ar svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.pn-next .pn-ar{animation:nudgeR 1.7s ease-in-out infinite}
+.pn-prev .pn-ar{animation:nudgeL 1.7s ease-in-out infinite}
+@keyframes pnsweep{0%{background-position:140% 0}100%{background-position:-140% 0}}
+@keyframes nudgeR{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+@keyframes nudgeL{0%,100%{transform:translateX(0)}50%{transform:translateX(-4px)}}
+@media (hover:hover) and (pointer:fine){
+  .pn a:hover .pn-ar{background:var(--orange);color:#140b00}
+}
+@media (prefers-reduced-motion:reduce){
+  .pn a::before,.pn-next .pn-ar,.pn-prev .pn-ar{animation:none}
+  .pn a::before{background:linear-gradient(110deg,rgba(255,161,1,.5),rgba(63,193,31,.3))}
+}
+
+/* ---------- tutorial list ---------- */
+.tutgrid{display:grid;gap:12px;max-width:var(--read)}
+.tutcard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px 17px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(12,19,11,.8),rgba(5,5,4,.9));font:inherit;color:inherit}
+.tutcard.live{cursor:pointer;transition:transform .16s,border-color .16s,background .16s}
+.tutnum{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-family:var(--mono);font-size:14px;font-weight:700;background:rgba(255,161,1,.13);color:var(--orange)}
+.tuttxt{flex:1;min-width:0}
+.tutt{display:block;color:var(--text);font-size:15.5px;line-height:1.3}
+.tutb{display:block;color:var(--muted);font-size:13.5px;line-height:1.45;margin-top:3px}
+.tutplay{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#FFB730,var(--orange));color:#140b00}
+.tutplay svg{width:19px;height:19px;fill:currentColor;stroke:none;margin-left:2px}
+.tutsoon{flex:none;font-family:var(--disp);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(198,128,16,.45);background:rgba(198,128,16,.1);padding:6px 11px;border-radius:99px;white-space:nowrap}
+.tutcard.soon{opacity:.72;cursor:default}
+.tutcard.soon .tutnum{background:rgba(158,154,140,.1);color:var(--dim)}
+.tutcard.soon .tutt{color:var(--muted)}
+@media (hover:hover) and (pointer:fine){
+  .tutcard.live:hover{transform:translateY(-2px);border-color:var(--line-hi);background:rgba(255,161,1,.06)}
+}
+@media(max-width:460px){.tutb{display:none}.tutsoon{font-size:9.5px;padding:5px 9px}}
+
 /* ---------- video card and player ---------- */
 .vidframe{box-shadow:0 0 34px rgba(198,128,16,.20), 0 20px 54px rgba(0,0,0,.8)}
 .vidcard{
@@ -170,6 +263,7 @@ const CSS = headSrc.slice(headSrc.indexOf('<style>') + 7, headSrc.indexOf('</sty
 .vidmodal.vertical .vidmodal-box{max-width:min(460px,92vw)}
 .vidmodal.vertical .vidmodal-frame{aspect-ratio:9/16}
 .vidcard-btn{gap:8px}
+
 
 
 
@@ -390,46 +484,11 @@ function copyIcons(){
 }
 
 /* ---------- social share image ----------
-   Rendered as a real PNG at 1200x630. Facebook and X do not reliably
-   accept SVG for og:image, and a link with no image gets far fewer clicks. */
-function writeShareImage(outPath){
-  let createCanvas;
-  try { createCanvas = require('canvas').createCanvas; }
-  catch(e){ console.log("  note: canvas module not available, share image skipped"); return false; }
-  const W=1200,H=630,c=createCanvas(W,H),x=c.getContext('2d');
-  x.fillStyle='#000'; x.fillRect(0,0,W,H);
-  let g=x.createRadialGradient(W*0.12,0,0,W*0.12,0,760);
-  g.addColorStop(0,'rgba(255,161,1,.22)'); g.addColorStop(1,'rgba(0,0,0,0)');
-  x.fillStyle=g; x.fillRect(0,0,W,H);
-  g=x.createRadialGradient(W*0.92,H,0,W*0.92,H,760);
-  g.addColorStop(0,'rgba(63,193,31,.20)'); g.addColorStop(1,'rgba(0,0,0,0)');
-  x.fillStyle=g; x.fillRect(0,0,W,H);
-  x.strokeStyle='#654314'; x.lineWidth=10; x.strokeRect(23,23,W-46,H-46);
-  x.strokeStyle='#C68010'; x.lineWidth=2.5; x.strokeRect(37,37,W-74,H-74);
-
-  /* the deck's node tree, simplified */
-  const N=[[300,250,'#3FC11F'],[900,250,'#3FC11F'],[150,330,'#FFA101'],[450,330,'#004AAD'],
-           [750,330,'#004AAD'],[1050,330,'#FFA101'],[75,410,'#C0FF72'],[225,410,'#FFA101'],
-           [375,410,'#FFA101'],[525,410,'#C0FF72'],[675,410,'#FFA101'],[825,410,'#FFA101'],
-           [975,410,'#C0FF72'],[1125,410,'#E2A9F0']];
-  x.globalAlpha=.9;
-  N.forEach(n=>{ x.beginPath(); x.arc(n[0],n[1],15,0,Math.PI*2); x.fillStyle=n[2]; x.fill(); });
-  x.globalAlpha=1;
-
-  x.textAlign='center';
-  x.font='700 34px sans-serif';
-  const t1='BITCOIN ', t2='WEALTH';
-  const w1=x.measureText(t1).width, w2=x.measureText(t2).width;
-  x.textAlign='left';
-  x.fillStyle='#FFA101'; x.fillText(t1, W/2-(w1+w2)/2, 150);
-  x.fillStyle='#3FC11F'; x.fillText(t2, W/2-(w1+w2)/2+w1, 150);
-  x.textAlign='center';
-  x.fillStyle='#F5F1E8'; x.font='700 52px sans-serif';
-  x.fillText('Understand It Before You Decide', W/2, 500);
-  x.fillStyle='#9E9A8C'; x.font='400 24px sans-serif';
-  x.fillText('bitcoinwealthpays.com', W/2, 552);
-
-  fs.writeFileSync(outPath, c.toBuffer('image/png'));
+   The supplied artwork, already sized to 1200x630.                  */
+function copyShareImage(){
+  const src = path.join(__dirname, 'share-source.png');
+  if(!fs.existsSync(src)){ console.log("  note: share-source.png missing"); return false; }
+  fs.copyFileSync(src, path.join(OUT, 'share.png'));
   return true;
 }
 
@@ -449,6 +508,55 @@ function videoCard(){
   </span>
 </button>
 </div></div>`;
+}
+
+
+/* ---------- video tutorials page ---------- */
+function tutorialsBody(){
+  let b = `<div class="crumbs"><a href="/">Home</a> &rsaquo; <b>Video Tutorials</b></div>
+<h1 style="font-size:clamp(26px,6.5vw,38px);margin-bottom:14px">Video Tutorials</h1>
+<p style="color:#DAD5C9;max-width:var(--read);font-size:17px;margin-bottom:26px">Watch the practical steps rather than reading them. Start with the introduction, then work through the setup tutorials in order.</p>
+
+<div class="frame vidframe" style="margin-bottom:34px"><div class="frame-in" style="padding:18px 16px 16px">
+<div class="eyebrow" style="display:inline-block">Start here</div>
+<button class="vidcard" type="button" data-video="${INTRO_VIDEO.id}" aria-label="Play video: ${esc(INTRO_VIDEO.title)}">
+  <img class="vidthumb" src="https://i.ytimg.com/vi/${INTRO_VIDEO.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+  <span class="vidshade"></span>
+  <span class="vidplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+  <span class="vidmeta">
+    <span class="vidtitle">${esc(INTRO_VIDEO.title)}</span>
+    <span class="vidblurb">${esc(INTRO_VIDEO.blurb)}</span>
+  </span>
+</button>
+</div></div>
+
+<div class="sec"><h2>Setup tutorials</h2><span class="ln"></span></div>
+<p style="color:var(--muted);max-width:var(--read);margin-bottom:20px">Three short walkthroughs taking you from an empty phone to holding BTCB.</p>
+<div class="tutgrid">`;
+
+  TUTORIALS.forEach((t, i) => {
+    const num = i + 1;
+    if(t.id){
+      b += `<button class="tutcard live" type="button" data-video="${t.id}" aria-label="Play video: ${esc(t.title)}">
+  <span class="tutnum">${num}</span>
+  <span class="tuttxt"><span class="tutt">${esc(t.title)}</span><span class="tutb">${esc(t.blurb)}</span></span>
+  <span class="tutplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+</button>`;
+    } else {
+      b += `<div class="tutcard soon" aria-disabled="true">
+  <span class="tutnum">${num}</span>
+  <span class="tuttxt"><span class="tutt">${esc(t.title)}</span><span class="tutb">${esc(t.blurb)}</span></span>
+  <span class="tutsoon">Coming soon</span>
+</div>`;
+    }
+  });
+
+  b += `</div>
+<div class="box box-note" style="max-width:var(--read);margin-top:26px"><p>Tutorials are added as they are recorded. In the meantime, every step is written out in full on the <a href="/guides/">Step-by-Step Setup Guides</a> page.</p></div>`;
+
+  b += sourcePanel("The programme is explained in full across this site, drawing on its own presentation.");
+  b += contactPanel("Stuck on a step in one of the tutorials?");
+  return b;
 }
 
 /* ---------- source document panel ----------
@@ -497,9 +605,11 @@ function contactPanel(line){
 
 /* ---------- shared page shell ---------- */
 const NAV = [
+  ["/", "Home"],
   ["/what-is-bitcoin-wealth.html", "What Is Bitcoin Wealth"],
   ["/topics/", "All Topics"],
   ["/guides/", "Setup Guides"],
+  ["/video-tutorials.html", "Video Tutorials"],
   ["/glossary.html", "Glossary"],
   ["/faq.html", "FAQ"]
 ];
@@ -508,10 +618,9 @@ function socialRow() {
   const ICONS = {
     whatsapp:{n:"WhatsApp", p:'<path d="M20.5 3.5A10.4 10.4 0 0 0 3.6 16.1L2.5 21.5l5.5-1.1a10.4 10.4 0 0 0 12.5-16.9z"/><path d="M8.6 8.1c.2-.5.4-.5.6-.5h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2 0 .4-.1.5l-.5.6c-.1.2-.2.3-.1.5a6.8 6.8 0 0 0 3.1 3c.3.1.4 0 .5-.1l.6-.6c.2-.2.3-.2.5-.1l1.8.9c.2.1.4.2.4.4a2 2 0 0 1-1.4 1.8 3.9 3.9 0 0 1-2.9-.5 11 11 0 0 1-4.6-4.6 3.9 3.9 0 0 1-.5-2.8 2 2 0 0 1 .7-1.3z"/>'},
     tiktok:{n:"TikTok", p:'<path d="M16.5 3.2a5 5 0 0 0 4.4 4.4v3.1a8 8 0 0 1-4.4-1.5v6.4a6.1 6.1 0 1 1-6.1-6.1c.3 0 .6 0 .9.1v3.2a2.9 2.9 0 1 0 2 2.8V3.2z"/>'},
-    facebook:{n:"Facebook", p:'<path d="M15.5 8.5h-2a1 1 0 0 0-1 1V12h3l-.5 3h-2.5v6.5h-3V15H7v-3h2.5V9.5A4 4 0 0 1 13.5 5.5h2z"/>'},
     youtube:{n:"YouTube", p:'<path d="M22.5 7.2a2.8 2.8 0 0 0-1.9-2C18.9 4.7 12 4.7 12 4.7s-6.9 0-8.6.5a2.8 2.8 0 0 0-1.9 2A29 29 0 0 0 1 12a29 29 0 0 0 .5 4.8 2.8 2.8 0 0 0 1.9 2c1.7.5 8.6.5 8.6.5s6.9 0 8.6-.5a2.8 2.8 0 0 0 1.9-2A29 29 0 0 0 23 12a29 29 0 0 0-.5-4.8z"/><path d="M9.9 15.3V8.7l5.7 3.3z"/>'}
   };
-  const out = ["whatsapp","tiktok","facebook","youtube"].filter(k => SOCIAL[k]).map(k =>
+  const out = ["whatsapp","tiktok","youtube"].filter(k => SOCIAL[k]).map(k =>
     `<a class="soc" href="${SOCIAL[k]}" target="_blank" rel="noopener noreferrer" aria-label="${ICONS[k].n}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k].p}</svg></a>`).join("");
   return out ? `<div class="socrow">${out}</div>` : "";
 }
@@ -609,7 +718,7 @@ const authorSchema = {
   "url": SITE.origin + "/",
   "logo": SITE.origin + "/logo.png",
   "email": SITE.contact,
-  "sameAs": ["whatsapp","tiktok","facebook","youtube"].map(k => SOCIAL[k]).filter(Boolean)
+  "sameAs": ["whatsapp","tiktok","youtube"].map(k => SOCIAL[k]).filter(Boolean)
 };
 
 function breadcrumb(items) {
@@ -628,7 +737,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'topics'), { recursive: true });
 fs.mkdirSync(path.join(OUT, 'guides'), { recursive: true });
 fs.writeFileSync(path.join(OUT, 'style.css'), CSS);
-writeShareImage(path.join(OUT, 'share.png'));
+copyShareImage();
 copyIcons();
 fs.writeFileSync(path.join(OUT, 'site.webmanifest'), JSON.stringify({
   name: SITE.name,
@@ -866,6 +975,9 @@ ${videoCard()}
 <div class="row" style="justify-content:center">
 <a class="btn btn-primary" href="/what-is-bitcoin-wealth.html">What is Bitcoin Wealth</a>
 <a class="btn btn-ghost" href="/guides/">Step-by-Step Guides</a></div>
+<div class="row secondrow" style="justify-content:center;margin-top:12px">
+<a class="btn btn-quiet btn-sm2" href="/video-tutorials.html">Tutorial videos</a>
+<a class="btn btn-quiet btn-sm2" href="${DECK.down}" target="_blank" rel="noopener noreferrer">Download the PDF</a></div>
 </div></div>`;
 
 writePage('index.html', page({
@@ -877,7 +989,7 @@ writePage('index.html', page({
     { "@context":"https://schema.org","@type":"WebSite","name":SITE.name,"alternateName":"Bitcoin Wealth Explained",
       "url":SITE.origin+"/","publisher":authorSchema,"description":SITE.blurb,"inLanguage":"en" },
     { "@context":"https://schema.org","@type":"Organization","name":SITE.author,"url":SITE.origin+"/",
-      "logo":SITE.origin+"/logo.png","email":SITE.contact,"sameAs":["whatsapp","tiktok","facebook","youtube"].map(k=>SOCIAL[k]).filter(Boolean) },
+      "logo":SITE.origin+"/logo.png","email":SITE.contact,"sameAs":["whatsapp","tiktok","youtube"].map(k=>SOCIAL[k]).filter(Boolean) },
     faqSchema(TOPICS.filter(t=>t.quiz))
   ]
 }));
@@ -941,9 +1053,9 @@ ti += `<div class="ctabar" style="margin-top:40px">
 <a class="btn btn-quiet" href="/glossary.html">Glossary</a>
 <a class="btn btn-quiet" href="/faq.html">FAQ</a></div></div>` + sourcePanel("Every topic here is drawn from the programme's own presentation.") + `
 <div class="ctabar">
-<div class="eyebrow" style="margin-bottom:8px">Prefer the guided version?</div>
-<p style="color:#DAD5C9;margin-bottom:16px">The same material runs as a free course with progress tracking, knowledge checks and a certificate when you finish.</p>
-<a class="btn btn-go" href="${SITE.course}" target="_blank" rel="noopener">Take the full crash course</a></div>`;
+<div class="eyebrow" style="margin-bottom:8px">Prefer to watch?</div>
+<p style="color:#DAD5C9;margin-bottom:16px">The practical steps are also recorded as short video walkthroughs, from setting up a wallet through to holding BTCB.</p>
+<a class="btn btn-go" href="/video-tutorials.html">Watch the video tutorials</a></div>`;
 
 writePage('topics/index.html', page({
   url: "/topics/", nav: "/topics/",
@@ -977,14 +1089,14 @@ ${t.quiz.opts.map((o,k)=>`<button class="opt" data-q-opt="${k}"><span class="k">
 <div data-q-fb></div></div>`;
   }
   b += `<div class="pn">`;
-  if (prev) b += `<a href="/topics/${prev.slug}.html"><div class="d">Previous</div><div class="t">${esc(prev.title)}</div></a>`;
-  if (next) b += `<a href="/topics/${next.slug}.html"><div class="d">Next</div><div class="t">${esc(next.title)}</div></a>`;
+  if (prev) b += `<a class="pn-prev" href="/topics/${prev.slug}.html"><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span><span class="pn-tx"><span class="d">Previous</span><span class="t">${esc(prev.title)}</span></span></a>`;
+  if (next) b += `<a class="pn-next" href="/topics/${next.slug}.html"><span class="pn-tx"><span class="d">Next</span><span class="t">${esc(next.title)}</span></span><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></a>`;
   b += `</div>`;
   if (t.slug === "questions-worth-asking") b += contactPanel("Some of these are quicker to ask than to research.");
   if (!next) b += contactPanel("You have read the whole site.") + `<div class="ctabar">
 <div class="eyebrow" style="margin-bottom:8px">That is everything</div>
-<p style="color:#DAD5C9;margin-bottom:16px">If you would rather work through it as a guided course, with progress tracking and a certificate at the end, it is free.</p>
-<a class="btn btn-go" href="${SITE.course}" target="_blank" rel="noopener">Take the full crash course</a></div>`;
+<p style="color:#DAD5C9;margin-bottom:16px">If you would rather see the practical steps done on screen, the video tutorials cover wallet setup, funding and swapping.</p>
+<a class="btn btn-go" href="/video-tutorials.html">Watch the video tutorials</a></div>`;
 
   writePage('topics/' + t.slug + '.html', page({
     url: "/topics/" + t.slug + ".html", nav: "/topics/",
@@ -1015,7 +1127,11 @@ let gi = `<div class="crumbs"><a href="/">Home</a> &rsaquo; <b>Setup Guides</b><
 <h1 style="font-size:clamp(26px,6.5vw,36px);margin-bottom:14px">Step-by-Step Setup Guides</h1>
 <p style="color:var(--muted);max-width:var(--read);margin-bottom:22px">Written wallet and exchange setup, aimed at complete beginners in South Africa.</p><div class="tgrid two">`;
 GUIDES.forEach(g => { gi += `<a class="tcard" href="/guides/${g.slug}.html"><i>&rarr;</i><span>${esc(g.name)}<small>${esc(g.sub)}</small></span></a>`; });
-gi += `</div>`;
+gi += `</div>
+<div class="ctabar">
+<div class="eyebrow" style="margin-bottom:8px">Prefer to watch than read?</div>
+<p style="color:#DAD5C9;margin-bottom:16px">The same setup steps are being recorded as short video walkthroughs.</p>
+<a class="btn btn-go" href="/video-tutorials.html">Watch the video tutorials</a></div>`;
 writePage('guides/index.html', page({
   url: "/guides/", nav: "/guides/",
   title: "Crypto Wallet Setup Guides: SafePal, MetaMask, Binance, VALR",
@@ -1042,10 +1158,14 @@ GUIDES.forEach((g, i) => {
 <p style="margin-top:14px;color:var(--gold);font-weight:600">${esc(g.rules.foot)}</p></div></div>`;
   }
   if (g.note) b += `<div class="box box-note" style="max-width:var(--read)"><p>${esc(g.note)}</p></div>`;
+  b += `<div class="ctabar" style="text-align:left">
+<div class="eyebrow" style="margin-bottom:8px">Rather see it done?</div>
+<p style="color:#DAD5C9;margin-bottom:14px">These steps are also being recorded as short video walkthroughs.</p>
+<a class="btn btn-ghost" href="/video-tutorials.html">Watch the video tutorials</a></div>`;
   const gq = GUIDE_QUIZ[g.slug];
   if (gq) b += checkYourself(gq.q, gq.opts, gq.a, gq.ok, gq.no);
   const nx = GUIDES[i+1], pv = GUIDES[i-1];
-  b += `<div class="pn">${pv?`<a href="/guides/${pv.slug}.html"><div class="d">Previous</div><div class="t">${esc(pv.name)}</div></a>`:''}${nx?`<a href="/guides/${nx.slug}.html"><div class="d">Next guide</div><div class="t">${esc(nx.name)}</div></a>`:''}</div>`;
+  b += `<div class="pn">${pv?`<a class="pn-prev" href="/guides/${pv.slug}.html"><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span><span class="pn-tx"><span class="d">Previous</span><span class="t">${esc(pv.name)}</span></span></a>`:''}${nx?`<a class="pn-next" href="/guides/${nx.slug}.html"><span class="pn-tx"><span class="d">Next guide</span><span class="t">${esc(nx.name)}</span></span><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></a>`:''}</div>`;
 
   writePage('guides/' + g.slug + '.html', page({
     url: "/guides/" + g.slug + ".html", nav: "/guides/",
@@ -1073,6 +1193,20 @@ GLOSSARY.forEach(g => {
   gl += `<dt style="font-family:var(--disp);font-size:17px;color:var(--orange);margin-top:20px" id="${slug(g[0])}">${esc(g[0])}</dt><dd style="margin:6px 0 0;color:#DAD5C9">${esc(g[1])}</dd>`;
 });
 gl += `</dl>` + sourcePanel("Terms used across this site, which draws on the programme's own presentation.");
+writePage('video-tutorials.html', page({
+  url: "/video-tutorials.html", nav: "/video-tutorials.html",
+  title: "Bitcoin Wealth Video Tutorials: Wallet Setup, BNB and BTCB",
+  desc: "Free video walkthroughs: setting up a Web3 wallet like SafePal, funding it with BNB, and swapping BNB for BTCB on BNB Smart Chain.",
+  body: tutorialsBody(),
+  schema: [
+    { "@context":"https://schema.org","@type":"ItemList","name":"Bitcoin Wealth video tutorials",
+      "url":SITE.origin+"/video-tutorials.html",
+      "itemListElement": TUTORIALS.map((t,i)=>({ "@type":"ListItem","position":i+1,"name":t.title })) },
+    breadcrumb([["Home","/"],["Video Tutorials","/video-tutorials.html"]])
+  ]
+}));
+add("/video-tutorials.html", "0.9", "weekly");
+
 writePage('glossary.html', page({
   url: "/glossary.html", nav: "/glossary.html",
   title: "Crypto Glossary: Matrix, Spillover, Gas Fees, BTCB Explained",
@@ -1085,16 +1219,41 @@ writePage('glossary.html', page({
 add("/glossary.html", "0.7", "monthly");
 
 /* ---------- faq ---------- */
+const FAQ_GROUPS = [
+  ["The basics",        t => ["m1","m2"].includes(t.mod.id)],
+  ["How the matrix works", t => t.mod.id === "m3"],
+  ["The numbers",       t => t.mod.id === "m4"],
+  ["Wallets and fees",  t => t.mod.id === "m5"],
+  ["Checking it yourself", t => t.mod.id === "m6"]
+];
 let fq = `<div class="crumbs"><a href="/">Home</a> &rsaquo; <b>FAQ</b></div>
-<h1 style="font-size:clamp(26px,6.5vw,36px);margin-bottom:14px">Frequently Asked Questions</h1>
-<p style="color:var(--muted);max-width:var(--read);margin-bottom:24px">Short answers, each linking to the page that covers it properly.</p><div style="max-width:var(--read)">`;
-TOPICS.filter(t=>t.quiz).forEach(t => {
-  fq += `<div class="box box-note"><h2 style="font-size:17.5px;color:var(--orange);margin-bottom:9px;font-family:var(--disp)">${adapt(esc(t.quiz.q), t.slug)}</h2>
-<p style="margin-bottom:8px"><strong style="color:var(--green)">${esc(t.quiz.opts[t.quiz.a])}</strong></p>
-<p style="color:#DAD5C9">${adapt(esc(strip(t.quiz.ok).replace(/^Correct[.,]?\s*/i,'')), t.slug)}</p>
-<p style="margin-top:10px"><a href="/topics/${t.slug}.html">Read the full page: ${esc(t.title)}</a></p></div>`;
+<h1 style="font-size:clamp(26px,6.5vw,36px);margin-bottom:12px">Frequently Asked Questions</h1>
+<p style="color:var(--muted);max-width:var(--read);margin-bottom:14px">Tap a question to see the answer. Each one links to the page that covers it properly.</p>
+<div class="faqjump">`;
+FAQ_GROUPS.forEach((g,i) => {
+  const items = TOPICS.filter(t => t.quiz && g[1](t));
+  if(items.length) fq += `<a href="#g${i}">${esc(g[0])} <span>${items.length}</span></a>`;
 });
-fq += `</div>` + contactPanel("If your question is not answered here, ask it.") + sourcePanel("These answers come from the programme's own presentation and the pages on this site.");
+fq += `</div>`;
+let qn = 0;
+FAQ_GROUPS.forEach((g,i) => {
+  const items = TOPICS.filter(t => t.quiz && g[1](t));
+  if(!items.length) return;
+  fq += `<h2 class="faqhead" id="g${i}"><span>${esc(g[0])}</span><i>${items.length} question${items.length>1?'s':''}</i></h2><div class="faqlist">`;
+  items.forEach(t => {
+    qn++;
+    fq += `<details class="faqitem">
+<summary><span class="faqn">${qn}</span><span class="faqq">${adapt(esc(t.quiz.q), t.slug)}</span><span class="faqchev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+<div class="faqa">
+  <p class="faqshort">${adapt(esc(t.quiz.opts[t.quiz.a]), t.slug)}</p>
+  <p>${adapt(esc(strip(t.quiz.ok).replace(/^Correct[.,]?\s*/i,'')), t.slug)}</p>
+  <p class="faqlink"><a href="/topics/${t.slug}.html">Read the full page: ${esc(t.title)}</a></p>
+</div></details>`;
+  });
+  fq += `</div>`;
+});
+fq += contactPanel("If your question is not answered here, ask it.") + sourcePanel("These answers come from the programme's own presentation and the pages on this site.");
+
 writePage('faq.html', page({
   url: "/faq.html", nav: "/faq.html",
   title: "Bitcoin Wealth FAQ: Straight Answers To The Common Questions",
