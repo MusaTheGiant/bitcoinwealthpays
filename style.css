@@ -547,6 +547,19 @@ a,button,.soc,.btn,.card,.opt,.navlink,.bn,.rl,.mles,.mitem,.jrow,.lback,.burger
   .nd-anim,.nd-draw{animation:none}
 }
 /* ================= OPEN SITE ================= */
+/* ---------- slogan ---------- */
+.slogan{
+  font-family:var(--disp);font-size:13px;letter-spacing:.09em;
+  color:var(--muted);line-height:1.5;margin-bottom:14px;
+}
+.slogan .o{color:var(--orange)}
+.slogan .g{color:var(--green)}
+.slogan-hero{
+  font-size:clamp(13px,3.2vw,16px);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);margin:0 auto 18px;padding-bottom:16px;max-width:34ch;
+  border-bottom:1px solid var(--line);
+}
+
 /* ---------- FAQ ---------- */
 .faqjump{display:flex;flex-wrap:wrap;gap:8px;max-width:var(--read);margin:0 0 26px}
 .faqjump a{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:rgba(12,19,11,.6);color:var(--muted);text-decoration:none;font-family:var(--disp);font-size:12px;letter-spacing:.05em}

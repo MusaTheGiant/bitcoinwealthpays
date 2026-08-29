@@ -50,7 +50,7 @@ const TOPIC_VIDEOS = {
 const SITE = {
   origin:  "https://bitcoinwealthpays.com",
   name:    "Bitcoin Wealth Pays",
-  tagline: "Understand it before you decide",
+  tagline: "Built by the People. For the People.",
   author:  "Bitcoin Accumulators",
   locale:  "en_ZA",
   contact: "bitcoinaccumulating@gmail.com",
@@ -136,6 +136,19 @@ const CSS = headSrc.slice(headSrc.indexOf('<style>') + 7, headSrc.indexOf('</sty
   .nd-anim,.nd-draw{animation:none}
 }
 /* ================= OPEN SITE ================= */
+/* ---------- slogan ---------- */
+.slogan{
+  font-family:var(--disp);font-size:13px;letter-spacing:.09em;
+  color:var(--muted);line-height:1.5;margin-bottom:14px;
+}
+.slogan .o{color:var(--orange)}
+.slogan .g{color:var(--green)}
+.slogan-hero{
+  font-size:clamp(13px,3.2vw,16px);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);margin:0 auto 18px;padding-bottom:16px;max-width:34ch;
+  border-bottom:1px solid var(--line);
+}
+
 /* ---------- FAQ ---------- */
 .faqjump{display:flex;flex-wrap:wrap;gap:8px;max-width:var(--read);margin:0 0 26px}
 .faqjump a{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:rgba(12,19,11,.6);color:var(--muted);text-decoration:none;font-family:var(--disp);font-size:12px;letter-spacing:.05em}
@@ -597,7 +610,7 @@ function sourcePanel(context, slug){
   /* where a video is attached, it replaces the Open button so the row
      stays to two primary actions and does not crowd on a phone */
   const openBtn = vid ? '' :
-    `<a class="btn btn-ghost" href="${DECK.open}" target="_blank" rel="noopener noreferrer">Open the presentation</a>`;
+    `<a class="btn btn-ghost" href="/video-tutorials.html">Tutorial videos</a>`;
   const vidBtn = vid ?
     `<button class="btn btn-primary vidcard-btn" type="button" data-video="${vid.id}"${vid.vertical ? ' data-vertical="1"' : ''} aria-label="Play video: ${esc(vid.label)}">
       <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px;fill:currentColor;stroke:none"><path d="M8 5.5v13l11-6.5z"/></svg>${esc(vid.label)}
@@ -627,7 +640,7 @@ function contactPanel(line){
 <p style="color:#DAD5C9;margin-bottom:16px">${esc(line)} There is a real person behind this site, and you are welcome to ask directly rather than working it out from the pages alone.</p>
 <div class="row">
   ${wa ? `<a class="btn btn-go" href="${wa}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9"><path d="M20.5 3.5A10.4 10.4 0 0 0 3.6 16.1L2.5 21.5l5.5-1.1a10.4 10.4 0 0 0 12.5-16.9z"/></svg>Message on WhatsApp</a>` : ''}
-  <a class="btn btn-quiet" href="mailto:${SITE.contact}?subject=bitcoinwealthpays.com">Send an email</a>
+  <a class="btn btn-quiet" href="/video-tutorials.html">Tutorial videos</a>
 </div>
 </div>`;
 }
@@ -712,7 +725,8 @@ ${o.body}
 </main>
 ${o.custody ? custodyBlock() : ''}
 <footer class="sitefoot">
-  <div class="wm" style="font-size:13px;margin-bottom:10px"><span class="o">Bitcoin</span> <span class="g">Wealth</span></div>
+  <div class="wm" style="font-size:13px;margin-bottom:6px"><span class="o">Bitcoin</span> <span class="g">Wealth</span></div>
+  <div class="slogan">Built by the <span class="o">People</span>. For the <span class="g">People</span>.</div>
   ${socialRow()}
   An independent educational resource. Not financial advice.<br>
   Content is drawn from supplied programme material. Source claims are labelled as claims.<br>
@@ -1021,7 +1035,8 @@ ${legend()}
 </div></div>
 ${videoCard()}
 <div class="panel beacon" style="padding:30px 22px;text-align:center">
-<h1 style="font-size:clamp(27px,7.5vw,44px);margin-bottom:16px"><span style="color:var(--orange)">Understand</span> Bitcoin Wealth<br><span style="color:var(--green)">Before You Decide</span></h1>
+<h1 style="font-size:clamp(27px,7.5vw,44px);margin-bottom:10px"><span style="color:var(--orange)">Understand</span> Bitcoin Wealth<br><span style="color:var(--green)">Before You Decide</span></h1>
+<div class="slogan slogan-hero">Built by the <span class="o">People</span>. For the <span class="g">People</span>.</div>
 <p style="color:#DAD5C9;margin-bottom:12px;max-width:50ch;margin-left:auto;margin-right:auto;font-size:17px">${esc(SITE.blurb)}</p>
 <p style="color:var(--muted);margin-bottom:24px;max-width:50ch;margin-left:auto;margin-right:auto">Every statement is labelled, so you always know what the material shows, what it claims, and what its own numbers add up to. Free to read, nothing to sign up for.</p>
 <div style="display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:26px">${LABEL.fact}${LABEL.claim}${LABEL.math}</div>
