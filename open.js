@@ -169,7 +169,33 @@
     }
   }
 
-  function boot2(){ boot(); wireTop(); wireVideo(); }
+
+  /* ---------- menu panel ----------
+     Anchored dropdown, so it must close on an outside click and on Escape
+     the way any menu does.                                            */
+  function wireMenu(){
+    var btn = document.getElementById('navtoggle');
+    var panel = document.getElementById('dr');
+    if(!btn || !panel || btn.__done) return;
+    btn.__done = 1;
+
+    function setOpen(open){
+      panel.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      setOpen(!panel.classList.contains('open'));
+    });
+    panel.addEventListener('click', function(e){ e.stopPropagation(); });
+    document.addEventListener('click', function(){ setOpen(false); });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && panel.classList.contains('open')){ setOpen(false); btn.focus(); }
+    });
+    window.addEventListener('resize', function(){ setOpen(false); }, {passive:true});
+  }
+
+  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); }
   window.__wire = boot2;
   boot2();
 })();

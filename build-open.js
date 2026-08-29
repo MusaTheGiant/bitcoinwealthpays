@@ -321,22 +321,50 @@ const CSS = headSrc.slice(headSrc.indexOf('<style>') + 7, headSrc.indexOf('</sty
 @media (hover:hover) and (pointer:fine){.totop:hover{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.totop{transition:none}}
 
-.topnav{position:sticky;top:0;z-index:40;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.topnav{position:relative;position:sticky;top:0;z-index:40;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .topnav-in{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .topnav a.nl{font-family:var(--disp);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:9px 11px;border-radius:9px;text-decoration:none}
 .topnav a.nl:hover{color:var(--orange);background:rgba(255,161,1,.08);text-decoration:none}
 .topnav a.nl.on{color:var(--orange);background:rgba(255,161,1,.13)}
 .navtoggle{display:grid;place-items:center;width:44px;height:44px;border-radius:11px;border:1px solid var(--line);color:var(--orange);background:rgba(255,161,1,.05);cursor:pointer}
 .navtoggle svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round}
-.drawer{display:none;border-top:1px solid var(--line);background:rgba(4,4,3,.99);padding:10px 16px 16px}
-.drawer.open{display:block}
-.drawer-in{max-width:var(--maxw);margin:0 auto}
-@media(min-width:700px){
-  .drawer-in{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+/* ---------- menu panel ----------
+   A single column anchored under the button, right aligned because the
+   button sits top right and the eye is already there. Floating rather
+   than full width, so it never pushes or covers the page content.  */
+.drawer{
+  display:none;position:absolute;top:calc(100% + 8px);right:20px;z-index:60;
+  width:248px;max-width:calc(100vw - 32px);
+  padding:7px;border-radius:14px;
+  background:rgba(6,6,5,.97);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid var(--line-hi);
+  box-shadow:0 18px 44px rgba(0,0,0,.72), 0 0 0 1px rgba(0,0,0,.5);
 }
-.drawer a{display:block;padding:12px 12px;border-radius:10px;color:var(--text);text-decoration:none;font-size:15px}
-.drawer a:hover{background:rgba(255,161,1,.08);text-decoration:none}
-.drawer a.on{background:rgba(255,161,1,.13);color:var(--orange)}
+.drawer.open{display:block;animation:menudrop .19s cubic-bezier(.2,.9,.3,1)}
+@keyframes menudrop{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:none}}
+/* a small pointer tying the panel to the button it came from */
+.drawer::before{
+  content:"";position:absolute;top:-6px;right:14px;width:11px;height:11px;
+  background:rgba(6,6,5,.97);border-left:1px solid var(--line-hi);border-top:1px solid var(--line-hi);
+  transform:rotate(45deg);border-radius:2px 0 0 0;
+}
+.drawer-in{display:block}
+@media (prefers-reduced-motion:reduce){.drawer.open{animation:none}}
+.drawer a{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px;border-radius:10px;color:var(--text);text-decoration:none;
+  font-size:14.5px;line-height:1.3;
+}
+.drawer a::after{
+  content:"";width:5px;height:5px;flex:none;border-right:1.6px solid var(--dim);
+  border-bottom:1.6px solid var(--dim);transform:rotate(-45deg);opacity:.5;transition:transform .15s,opacity .15s;
+}
+.drawer a.on{background:rgba(255,161,1,.13);color:var(--orange);font-weight:600}
+.drawer a.on::after{border-color:var(--orange);opacity:1}
+@media (hover:hover) and (pointer:fine){
+  .drawer a:hover{background:rgba(255,161,1,.09);text-decoration:none}
+  .drawer a:hover::after{transform:rotate(-45deg) translate(2px,2px);opacity:1;border-color:var(--orange)}
+}
 .drawer .dl{font-family:var(--disp);font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);padding:14px 12px 6px}
 
 .hero{text-align:center;max-width:760px;margin:0 auto}
@@ -673,7 +701,7 @@ ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + 
       <span><span class="wm" style="font-size:14px;display:block"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span>
       <span class="brand-sub">${esc(SITE.tagline)}</span></span>
     </a>
-    <button class="navtoggle" aria-label="Open menu" aria-expanded="false" onclick="var d=document.getElementById('dr');var o=d.classList.toggle('open');this.setAttribute('aria-expanded',o)">
+    <button class="navtoggle" id="navtoggle" aria-label="Menu" aria-expanded="false" aria-controls="dr" aria-haspopup="true">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
@@ -952,7 +980,33 @@ fs.writeFileSync(path.join(OUT, 'open.js'), `
     }
   }
 
-  function boot2(){ boot(); wireTop(); wireVideo(); }
+
+  /* ---------- menu panel ----------
+     Anchored dropdown, so it must close on an outside click and on Escape
+     the way any menu does.                                            */
+  function wireMenu(){
+    var btn = document.getElementById('navtoggle');
+    var panel = document.getElementById('dr');
+    if(!btn || !panel || btn.__done) return;
+    btn.__done = 1;
+
+    function setOpen(open){
+      panel.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      setOpen(!panel.classList.contains('open'));
+    });
+    panel.addEventListener('click', function(e){ e.stopPropagation(); });
+    document.addEventListener('click', function(){ setOpen(false); });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && panel.classList.contains('open')){ setOpen(false); btn.focus(); }
+    });
+    window.addEventListener('resize', function(){ setOpen(false); }, {passive:true});
+  }
+
+  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); }
   window.__wire = boot2;
   boot2();
 })();
