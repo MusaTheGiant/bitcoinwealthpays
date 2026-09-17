@@ -1,0 +1,205 @@
+BITCOIN WEALTH CONNECT
+Worldwide member directory and local events
+
+START HERE
+
+The new page is connect.html. It is linked from the main menu, the home
+page, the footer and selected help panels.
+
+The directory starts with no member profiles and no events. No demonstration
+people or invented events are included in the live data.
+
+Upload the extracted ZIP contents to the same GitHub publishing location as
+your current website. Upload the files themselves, not the ZIP or its enclosing
+folder. Keep CNAME and .nojekyll. GitHub must finish publishing before the new
+page is available at https://bitcoinwealthpays.com/connect.html.
+
+This package has not been deployed automatically.
+
+DIRECTORY CONTACT
+
+Listing requests currently use the contact already configured on your site:
+WhatsApp: +27 69 546 5838
+Email: bitcoinaccumulating@gmail.com
+
+If this should change, edit contactWhatsapp and contactEmail near the top of
+connect-data.js. Changing these only changes the directory's request contact;
+the existing website's general social contacts remain in bw-data.js.
+
+DAILY MAINTENANCE
+
+1. Collect a member's information and photograph through WhatsApp.
+2. Confirm which details and photograph they agree to publish.
+3. Add the approved profile to the members list in connect-data.js.
+4. Upload the updated connect-data.js and any new photos to GitHub.
+5. Open the published directory and check the member's profile and contact.
+
+Listing changes do not need a database, a paid messaging API or a site rebuild.
+Data stays in a small public JavaScript file. People choose their own contacts.
+The website opens WhatsApp with a draft message; the visitor still sends it.
+
+If you have Node.js installed, check listing syntax, contact numbers, required
+fields, duplicate ids and local photo files before uploading:
+
+node check-connect.js
+
+The full site builder runs these same checks automatically.
+
+Never store private notes, consent records, identity documents, wallet details
+or unapproved submissions in this file. All files uploaded to the website are
+public, including entries hidden by active: false. Keep private records
+separately. Deleting a public entry cannot recall screenshots, cached copies
+or older GitHub history.
+
+ADDING A MEMBER
+
+Replace members: [] with members: [ ... ] containing approved profiles.
+Use a comma between profiles. The example below is a template, not a listing.
+Fill all placeholder values and change active to true only when ready.
+
+{
+  id: "unique-member-name",
+  active: false,
+  name: "MEMBER DISPLAY NAME",
+  countryCode: "ZA",
+  region: "KwaZulu-Natal",
+  city: "Durban",
+  areas: ["Phoenix", "Umhlanga"],
+  whatsapp: "+COUNTRYCODE_AND_NUMBER",
+  photo: "members/member-photo.webp",
+  languages: ["English", "isiZulu"],
+  bio: "A short introduction in the member's own words.",
+  support: ["Understanding Bitcoin Wealth", "Navigating the system"],
+  meetingModes: ["in-person", "online"],
+  availability: "Weekday evenings by arrangement",
+  timeZone: "Africa/Johannesburg",
+  updatedAt: "YYYY-MM-DD"
+}
+
+Required: a unique lowercase hyphenated id, active: true, name, a valid
+countryCode, city, an international WhatsApp number and at least one valid
+meeting mode. Other fields are optional. Invalid profiles are not displayed.
+
+The number must include its international country code. Example format:
++27 72 000 0000. This is a format illustration, not a number to contact.
+The page removes spaces, plus signs and brackets when making the WhatsApp
+link. Use the correct international number supplied by the member.
+
+Use a two-letter country or territory code. Examples: ZA South Africa,
+GB United Kingdom, US United States, NG Nigeria, IN India, BR Brazil,
+DE Germany, AU Australia. The page includes 249 country/territory choices.
+Locations and regions are entered in the member's own details. Avoid
+abbreviations and inconsistent spellings within the same region.
+
+The two meeting modes are "in-person" and "online". Online members can help
+across borders. A selected country filters the member's location; selecting
+online alone does not override a country filter. The no-results button can
+clear all location/language filters and show online members worldwide.
+
+Store photographs in members/. Use small, clear square photos, preferably
+WebP or JPEG. About 400 by 400 pixels and under 150 KB is a useful target.
+Only use photographs the member has approved for public use.
+If photo is empty or unavailable, the profile shows the member's initials.
+
+Use an IANA time zone such as Africa/Johannesburg, Europe/London,
+America/New_York, Asia/Kolkata or Australia/Sydney. This handles seasonal
+clock changes. Availability is a member's stated preference, not a live diary.
+
+The updatedAt field means the listing details were updated on that date.
+It is not an identity, qualification or investment-quality verification.
+
+SHARING A PROFILE
+
+Every profile has a Share profile button. It copies a link such as:
+https://bitcoinwealthpays.com/connect.html#member-unique-member-name
+
+The id must stay unchanged when updating a profile so existing links work.
+These links use the directory's common social preview image. They do not
+generate a personalised preview image for each member.
+
+UPDATING OR REMOVING A PROFILE
+
+Edit the entry and update updatedAt. Remove its entire entry from members
+to remove a listing. Remove an unused photo as appropriate. Members can
+request corrections, removal or report concerns through the page.
+Reconfirm listings periodically and remove contacts who no longer respond.
+
+ADDING AN EVENT
+
+Add objects to the events list in connect-data.js. Example template:
+
+{
+  id: "unique-event-name",
+  status: "scheduled",
+  title: "EVENT TITLE",
+  type: "coffee",
+  countryCode: "ZA",
+  region: "KwaZulu-Natal",
+  city: "Durban",
+  venue: "PUBLIC VENUE NAME",
+  mapUrl: "",
+  startsAt: "2030-01-19T10:00:00+02:00",
+  endsAt: "2030-01-19T12:00:00+02:00",
+  timeZone: "Africa/Johannesburg",
+  cost: "Free",
+  organiser: "ORGANISER NAME",
+  whatsapp: "+COUNTRYCODE_AND_NUMBER",
+  description: "A short, factual description of the gathering."
+}
+
+The sample date is only an illustration. Replace it with the actual date.
+Valid types: presentation, coffee, workshop, online, other.
+Required: id, title, type, status, countryCode, city, international WhatsApp
+number, startsAt, endsAt and a valid IANA timeZone.
+
+Both timestamps must include the correct UTC offset for that event's date,
+or Z for UTC. The IANA zone controls display; it does not repair an incorrect
+offset in the supplied timestamp. Check both the date and local time before
+publishing, especially around daylight saving changes. End must follow start.
+
+Optional mapUrl must be an https link to the actual public venue. For an
+online event, the city/country describe where the organiser is based.
+People get any private meeting link from the organiser.
+
+Events are sorted by start time. Ended events disappear from the visitor's
+view automatically, including while the page remains open. This does not
+delete them from the file. You may remove old entries during maintenance.
+Set status to "cancelled" when cancelling a future event; it stays visible
+with a cancellation notice until its scheduled end. No bookings are taken.
+
+REBUILDING THE WHOLE SITE
+
+The already-built HTML files are ready to upload. If you change the site
+templates or course content, run this command with Node.js 18 or newer:
+
+node build-open.js
+
+The generated deployment files are written to the open/ folder. Upload the
+contents of open/, not the folder itself, to your GitHub publishing location.
+Keep your source files from this package separately for future rebuilds.
+
+Source files:
+- build-open.js: shared page layout, navigation and site generation.
+- bw-data.js: the existing educational content and general social contacts.
+- style.css: the existing site's stylesheet, now used directly by the builder.
+- connect-body.txt: the directory page's HTML content.
+- connect.css: directory styling and the home-page directory callout.
+- connect.js: filters, profiles, events, links and time-zone formatting.
+- connect-data.js: the approved public members, events and directory contact.
+- check-connect.js: optional offline listing checks.
+- members/: approved public profile images.
+- share.png and connect-share.png: supplied social preview images.
+
+The missing v2-head.html dependency has been removed. The builder copies the
+icons already present in this package and preserves the new directory page,
+data and photos in its output. The two legacy preview documents produced by
+the builder are not required for deployment.
+
+VISITOR EXPERIENCE
+
+The directory requires JavaScript for its search and listings. A contact link
+is shown when JavaScript is off. No login, browser geolocation or database
+connection is used. Search is based on the town/areas members supply, not on
+GPS distance. New listings and changes are published by the site organiser.
+Chat, video calls, screen sharing and meeting arrangements happen in the
+apps chosen by the member and visitor.

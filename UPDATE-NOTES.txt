@@ -1,0 +1,23 @@
+UPDATE NOTES: BITCOIN WEALTH CONNECT
+
+Added connect.html with worldwide member and event listings.
+Added directory links to the menu, home page, footer and relevant help panels.
+Added international WhatsApp contact links, location/language/mode filters,
+shareable profile/event links, and visitor-local event time display.
+Added reviewed listing requests and correction/removal/report routes.
+Added automatic hiding of ended events, and cancellation notices.
+Repaired the standalone site builder and supplied the missing share images.
+The existing educational content and original stylesheet were preserved.
+
+Member and event lists are empty. No fictitious profiles are published.
+Listing requests currently use the existing website number +27 69 546 5838.
+
+Checks completed: the full site builds successfully; 23 filter, contact,
+validation and event-lifecycle checks passed; all 30 HTML pages passed checks
+for local file references, fragment links and duplicate element IDs.
+
+Desktop and mobile visual/browser interaction checks remain outstanding:
+the preview browser's security policy prevented opening local website files.
+
+Read CONNECT-GUIDE.txt for adding profiles, events and uploading the files.
+This ZIP has not been deployed to the live website.

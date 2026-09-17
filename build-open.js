@@ -7,6 +7,10 @@
    ===================================================================== */
 const fs = require('fs');
 const path = require('path');
+require('./check-connect.js')(__dirname);
+for (const file of ['connect-body.txt', 'connect.css', 'connect.js', 'connect-data.js', 'share.png', 'connect-share.png', 'logo.png']) {
+  if (!fs.existsSync(path.join(__dirname, file))) throw new Error('Missing build input: ' + file);
+}
 
 const VIDEO = {
   id:    "lAjhtdcncJo",
@@ -125,294 +129,8 @@ function adaptTitle(t){
        : t;
 }
 
-/* ---------- styles, lifted from the course then extended ---------- */
-const headSrc = fs.readFileSync(path.join(__dirname, 'v2-head.html'), 'utf8');
-const CSS = headSrc.slice(headSrc.indexOf('<style>') + 7, headSrc.indexOf('</style>')) + `
-
-/* the connecting lines fade in just ahead of each node */
-@keyframes drawline{from{opacity:0}to{opacity:1}}
-.nd-draw{animation:drawline .45s ease-out both}
-@media (prefers-reduced-motion:reduce){
-  .nd-anim,.nd-draw{animation:none}
-}
-/* ================= OPEN SITE ================= */
-/* ---------- slogan ---------- */
-.slogan{
-  font-family:var(--disp);font-size:13px;letter-spacing:.09em;
-  color:var(--muted);line-height:1.5;margin-bottom:14px;
-}
-.slogan .o{color:var(--orange)}
-.slogan .g{color:var(--green)}
-.slogan-hero{
-  font-size:clamp(13px,3.2vw,16px);letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);margin:0 auto 18px;padding-bottom:16px;max-width:34ch;
-  border-bottom:1px solid var(--line);
-}
-
-/* ---------- FAQ ---------- */
-.faqjump{display:flex;flex-wrap:wrap;gap:8px;max-width:var(--read);margin:0 0 26px}
-.faqjump a{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:99px;border:1px solid var(--line);background:rgba(12,19,11,.6);color:var(--muted);text-decoration:none;font-family:var(--disp);font-size:12px;letter-spacing:.05em}
-.faqjump a span{font-family:var(--mono);font-size:11px;color:var(--orange);background:rgba(255,161,1,.13);border-radius:99px;padding:1px 7px}
-.faqjump a:hover{border-color:var(--line-hi);color:var(--text);text-decoration:none}
-.faqhead{display:flex;align-items:baseline;gap:10px;max-width:var(--read);font-family:var(--disp);font-size:16px;color:var(--gold);letter-spacing:.05em;margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:80px}
-.faqhead i{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-left:auto}
-.faqlist{max-width:var(--read);display:grid;gap:8px}
-.faqitem{border:1px solid var(--line);border-radius:13px;background:linear-gradient(170deg,rgba(12,19,11,.72),rgba(5,5,4,.88));overflow:hidden}
-.faqitem summary{display:flex;align-items:center;gap:12px;padding:15px 16px;cursor:pointer;list-style:none}
-.faqitem summary::-webkit-details-marker{display:none}
-.faqn{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700;background:rgba(255,161,1,.12);color:var(--orange)}
-.faqq{flex:1;color:var(--text);font-size:15px;line-height:1.4}
-.faqchev{flex:none;color:var(--dim);transition:transform .2s ease,color .2s ease}
-.faqchev svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;display:block}
-.faqitem[open]{border-color:var(--line-hi)}
-.faqitem[open] .faqchev{transform:rotate(180deg);color:var(--orange)}
-.faqitem[open] .faqn{background:var(--orange);color:#140b00}
-.faqa{padding:0 16px 16px 56px}
-.faqa p{margin:0 0 9px;color:#DAD5C9;font-size:14.5px;line-height:1.6}
-.faqshort{color:var(--green)!important;font-weight:600}
-.faqlink a{font-size:13.5px}
-@media (hover:hover) and (pointer:fine){.faqitem summary:hover{background:rgba(255,161,1,.05)}}
-@media(max-width:520px){.faqa{padding-left:16px}}
-@media (prefers-reduced-motion:reduce){.faqchev{transition:none}}
-
-/* ---------- landing secondary row ---------- */
-.btn-sm2{min-height:44px;padding:11px 18px;font-size:12.5px}
-@media(max-width:620px){.secondrow .btn{width:auto;flex:1;min-width:140px}}
-
-/* ---------- previous and next ----------
-   A slow border sweep and a nudging arrow, so the way forward is obvious
-   without shouting.                                                  */
-.pn a{position:relative;display:flex;align-items:center;gap:12px;overflow:hidden}
-.pn a::before{
-  content:"";position:absolute;inset:-1px;border-radius:13px;padding:1px;
-  background:linear-gradient(110deg,rgba(255,161,1,0) 20%,rgba(255,161,1,.85) 50%,rgba(63,193,31,0) 80%);
-  background-size:280% 100%;
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  animation:pnsweep 3.4s linear infinite;pointer-events:none;
-}
-.pn .pn-tx{flex:1;min-width:0}
-.pn .d{display:block}
-.pn .t{display:block}
-.pn-ar{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,161,1,.13);color:var(--orange)}
-.pn-ar svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.pn-next .pn-ar{animation:nudgeR 1.7s ease-in-out infinite}
-.pn-prev .pn-ar{animation:nudgeL 1.7s ease-in-out infinite}
-@keyframes pnsweep{0%{background-position:140% 0}100%{background-position:-140% 0}}
-@keyframes nudgeR{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
-@keyframes nudgeL{0%,100%{transform:translateX(0)}50%{transform:translateX(-4px)}}
-@media (hover:hover) and (pointer:fine){
-  .pn a:hover .pn-ar{background:var(--orange);color:#140b00}
-}
-@media (prefers-reduced-motion:reduce){
-  .pn a::before,.pn-next .pn-ar,.pn-prev .pn-ar{animation:none}
-  .pn a::before{background:linear-gradient(110deg,rgba(255,161,1,.5),rgba(63,193,31,.3))}
-}
-
-/* ---------- tutorial list ---------- */
-.tutgrid{display:grid;gap:12px;max-width:var(--read)}
-.tutcard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px 17px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(12,19,11,.8),rgba(5,5,4,.9));font:inherit;color:inherit}
-.tutcard.live{cursor:pointer;transition:transform .16s,border-color .16s,background .16s}
-.tutnum{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-family:var(--mono);font-size:14px;font-weight:700;background:rgba(255,161,1,.13);color:var(--orange)}
-.tuttxt{flex:1;min-width:0}
-.tutt{display:block;color:var(--text);font-size:15.5px;line-height:1.3}
-.tutb{display:block;color:var(--muted);font-size:13.5px;line-height:1.45;margin-top:3px}
-.tutplay{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#FFB730,var(--orange));color:#140b00}
-.tutplay svg{width:19px;height:19px;fill:currentColor;stroke:none;margin-left:2px}
-.tutsoon{flex:none;font-family:var(--disp);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(198,128,16,.45);background:rgba(198,128,16,.1);padding:6px 11px;border-radius:99px;white-space:nowrap}
-.tutcard.soon{opacity:.72;cursor:default}
-.tutcard.soon .tutnum{background:rgba(158,154,140,.1);color:var(--dim)}
-.tutcard.soon .tutt{color:var(--muted)}
-@media (hover:hover) and (pointer:fine){
-  .tutcard.live:hover{transform:translateY(-2px);border-color:var(--line-hi);background:rgba(255,161,1,.06)}
-}
-@media(max-width:460px){.tutb{display:none}.tutsoon{font-size:9.5px;padding:5px 9px}}
-
-/* ---------- video card and player ---------- */
-.vidframe{box-shadow:0 0 34px rgba(198,128,16,.20), 0 20px 54px rgba(0,0,0,.8)}
-.vidcard{
-  position:relative;display:block;width:100%;margin-top:10px;padding:0;border:none;
-  border-radius:12px;overflow:hidden;cursor:pointer;background:#000;
-  aspect-ratio:16/9;
-  box-shadow:0 0 0 1px rgba(198,128,16,.45), 0 10px 30px rgba(0,0,0,.65);
-  transition:box-shadow .2s ease, transform .2s ease;
-}
-.vidthumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:.72}
-.vidshade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.78))}
-.vidplay{
-  position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
-  width:72px;height:72px;border-radius:50%;display:grid;place-items:center;
-  background:linear-gradient(135deg,#FFB730,var(--orange));color:#140b00;
-  box-shadow:0 10px 30px rgba(255,161,1,.5);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-.vidplay svg{width:34px;height:34px;fill:currentColor;stroke:none;margin-left:3px}
-.vidmeta{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;text-align:left}
-.vidtitle{display:block;font-family:var(--disp);font-size:16px;color:#fff;letter-spacing:.02em;line-height:1.25}
-.vidblurb{display:block;font-size:13px;color:rgba(255,255,255,.72);margin-top:3px}
-@media (hover:hover) and (pointer:fine){
-  .vidcard:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,161,1,.7), 0 16px 40px rgba(0,0,0,.7)}
-  .vidcard:hover .vidplay{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 14px 38px rgba(255,161,1,.65)}
-}
-@media(min-width:700px){.vidplay{width:84px;height:84px}.vidplay svg{width:40px;height:40px}}
-
-.vidmodal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:18px}
-.vidmodal[hidden]{display:none}
-.vidmodal-bg{position:absolute;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);animation:fade .2s ease}
-.vidmodal-box{position:relative;width:100%;max-width:min(1100px,94vw);animation:vidin .28s cubic-bezier(.2,.9,.3,1)}
-@keyframes vidin{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
-.vidmodal-frame{position:relative;aspect-ratio:16/9;width:100%;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(198,128,16,.5), 0 30px 80px rgba(0,0,0,.9)}
-.vidmodal-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.vidclose{
-  position:absolute;top:-52px;right:0;width:44px;height:44px;border-radius:12px;
-  display:grid;place-items:center;border:1px solid var(--line-hi);color:var(--orange);
-  background:rgba(0,0,0,.6);cursor:pointer;
-}
-.vidclose svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.3;stroke-linecap:round}
-@media (hover:hover) and (pointer:fine){.vidclose:hover{background:rgba(255,161,1,.16)}}
-@media(max-width:560px){.vidclose{top:-48px}}
-@media (prefers-reduced-motion:reduce){.vidmodal-bg,.vidmodal-box{animation:none}}
-/* a Short is vertical, so the frame follows it rather than letterboxing */
-.vidmodal.vertical .vidmodal-box{max-width:min(460px,92vw)}
-.vidmodal.vertical .vidmodal-frame{aspect-ratio:9/16}
-.vidcard-btn{gap:8px}
-
-
-
-
-/* ---------- source document panel ---------- */
-.srcbox{max-width:var(--read);margin:30px 0 0;padding:20px;border-radius:15px;border:1px solid rgba(198,128,16,.4);background:linear-gradient(160deg,rgba(198,128,16,.09),rgba(198,128,16,.03))}
-.srcbox-in{display:flex;gap:14px;align-items:flex-start}
-.srcbox-ico{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(198,128,16,.16);color:var(--gold);border:1px solid rgba(198,128,16,.35)}
-.srcbox-ico svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.srcbox-h{font-family:var(--disp);font-size:15px;color:var(--gold);letter-spacing:.04em;margin-bottom:6px}
-.srcbox-txt p{margin:0;color:#DAD5C9;font-size:14.5px;line-height:1.6}
-
-/* ---------- the two-column reading path ----------
-   Eight pages read as two groups of four rather than one long list,
-   which is far less intimidating than a single stack.            */
-.pathwrap{display:grid;gap:26px;max-width:var(--maxw);margin:0 0 8px}
-@media(min-width:780px){.pathwrap{grid-template-columns:1fr 1fr;gap:30px}}
-.pathcol{position:relative}
-.pathhead{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;padding-bottom:13px;border-bottom:1px solid var(--line)}
-.pathnum{
-  flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
-  font-family:var(--disp);font-weight:700;font-size:14px;color:#140b00;
-  background:linear-gradient(135deg,#FFB730,var(--orange));
-}
-.pathlabel{font-family:var(--disp);font-size:15px;color:var(--text);letter-spacing:.03em;line-height:1.25}
-.pathsub{font-size:13px;color:var(--dim);margin-top:3px;line-height:1.45}
-.pathstep{
-  display:flex;align-items:center;gap:12px;padding:13px 14px;margin-bottom:7px;
-  border:1px solid var(--line);border-radius:12px;text-decoration:none;
-  background:linear-gradient(170deg,rgba(12,19,11,.7),rgba(5,5,4,.85));
-  transition:transform .16s,border-color .16s,background .16s;
-}
-.pathstep i{
-  flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-style:normal;
-  font-family:var(--mono);font-size:12px;font-weight:700;background:rgba(255,161,1,.12);color:var(--orange);
-}
-.pathstep span{flex:1;color:var(--text);font-size:14.5px;line-height:1.35}
-.pathstep em{flex:none;font-style:normal;color:var(--dim);font-size:15px;transition:transform .16s,color .16s}
-@media (hover:hover) and (pointer:fine){
-  .pathstep:hover{transform:translateY(-2px);border-color:var(--line-hi);background:rgba(255,161,1,.06);text-decoration:none}
-  .pathstep:hover em{color:var(--orange);transform:translateX(3px)}
-  .pathstep:hover i{background:var(--orange);color:#140b00}
-}
-
-/* ---------- back to top ---------- */
-.totop{
-  position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:50;
-  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;cursor:pointer;
-  background:linear-gradient(135deg,#FFB730,var(--orange));color:#140b00;border:none;
-  box-shadow:0 8px 26px rgba(255,161,1,.42);
-  opacity:0;transform:translateY(12px);pointer-events:none;
-  transition:opacity .22s ease,transform .22s ease;
-}
-.totop.show{opacity:1;transform:none;pointer-events:auto}
-.totop svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-@media (hover:hover) and (pointer:fine){.totop:hover{transform:translateY(-3px)}}
-@media (prefers-reduced-motion:reduce){.totop{transition:none}}
-
-.topnav{position:relative;position:sticky;top:0;z-index:40;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-.topnav-in{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.topnav a.nl{font-family:var(--disp);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:9px 11px;border-radius:9px;text-decoration:none}
-.topnav a.nl:hover{color:var(--orange);background:rgba(255,161,1,.08);text-decoration:none}
-.topnav a.nl.on{color:var(--orange);background:rgba(255,161,1,.13)}
-.navtoggle{display:grid;place-items:center;width:44px;height:44px;border-radius:11px;border:1px solid var(--line);color:var(--orange);background:rgba(255,161,1,.05);cursor:pointer}
-.navtoggle svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round}
-/* ---------- menu panel ----------
-   A single column anchored under the button, right aligned because the
-   button sits top right and the eye is already there. Floating rather
-   than full width, so it never pushes or covers the page content.  */
-.drawer{
-  display:none;position:absolute;top:calc(100% + 8px);right:20px;z-index:60;
-  width:248px;max-width:calc(100vw - 32px);
-  padding:7px;border-radius:14px;
-  background:rgba(6,6,5,.97);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border:1px solid var(--line-hi);
-  box-shadow:0 18px 44px rgba(0,0,0,.72), 0 0 0 1px rgba(0,0,0,.5);
-}
-.drawer.open{display:block;animation:menudrop .19s cubic-bezier(.2,.9,.3,1)}
-@keyframes menudrop{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:none}}
-/* a small pointer tying the panel to the button it came from */
-.drawer::before{
-  content:"";position:absolute;top:-6px;right:14px;width:11px;height:11px;
-  background:rgba(6,6,5,.97);border-left:1px solid var(--line-hi);border-top:1px solid var(--line-hi);
-  transform:rotate(45deg);border-radius:2px 0 0 0;
-}
-.drawer-in{display:block}
-@media (prefers-reduced-motion:reduce){.drawer.open{animation:none}}
-.drawer a{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:10px 12px;border-radius:10px;color:var(--text);text-decoration:none;
-  font-size:14.5px;line-height:1.3;
-}
-.drawer a::after{
-  content:"";width:5px;height:5px;flex:none;border-right:1.6px solid var(--dim);
-  border-bottom:1.6px solid var(--dim);transform:rotate(-45deg);opacity:.5;transition:transform .15s,opacity .15s;
-}
-.drawer a.on{background:rgba(255,161,1,.13);color:var(--orange);font-weight:600}
-.drawer a.on::after{border-color:var(--orange);opacity:1}
-@media (hover:hover) and (pointer:fine){
-  .drawer a:hover{background:rgba(255,161,1,.09);text-decoration:none}
-  .drawer a:hover::after{transform:rotate(-45deg) translate(2px,2px);opacity:1;border-color:var(--orange)}
-}
-.drawer .dl{font-family:var(--disp);font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);padding:14px 12px 6px}
-
-.hero{text-align:center;max-width:760px;margin:0 auto}
-.crumbs{font-family:var(--disp);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
-.crumbs a{color:var(--dim);text-decoration:none}
-.crumbs a:hover{color:var(--orange)}
-.crumbs b{color:var(--orange);font-weight:600}
-
-.tgrid{display:grid;gap:12px}
-@media(min-width:760px){.tgrid.two{grid-template-columns:1fr 1fr}}
-.tcard{display:flex;gap:14px;align-items:center;padding:15px 16px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(170deg,rgba(12,19,11,.75),rgba(5,5,4,.9));text-decoration:none;transition:transform .16s,border-color .16s}
-.tcard:hover{transform:translateY(-2px);border-color:var(--line-hi);text-decoration:none}
-.tcard i{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:700;background:rgba(255,161,1,.12);color:var(--orange);font-style:normal}
-.tcard span{color:var(--text);font-size:15px;line-height:1.35}
-.tcard small{display:block;color:var(--muted);font-size:13px;margin-top:3px;line-height:1.45}
-
-.pn{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px;max-width:var(--read)}
-.pn a{flex:1;min-width:220px;padding:15px 16px;border:1px solid var(--line);border-radius:13px;background:rgba(12,19,11,.6);text-decoration:none}
-.pn a:hover{border-color:var(--line-hi);text-decoration:none}
-.pn .d{font-family:var(--disp);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
-.pn .t{color:var(--text);font-size:15px;line-height:1.35}
-
-/* page quiz */
-.pq{background:linear-gradient(165deg,rgba(12,19,11,.9),#030302);border:1px solid rgba(63,193,31,.28);border-radius:16px;padding:22px;margin:34px 0 0;max-width:var(--read)}
-.pq .opt{cursor:pointer}
-.pq .opt.locked{cursor:default}
-
-/* footer custody block, repeated site wide */
-.cb{border-top:1px solid rgba(255,161,1,.12);margin-top:48px;padding-top:34px}
-.cb-in{max-width:760px;margin:0 auto}
-
-.sitefoot{text-align:center;padding:38px 20px 34px;color:var(--dim);font-size:12.5px;line-height:1.9;border-top:1px solid rgba(255,161,1,.08);margin-top:40px}
-.sitefoot a{color:var(--gold)}
-.ctabar{max-width:var(--read);margin:34px auto 0;padding:20px;border-radius:15px;border:1px solid var(--line-hi);background:linear-gradient(160deg,rgba(255,161,1,.09),rgba(63,193,31,.04));text-align:center}
-`;
+/* The included stylesheet is the source of truth for this standalone export. */
+const CSS = fs.readFileSync(path.join(__dirname, 'style.css'), 'utf8');
 
 /* ---------- the interactive block that sits on every page ---------- */
 function custodyBlock() {
@@ -517,8 +235,7 @@ function padDesc(text, t){
 const ICON_FILES = ['favicon.ico','favicon-16.png','favicon-32.png',
                     'apple-touch-icon.png','icon-192.png','icon-512.png','logo.png'];
 function copyIcons(){
-  const src = path.join(__dirname, 'icons');
-  if(!fs.existsSync(src)){ console.log("  note: icons folder missing, icons not copied"); return; }
+  const src = fs.existsSync(path.join(__dirname, 'icons')) ? path.join(__dirname, 'icons') : __dirname;
   ICON_FILES.forEach(f => {
     const from = path.join(src, f);
     if(fs.existsSync(from)) fs.copyFileSync(from, path.join(OUT, f));
@@ -528,7 +245,7 @@ function copyIcons(){
 /* ---------- social share image ----------
    The supplied artwork, already sized to 1200x630.                  */
 function copyShareImage(){
-  const src = path.join(__dirname, 'share-source.png');
+  const src = fs.existsSync(path.join(__dirname, 'share-source.png')) ? path.join(__dirname, 'share-source.png') : path.join(__dirname, 'share.png');
   if(!fs.existsSync(src)){ console.log("  note: share-source.png missing"); return false; }
   fs.copyFileSync(src, path.join(OUT, 'share.png'));
   return true;
@@ -640,6 +357,7 @@ function contactPanel(line){
 <p style="color:#DAD5C9;margin-bottom:16px">${esc(line)} There is a real person behind this site, and you are welcome to ask directly rather than working it out from the pages alone.</p>
 <div class="row">
   ${wa ? `<a class="btn btn-go" href="${wa}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9"><path d="M20.5 3.5A10.4 10.4 0 0 0 3.6 16.1L2.5 21.5l5.5-1.1a10.4 10.4 0 0 0 12.5-16.9z"/></svg>Message on WhatsApp</a>` : ''}
+  <a class="btn btn-quiet" href="/connect.html">Find a member</a>
   <a class="btn btn-quiet" href="/video-tutorials.html">Tutorial videos</a>
 </div>
 </div>`;
@@ -649,6 +367,7 @@ function contactPanel(line){
 const NAV = [
   ["/", "Home"],
   ["/what-is-bitcoin-wealth.html", "What Is Bitcoin Wealth"],
+  ["/connect.html", "Find a Member"],
   ["/topics/", "All Topics"],
   ["/guides/", "Setup Guides"],
   ["/video-tutorials.html", "Video Tutorials"],
@@ -669,6 +388,7 @@ function socialRow() {
 
 function page(o) {
   const canonical = SITE.origin + o.url;
+  const shareImage = SITE.origin + (o.image || "/share.png");
   const drawer = NAV.map(n => `<a href="${n[0]}"${o.nav === n[0] ? ' class="on" aria-current="page"' : ''}>${n[1]}</a>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
@@ -687,14 +407,14 @@ function page(o) {
 <meta property="og:title" content="${esc(o.title)}">
 <meta property="og:description" content="${esc(o.desc)}">
 <meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${SITE.origin}/share.png">
+<meta property="og:image" content="${shareImage}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Bitcoin Wealth: Understand It Before You Decide">
+<meta property="og:image:alt" content="${esc(o.imageAlt || "Bitcoin Wealth: Understand It Before You Decide")}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(o.title)}">
 <meta name="twitter:description" content="${esc(o.desc)}">
-<meta name="twitter:image" content="${SITE.origin}/share.png">
+<meta name="twitter:image" content="${shareImage}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -704,6 +424,7 @@ function page(o) {
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/connect.css">
 ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + '</script>' : ''}
 </head>
 <body>
@@ -731,6 +452,7 @@ ${o.custody ? custodyBlock() : ''}
   An independent educational resource. Not financial advice.<br>
   Content is drawn from supplied programme material. Source claims are labelled as claims.<br>
   <a href="${DECK.open}" target="_blank" rel="noopener">View the source presentation</a><br>
+  <a href="/connect.html">Find a member</a> · <a href="/connect.html#local-events">Events &amp; meet-ups</a><br>
   Questions or corrections? <a href="mailto:${SITE.contact}">${SITE.contact}</a>
   <div class="sig">Made with <span class="sig-heart">&#10084;&#65039;</span> by <span class="sig-name">Bitcoin</span> <span class="sig-role">Accumulators</span></div>
 </footer>
@@ -747,6 +469,7 @@ ${o.custody ? custodyBlock() : ''}
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 <script src="/open.js" defer></script>
+${(o.scripts || []).map(src => `<script src="${src}" defer></script>`).join("\n")}
 </body>
 </html>`;
 }
@@ -780,6 +503,12 @@ fs.mkdirSync(path.join(OUT, 'guides'), { recursive: true });
 fs.writeFileSync(path.join(OUT, 'style.css'), CSS);
 copyShareImage();
 copyIcons();
+['connect.css', 'connect.js', 'connect-data.js', 'connect-share.png'].forEach(file => {
+  fs.copyFileSync(path.join(__dirname, file), path.join(OUT, file));
+});
+if (fs.existsSync(path.join(__dirname, 'members'))) {
+  fs.cpSync(path.join(__dirname, 'members'), path.join(OUT, 'members'), { recursive: true });
+}
 fs.writeFileSync(path.join(OUT, 'site.webmanifest'), JSON.stringify({
   name: SITE.name,
   short_name: "Bitcoin Wealth",
@@ -1048,6 +777,8 @@ ${videoCard()}
 <a class="btn btn-quiet btn-sm2" href="${DECK.down}" target="_blank" rel="noopener noreferrer">Download the PDF</a></div>
 </div></div>`;
 
+home += `<section class="connect-home-callout"><div><h2>Find your Bitcoin Wealth connection</h2><p>Meet a member near you, connect online or discover a local event.</p></div><a class="connect-button connect-primary" href="/connect.html">Find a member ↗</a></section>`;
+
 writePage('index.html', page({
   url: "/", nav: "/", custody: true,
   title: "Bitcoin Wealth Explained: How It Works, In Plain English",
@@ -1062,6 +793,25 @@ writePage('index.html', page({
   ]
 }));
 add("/", "1.0", "weekly");
+
+/* ---------- worldwide community directory ---------- */
+writePage('connect.html', page({
+  url: '/connect.html', nav: '/connect.html',
+  title: 'Bitcoin Wealth Connect | Find Members & Local Events',
+  desc: 'Find a Bitcoin Wealth member in your country, connect on WhatsApp, and discover local meet-ups, presentations and online sessions.',
+  image: '/connect-share.png',
+  imageAlt: 'Bitcoin Wealth Connect: Find a member. Meet. Learn together.',
+  scripts: ['/connect-data.js', '/connect.js'],
+  body: fs.readFileSync(path.join(__dirname, 'connect-body.txt'), 'utf8'),
+  schema: {
+    '@context': 'https://schema.org', '@type': 'CollectionPage',
+    name: 'Bitcoin Wealth Connect', url: SITE.origin + '/connect.html',
+    description: 'An independent worldwide member directory and events hub.',
+    inLanguage: 'en', publisher: authorSchema
+  }
+}));
+add('/connect.html', '0.9', 'weekly');
+
 
 /* ---------- what is bitcoin wealth ---------- */
 const overviewTopics = TOPICS.slice(0, 8);
@@ -1179,7 +929,7 @@ ${t.quiz.opts.map((o,k)=>`<button class="opt" data-q-opt="${k}"><span class="k">
         "mainEntityOfPage":{"@type":"WebPage","@id":SITE.origin+"/topics/"+t.slug+".html"},
         "author":authorSchema,"publisher":authorSchema,
         "inLanguage":"en","isAccessibleForFree":true,
-        "datePublished":TODAY,"dateModified":TODAY,
+        "datePublished":"2026-08-29","dateModified":TODAY,
         "wordCount":strip(t.html).split(/\s+/).length,
         "articleSection":t.mod.title,
         "about":{"@type":"Thing","name":"Bitcoin Wealth"},
@@ -1243,7 +993,7 @@ GUIDES.forEach((g, i) => {
     schema: [
       { "@context":"https://schema.org","@type":"HowTo","name":"How to set up your "+g.name,"description":g.sub,
         "url":SITE.origin+"/guides/"+g.slug+".html","totalTime":"PT15M",
-        "datePublished":TODAY,"dateModified":TODAY,"inLanguage":"en",
+        "datePublished":"2026-08-29","dateModified":TODAY,"inLanguage":"en",
         "author":authorSchema,"publisher":authorSchema,
         "supply":g.needs.map(n=>({"@type":"HowToSupply","name":n})),
         "step":g.steps.map((s,k)=>({"@type":"HowToStep","position":k+1,"name":s.t,"text":s.d,"url":SITE.origin+"/guides/"+g.slug+".html#step"+(k+1)})) },
