@@ -25,7 +25,7 @@ var CONTACT_EMAIL = "bitcoinaccumulating@gmail.com";
 var SOCIAL = {
   whatsapp: "https://wa.me/27695465838",
   tiktok:   "https://www.tiktok.com/@bitcoinwealthexpl",
-  youtube:  "https://www.youtube.com/@bitcoinwealthpays_com"
+  facebook: "https://www.facebook.com/bitcoinwealthexplained/"
 };
 
 /* ---------- SOURCE PRESENTATION ----------
