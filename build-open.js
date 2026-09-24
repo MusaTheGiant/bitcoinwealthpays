@@ -379,9 +379,9 @@ function socialRow() {
   const ICONS = {
     whatsapp:{n:"WhatsApp", p:'<path d="M20.5 3.5A10.4 10.4 0 0 0 3.6 16.1L2.5 21.5l5.5-1.1a10.4 10.4 0 0 0 12.5-16.9z"/><path d="M8.6 8.1c.2-.5.4-.5.6-.5h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2 0 .4-.1.5l-.5.6c-.1.2-.2.3-.1.5a6.8 6.8 0 0 0 3.1 3c.3.1.4 0 .5-.1l.6-.6c.2-.2.3-.2.5-.1l1.8.9c.2.1.4.2.4.4a2 2 0 0 1-1.4 1.8 3.9 3.9 0 0 1-2.9-.5 11 11 0 0 1-4.6-4.6 3.9 3.9 0 0 1-.5-2.8 2 2 0 0 1 .7-1.3z"/>'},
     tiktok:{n:"TikTok", p:'<path d="M16.5 3.2a5 5 0 0 0 4.4 4.4v3.1a8 8 0 0 1-4.4-1.5v6.4a6.1 6.1 0 1 1-6.1-6.1c.3 0 .6 0 .9.1v3.2a2.9 2.9 0 1 0 2 2.8V3.2z"/>'},
-    youtube:{n:"YouTube", p:'<path d="M22.5 7.2a2.8 2.8 0 0 0-1.9-2C18.9 4.7 12 4.7 12 4.7s-6.9 0-8.6.5a2.8 2.8 0 0 0-1.9 2A29 29 0 0 0 1 12a29 29 0 0 0 .5 4.8 2.8 2.8 0 0 0 1.9 2c1.7.5 8.6.5 8.6.5s6.9 0 8.6-.5a2.8 2.8 0 0 0 1.9-2A29 29 0 0 0 23 12a29 29 0 0 0-.5-4.8z"/><path d="M9.9 15.3V8.7l5.7 3.3z"/>'}
+    facebook:{n:"Facebook", p:'<circle cx="12" cy="12" r="10"/><path d="M15.5 7.5h-2a2 2 0 0 0-2 2V19M9 12h6"/>'}
   };
-  const out = ["whatsapp","tiktok","youtube"].filter(k => SOCIAL[k]).map(k =>
+  const out = ["whatsapp","tiktok","facebook"].filter(k => SOCIAL[k]).map(k =>
     `<a class="soc" href="${SOCIAL[k]}" target="_blank" rel="noopener noreferrer" aria-label="${ICONS[k].n}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k].p}</svg></a>`).join("");
   return out ? `<div class="socrow">${out}</div>` : "";
 }
@@ -482,7 +482,7 @@ const authorSchema = {
   "url": SITE.origin + "/",
   "logo": SITE.origin + "/logo.png",
   "email": SITE.contact,
-  "sameAs": ["whatsapp","tiktok","youtube"].map(k => SOCIAL[k]).filter(Boolean)
+  "sameAs": ["whatsapp","tiktok","facebook"].map(k => SOCIAL[k]).filter(Boolean)
 };
 
 function breadcrumb(items) {
@@ -788,7 +788,7 @@ writePage('index.html', page({
     { "@context":"https://schema.org","@type":"WebSite","name":SITE.name,"alternateName":"Bitcoin Wealth Explained",
       "url":SITE.origin+"/","publisher":authorSchema,"description":SITE.blurb,"inLanguage":"en" },
     { "@context":"https://schema.org","@type":"Organization","name":SITE.author,"url":SITE.origin+"/",
-      "logo":SITE.origin+"/logo.png","email":SITE.contact,"sameAs":["whatsapp","tiktok","youtube"].map(k=>SOCIAL[k]).filter(Boolean) },
+      "logo":SITE.origin+"/logo.png","email":SITE.contact,"sameAs":["whatsapp","tiktok","facebook"].map(k=>SOCIAL[k]).filter(Boolean) },
     faqSchema(TOPICS.filter(t=>t.quiz))
   ]
 }));
