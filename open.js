@@ -113,6 +113,23 @@
       return f;
     }
 
+    function buildLocal(src){
+      var video = document.createElement('video');
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.setAttribute('aria-label', 'Bitcoin Wealth introduction video');
+      var source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.appendChild(document.createTextNode('Your browser does not support video playback.'));
+      video.addEventListener('ended', close);
+      mount.appendChild(video);
+      return video;
+    }
+
     function attachApi(id){
       function make(){
         try{
@@ -139,23 +156,27 @@
       }, 250);
     }
 
-    function open(id, vertical){
+    function open(id, vertical, localSrc){
       vidState.scrollY = window.scrollY || window.pageYOffset || 0;
       mount.innerHTML = '';
       modal.classList.toggle('vertical', !!vertical);
-      build(id);
+      if(localSrc){
+        vidState.player = buildLocal(localSrc);
+      }else{
+        build(id);
+      }
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
       var x = modal.querySelector('.vidclose');
       if(x) x.focus();
-      attachApi(id);
+      if(!localSrc) attachApi(id);
     }
 
     document.querySelectorAll('.vidcard, .vidcard-btn').forEach(function(c){
       if(c.__done) return; c.__done = 1;
       c.addEventListener('click', function(){
         vidState.opener = c;
-        open(c.getAttribute('data-video'), c.getAttribute('data-vertical') === '1');
+        open(c.getAttribute('data-video'), c.getAttribute('data-vertical') === '1', c.getAttribute('data-src'));
       });
     });
     if(!modal.__done){

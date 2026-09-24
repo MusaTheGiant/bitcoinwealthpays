@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Bitcoin Wealth explained</title>
+  <desc id="desc">A dark Bitcoin Wealth video thumbnail with amber and green accents.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1">
+      <stop stop-color="#111b17"/>
+      <stop offset=".52" stop-color="#08100e"/>
+      <stop offset="1" stop-color="#050908"/>
+    </linearGradient>
+    <radialGradient id="halo">
+      <stop stop-color="#ffa101" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#ffa101" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="coin" x2="1" y2="1">
+      <stop stop-color="#ffdb77"/>
+      <stop offset=".5" stop-color="#ffa101"/>
+      <stop offset="1" stop-color="#9d5700"/>
+    </linearGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" fill="none" stroke="#9fd567" stroke-opacity=".085"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect width="1280" height="720" fill="url(#grid)"/>
+  <circle cx="975" cy="352" r="390" fill="url(#halo)"/>
+  <path d="M0 600 Q255 485 435 578 T850 544 T1280 552" fill="none" stroke="#c0ff72" stroke-width="3" stroke-opacity=".27"/>
+  <path d="M0 640 Q315 540 485 630 T980 570 T1280 610" fill="none" stroke="#ffa101" stroke-width="2" stroke-opacity=".22"/>
+  <rect x="72" y="70" width="132" height="47" rx="10" fill="#ffa101"/>
+  <text x="138" y="102" text-anchor="middle" fill="#14130e" font-family="Arial,sans-serif" font-size="25" font-weight="700" letter-spacing="2">BW</text>
+  <text x="225" y="101" fill="#ddd9cb" font-family="Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="2">BITCOIN WEALTH</text>
+  <text x="76" y="246" fill="#ffa101" font-family="Arial,sans-serif" font-size="26" font-weight="700" letter-spacing="6">START HERE</text>
+  <text x="70" y="340" fill="#ffffff" font-family="Arial,sans-serif" font-size="80" font-weight="700" letter-spacing="-2">BITCOIN</text>
+  <text x="70" y="430" fill="#c0ff72" font-family="Arial,sans-serif" font-size="80" font-weight="700" letter-spacing="-2">WEALTH</text>
+  <rect x="75" y="464" width="282" height="4" rx="2" fill="#ffa101"/>
+  <text x="76" y="528" fill="#f4f0e6" font-family="Arial,sans-serif" font-size="30" font-weight="600" letter-spacing="3">EXPLAINED</text>
+  <g transform="translate(992 355)">
+    <circle r="198" fill="#ffa101" fill-opacity=".075" stroke="#ffa101" stroke-opacity=".18" stroke-width="2"/>
+    <circle r="155" fill="url(#coin)" stroke="#ffdd85" stroke-width="5"/>
+    <circle r="136" fill="none" stroke="#76440a" stroke-opacity=".7" stroke-width="4"/>
+    <text x="0" y="85" text-anchor="middle" fill="#522b00" font-family="Arial,sans-serif" font-size="247" font-weight="700">B</text>
+    <path d="M-29-103V-70M5-103V-70M-29 87v32M5 87v32" stroke="#522b00" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <rect x="72" y="606" width="1136" height="1" fill="#e7e3d7" opacity=".2"/>
+  <text x="74" y="658" fill="#e9e6db" font-family="Arial,sans-serif" font-size="24" letter-spacing="1">UNDERSTAND IT BEFORE YOU DECIDE</text>
+  <rect x="2" y="2" width="1276" height="716" rx="16" fill="none" stroke="#ffa101" stroke-opacity=".45" stroke-width="4"/>
+</svg>
