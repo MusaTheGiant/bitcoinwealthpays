@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101c17"/><stop offset=".6" stop-color="#07100c"/><stop offset="1" stop-color="#070807"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#ffa101" stop-opacity=".30"/><stop offset="1" stop-color="#ffa101" stop-opacity="0"/></radialGradient>
+    <linearGradient id="coin" x2="1" y2="1"><stop stop-color="#ffe493"/><stop offset=".5" stop-color="#ffa101"/><stop offset="1" stop-color="#a85b00"/></linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#c0ff72" stroke-opacity=".09"/></pattern>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/><rect width="1280" height="720" fill="url(#grid)"/>
+  <circle cx="997" cy="350" r="390" fill="url(#glow)"/>
+  <path d="M0 596C140 569 215 638 340 582S585 565 730 496 970 515 1280 303" fill="none" stroke="#c0ff72" stroke-width="5" opacity=".36"/>
+  <rect x="70" y="66" width="98" height="45" rx="10" fill="#ffa101"/>
+  <text x="119" y="98" text-anchor="middle" fill="#16110b" font-family="Arial,sans-serif" font-size="26" font-weight="700">BW</text>
+  <text x="189" y="97" fill="#eee7d8" font-family="Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="2">BITCOIN WEALTH</text>
+  <text x="72" y="245" fill="#ffa101" font-family="Arial,sans-serif" font-size="26" font-weight="700" letter-spacing="5">THE OVERVIEW</text>
+  <text x="69" y="344" fill="#ffffff" font-family="Arial,sans-serif" font-size="83" font-weight="700">WHY</text>
+  <text x="69" y="440" fill="#c0ff72" font-family="Arial,sans-serif" font-size="78" font-weight="700">BITCOIN</text>
+  <text x="69" y="536" fill="#ffffff" font-family="Arial,sans-serif" font-size="78" font-weight="700">WEALTH?</text>
+  <g transform="translate(995 350)">
+    <circle r="189" fill="#ffa101" fill-opacity=".09" stroke="#ffa101" stroke-opacity=".25" stroke-width="3"/>
+    <circle r="148" fill="url(#coin)" stroke="#ffdf91" stroke-width="5"/>
+    <circle r="130" fill="none" stroke="#915005" stroke-opacity=".7" stroke-width="3"/>
+    <text x="0" y="82" text-anchor="middle" fill="#502d07" font-family="Arial,sans-serif" font-size="230" font-weight="700">B</text>
+    <path d="M-26-98v32M6-98v32M-26 86v30M6 86v30" stroke="#502d07" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <rect x="70" y="613" width="1140" height="1" fill="#f6e4c8" opacity=".22"/>
+  <text x="72" y="660" fill="#ddd6c5" font-family="Arial,sans-serif" font-size="24" letter-spacing="2">UNDERSTAND THE IDEA BEFORE THE DETAILS</text>
+  <rect x="2" y="2" width="1276" height="716" rx="16" fill="none" stroke="#ffa101" stroke-opacity=".45" stroke-width="4"/>
+</svg>

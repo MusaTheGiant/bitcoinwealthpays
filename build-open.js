@@ -1,19 +1,18 @@
 /* =====================================================================
    OPEN SITE BUILDER  ->  bitcoinwealthpays.com
-   Every topic is a public page. No login, no registration, no progress
-   tracking. Built for GitHub Pages: flat files, relative-safe links,
+   Every topic is a public page. No login or registration. Lesson progress is shown on each page. Built for GitHub Pages: flat files, relative-safe links,
    CNAME and .nojekyll included.
    Rebuild after any content change:  node build-open.js
    ===================================================================== */
 const fs = require('fs');
 const path = require('path');
-require('./check-connect.js')(__dirname);
-for (const file of ['connect-body.txt', 'connect.css', 'connect.js', 'connect-data.js', 'share.png', 'connect-share.png', 'logo.png']) {
+for (const file of ['share.png', 'logo.png']) {
   if (!fs.existsSync(path.join(__dirname, file))) throw new Error('Missing build input: ' + file);
 }
 
 const VIDEO = {
-  id:    "lAjhtdcncJo",
+  src:   "/videos/bitcoin-wealth-intro.mp4",
+  thumb: "/images/bitcoin-wealth-intro.png",
   title: "Bitcoin Wealth explained",
   blurb: "A short introduction before you read the pages"
 };
@@ -30,24 +29,27 @@ const TUTORIALS = [
   { id: "", title: "Swapping BNB for BTCB",
     blurb: "Turning BNB into BTCB on BNB Smart Chain, step by step." }
 ];
-const INTRO_VIDEO = { id: "lAjhtdcncJo", title: "Start here: Bitcoin Wealth explained",
+const INTRO_VIDEO = { src: "/videos/bitcoin-wealth-intro.mp4", thumb: "/images/bitcoin-wealth-intro.png", title: "Start here: Bitcoin Wealth explained",
   blurb: "A short introduction before you work through the tutorials." };
 
 const TOPIC_VIDEOS = {
   "what-is-bitcoin-wealth": {
-    id: "Gn1VG9aelYg",
-    label: "Bitcoin Wealth - Sound Track \uD83C\uDFB5",
+    src: "/videos/why-bitcoin-wealth.mp4",
+    thumb: "/images/why-bitcoin-wealth.png",
+    label: "Why Bitcoin Wealth?",
     vertical: false
   },
   "the-14-positions": {
-    id: "fZZw-yLblHo",
-    label: "The 14 Positions Explained",
-    vertical: false
+    src: "/videos/how-bitcoin-wealth-matrix-work.mp4",
+    thumb: "/images/bitcoin-wealth-matrix.png",
+    label: "The 14 positions explained",
+    vertical: true
   },
   "bitcoin-blockchain-smart-contract-matrix": {
-    id: "9etm48biUfs",
-    label: "The Matrix: How It REALLY Works",
-    vertical: true          /* YouTube Short */
+    src: "/videos/how-bitcoin-wealth-matrix-work.mp4",
+    thumb: "/images/bitcoin-wealth-matrix.png",
+    label: "How the Bitcoin Wealth matrix works",
+    vertical: true
   }
 };
 
@@ -257,8 +259,8 @@ function copyShareImage(){
 function videoCard(){
   return `<div class="frame vidframe" style="margin-bottom:22px"><div class="frame-in" style="padding:18px 16px 16px">
 <div class="eyebrow" style="display:inline-block">Watch first</div>
-<button class="vidcard" type="button" data-video="${VIDEO.id}" aria-label="Play video: ${esc(VIDEO.title)}">
-  <img class="vidthumb" src="https://i.ytimg.com/vi/${VIDEO.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+<button class="vidcard" type="button" data-src="${VIDEO.src}" data-poster="${VIDEO.thumb}" aria-label="Play video: ${esc(VIDEO.title)}">
+  <img class="vidthumb" src="${VIDEO.thumb}" alt="" loading="lazy" width="1280" height="720">
   <span class="vidshade"></span>
   <span class="vidplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
   <span class="vidmeta">
@@ -278,8 +280,8 @@ function tutorialsBody(){
 
 <div class="frame vidframe" style="margin-bottom:34px"><div class="frame-in" style="padding:18px 16px 16px">
 <div class="eyebrow" style="display:inline-block">Start here</div>
-<button class="vidcard" type="button" data-video="${INTRO_VIDEO.id}" aria-label="Play video: ${esc(INTRO_VIDEO.title)}">
-  <img class="vidthumb" src="https://i.ytimg.com/vi/${INTRO_VIDEO.id}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+<button class="vidcard" type="button" data-src="${INTRO_VIDEO.src}" data-poster="${INTRO_VIDEO.thumb}" aria-label="Play video: ${esc(INTRO_VIDEO.title)}">
+  <img class="vidthumb" src="${INTRO_VIDEO.thumb}" alt="" loading="lazy" width="1280" height="720">
   <span class="vidshade"></span>
   <span class="vidplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
   <span class="vidmeta">
@@ -321,6 +323,16 @@ function tutorialsBody(){
 /* ---------- source document panel ----------
    Shown on every page that cites the presentation, so a sceptical reader is
    never more than one tap from the original.                            */
+function topicVideoCard(vid){
+  return `<div class="frame vidframe lesson-video"><div class="frame-in" style="padding:18px 16px 16px">
+<div class="eyebrow">Watch the explanation</div>
+<button class="vidcard" type="button" data-src="${vid.src}" data-poster="${vid.thumb}"${vid.vertical ? ' data-vertical="1"' : ''} aria-label="Play video: ${esc(vid.label)}">
+<img class="vidthumb" src="${vid.thumb}" alt="" loading="lazy" width="1280" height="720"><span class="vidshade"></span>
+<span class="vidplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+<span class="vidmeta"><span class="vidtitle">${esc(vid.label)}</span><span class="vidblurb">Watch the short explanation.</span></span></button>
+</div></div>`;
+}
+
 function sourcePanel(context, slug){
   const line = context || "Everything on this page is drawn from the programme's own presentation.";
   const vid  = slug ? TOPIC_VIDEOS[slug] : null;
@@ -328,11 +340,8 @@ function sourcePanel(context, slug){
      stays to two primary actions and does not crowd on a phone */
   const openBtn = vid ? '' :
     `<a class="btn btn-ghost" href="/video-tutorials.html">Tutorial videos</a>`;
-  const vidBtn = vid ?
-    `<button class="btn btn-primary vidcard-btn" type="button" data-video="${vid.id}"${vid.vertical ? ' data-vertical="1"' : ''} aria-label="Play video: ${esc(vid.label)}">
-      <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px;fill:currentColor;stroke:none"><path d="M8 5.5v13l11-6.5z"/></svg>${esc(vid.label)}
-    </button>` : '';
-  return `<div class="srcbox">
+  const vidBtn = '';
+  return `${vid ? topicVideoCard(vid) : ''}<div class="srcbox">
 <div class="srcbox-in">
   <div class="srcbox-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v5h5"/><path d="M19 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v13z"/><path d="M9 13h6M9 17h4"/></svg></div>
   <div class="srcbox-txt">
@@ -357,7 +366,6 @@ function contactPanel(line){
 <p style="color:#DAD5C9;margin-bottom:16px">${esc(line)} There is a real person behind this site, and you are welcome to ask directly rather than working it out from the pages alone.</p>
 <div class="row">
   ${wa ? `<a class="btn btn-go" href="${wa}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9"><path d="M20.5 3.5A10.4 10.4 0 0 0 3.6 16.1L2.5 21.5l5.5-1.1a10.4 10.4 0 0 0 12.5-16.9z"/></svg>Message on WhatsApp</a>` : ''}
-  <a class="btn btn-quiet" href="/connect.html">Find a member</a>
   <a class="btn btn-quiet" href="/video-tutorials.html">Tutorial videos</a>
 </div>
 </div>`;
@@ -367,7 +375,6 @@ function contactPanel(line){
 const NAV = [
   ["/", "Home"],
   ["/what-is-bitcoin-wealth.html", "What Is Bitcoin Wealth"],
-  ["/connect.html", "Find a Member"],
   ["/topics/", "All Topics"],
   ["/guides/", "Setup Guides"],
   ["/video-tutorials.html", "Video Tutorials"],
@@ -386,7 +393,25 @@ function socialRow() {
   return out ? `<div class="socrow">${out}</div>` : "";
 }
 
+const VIDEO_METADATA = {
+  '/': ['Bitcoin Wealth explained', 'A short introduction to the Bitcoin Wealth programme and the questions to ask before you decide.', 'bitcoin-wealth-intro', 'PT4M11S', '2026-09-24T20:10:25+02:00'],
+  '/video-tutorials.html': ['Bitcoin Wealth explained', 'A short introduction before the Bitcoin Wealth tutorial sequence.', 'bitcoin-wealth-intro', 'PT4M11S', '2026-09-24T20:10:25+02:00'],
+  '/what-is-bitcoin-wealth.html': ['Why Bitcoin Wealth?', 'A short overview of Bitcoin Wealth before you begin the lessons.', 'why-bitcoin-wealth', 'PT1M35S', '2026-09-24T20:52:48+02:00'],
+  '/topics/bitcoin-blockchain-smart-contract-matrix.html': ['How the Bitcoin Wealth matrix works', 'A step-by-step video introduction to the Bitcoin Wealth matrix.', 'how-bitcoin-wealth-matrix-work', 'PT2M50S', '2026-09-24T21:05:58+02:00'],
+  '/topics/the-14-positions.html': ['The 14 positions explained', 'The Bitcoin Wealth matrix and its positions explained in a short video.', 'how-bitcoin-wealth-matrix-work', 'PT2M50S', '2026-09-24T21:05:58+02:00']
+};
 function page(o) {
+  const video = VIDEO_METADATA[o.url];
+  if(video){
+    const [name, description, file, duration, uploadDate] = video;
+    const thumb = file === 'how-bitcoin-wealth-matrix-work' ? 'bitcoin-wealth-matrix' : file;
+    o.image = '/images/' + thumb + '.png';
+    o.imageAlt = name + ' video thumbnail';
+    const videoSchema = { '@context':'https://schema.org', '@type':'VideoObject',
+      name, description, thumbnailUrl:SITE.origin+o.image, uploadDate, duration,
+      contentUrl:SITE.origin+'/videos/'+file+'.mp4', mainEntityOfPage:SITE.origin+o.url };
+    o.schema = o.schema ? [].concat(o.schema, videoSchema) : videoSchema;
+  }
   const canonical = SITE.origin + o.url;
   const shareImage = SITE.origin + (o.image || "/share.png");
   const drawer = NAV.map(n => `<a href="${n[0]}"${o.nav === n[0] ? ' class="on" aria-current="page"' : ''}>${n[1]}</a>`).join("");
@@ -408,8 +433,8 @@ function page(o) {
 <meta property="og:description" content="${esc(o.desc)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${shareImage}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="${video ? 1280 : 1200}">
+<meta property="og:image:height" content="${video ? 720 : 630}">
 <meta property="og:image:alt" content="${esc(o.imageAlt || "Bitcoin Wealth: Understand It Before You Decide")}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(o.title)}">
@@ -424,7 +449,6 @@ function page(o) {
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/connect.css">
 ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + '</script>' : ''}
 </head>
 <body>
@@ -452,7 +476,6 @@ ${o.custody ? custodyBlock() : ''}
   An independent educational resource. Not financial advice.<br>
   Content is drawn from supplied programme material. Source claims are labelled as claims.<br>
   <a href="${DECK.open}" target="_blank" rel="noopener">View the source presentation</a><br>
-  <a href="/connect.html">Find a member</a> · <a href="/connect.html#local-events">Events &amp; meet-ups</a><br>
   Questions or corrections? <a href="mailto:${SITE.contact}">${SITE.contact}</a>
   <div class="sig">Made with <span class="sig-heart">&#10084;&#65039;</span> by <span class="sig-name">Bitcoin</span> <span class="sig-role">Accumulators</span></div>
 </footer>
@@ -500,12 +523,14 @@ const OUT = path.join(__dirname, 'open');
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'topics'), { recursive: true });
 fs.mkdirSync(path.join(OUT, 'guides'), { recursive: true });
-fs.writeFileSync(path.join(OUT, 'style.css'), CSS);
+fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
 copyShareImage();
 copyIcons();
-['connect.css', 'connect.js', 'connect-data.js', 'connect-share.png'].forEach(file => {
-  fs.copyFileSync(path.join(__dirname, file), path.join(OUT, file));
-});
+for (const folder of ['images', 'videos']) {
+  if (fs.existsSync(path.join(__dirname, folder))) {
+    fs.cpSync(path.join(__dirname, folder), path.join(OUT, folder), { recursive: true });
+  }
+}
 if (fs.existsSync(path.join(__dirname, 'members'))) {
   fs.cpSync(path.join(__dirname, 'members'), path.join(OUT, 'members'), { recursive: true });
 }
@@ -552,208 +577,7 @@ const urls = [];
 const add = (u, pri, freq) => urls.push({ u, pri, freq });
 
 /* on-page interactivity, one small file */
-fs.writeFileSync(path.join(OUT, 'open.js'), `
-/* quiz interactions. Answer, see the result, retry until right. */
-(function(){
-  function wire(root, correct, okText, noText){
-    var opts = root.querySelectorAll('[data-q-opt],[data-cq-opt]');
-    var fb   = root.querySelector('[data-q-fb],[data-cq-fb]');
-    function reset(){
-      opts.forEach(function(b){ b.classList.remove('right','wrong','locked'); b.disabled=false; });
-      fb.innerHTML='';
-    }
-    opts.forEach(function(b){
-      b.addEventListener('click', function(){
-        var pick = +(b.getAttribute('data-q-opt') || b.getAttribute('data-cq-opt'));
-        opts.forEach(function(x){ x.disabled=true; x.classList.add('locked'); });
-        if(pick===correct){
-          opts.forEach(function(x){
-            var i=+(x.getAttribute('data-q-opt')||x.getAttribute('data-cq-opt'));
-            if(i===correct) x.classList.add('right');
-          });
-          fb.innerHTML='<div class="feedback fb-ok"><span class="cheer">Correct.</span> '+okText+'</div>';
-        } else {
-          opts.forEach(function(x){
-            var i=+(x.getAttribute('data-q-opt')||x.getAttribute('data-cq-opt'));
-            if(i===correct) x.classList.add('right');
-            else if(i===pick) x.classList.add('wrong');
-          });
-          fb.innerHTML='<div class="tryagain"><strong>Not quite.</strong> The correct answer is <strong>'+
-            'ABCD'.charAt(correct)+'</strong>, highlighted above. '+noText+
-            '</div><button class="btn btn-go" style="margin-top:14px" data-retry>Try this question again</button>';
-          var r=fb.querySelector('[data-retry]');
-          if(r) r.addEventListener('click', reset);
-        }
-      });
-    });
-  }
-  /* horizontal scroll containment for wide tables on touch screens */
-  function boot(){
-    document.querySelectorAll('[data-q]').forEach(function(el){
-      if(el.__done) return; el.__done=1;
-      wire(el, +el.getAttribute('data-q-answer'), el.getAttribute('data-q-ok'), el.getAttribute('data-q-no'));
-    });
-    document.querySelectorAll('[data-cq]').forEach(function(el){
-      if(el.__done) return; el.__done=1;
-      wire(el, 1,
-        'It guarantees delivery of payments that happen. It says nothing about whether they happen, which depends on other members activating slots. Two separate questions.',
-        'It guarantees only that payments which are triggered reach you without permission from anyone. Whether a payment is triggered at all depends on other members activating slots.');
-    });
-  }
-  /* back to top. Wired inside boot so it survives client-side routing,
-     and by class rather than id so duplicates cannot break it.        */
-  function wireTop(){
-    var btns = document.querySelectorAll('.totop');
-    if(!btns.length) return;
-    btns.forEach(function(b){
-      if(b.__done) return; b.__done = 1;
-      b.hidden = false;
-      b.addEventListener('click', function(e){
-        e.preventDefault();
-        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-        try { window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'}); }
-        catch(err) { window.scrollTo(0,0); }
-        if(document.documentElement) document.documentElement.scrollTop = 0;
-        if(document.body) document.body.scrollTop = 0;
-      });
-    });
-    if(!window.__topScroll){
-      window.__topScroll = 1;
-      var toggle = function(){
-        var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-        document.querySelectorAll('.totop').forEach(function(b){
-          if(y > 400) b.classList.add('show'); else b.classList.remove('show');
-        });
-      };
-      window.addEventListener('scroll', toggle, {passive:true});
-      toggle();
-    }
-  }
-
-
-  /* ---------- video player ----------
-     Nothing touches YouTube until play is pressed. The API is loaded on
-     demand so the end of the video can close the overlay by itself.   */
-  var vidState = { scrollY: 0, player: null, api: null, opener: null };
-  function wireVideo(){
-    var modal = document.getElementById('vidmodal');
-    var mount = document.getElementById('vidmount');
-    if(!modal || !mount) return;
-
-    function close(){
-      if(modal.hidden) return;
-      modal.hidden = true;
-      mount.innerHTML = '';
-      vidState.player = null;
-      document.body.style.overflow = '';
-      window.scrollTo(0, vidState.scrollY);
-      modal.classList.remove('vertical');
-      var back = vidState.opener || document.querySelector('.vidcard');
-      if(back && back.focus) back.focus();
-    }
-
-    function build(id){
-      var f = document.createElement('iframe');
-      f.id = 'ytplayer';
-      f.title = 'Video player';
-      f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
-      f.setAttribute('allowfullscreen','');
-      /* rel=0 keeps suggestions to this channel, modestbranding trims chrome,
-         enablejsapi lets us hear the ended event and close ourselves */
-      f.src = 'https://www.youtube-nocookie.com/embed/' + id +
-              '?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=' +
-              encodeURIComponent(location.origin);
-      mount.appendChild(f);
-      return f;
-    }
-
-    function attachApi(id){
-      function make(){
-        try{
-          vidState.player = new window.YT.Player('ytplayer', {
-            events: { 'onStateChange': function(e){ if(e.data === window.YT.PlayerState.ENDED) close(); } }
-          });
-        }catch(err){}
-      }
-      if(window.YT && window.YT.Player){ make(); return; }
-      if(!vidState.api){
-        vidState.api = true;
-        var tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        document.head.appendChild(tag);
-      }
-      var prev = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = function(){ if(prev) prev(); make(); };
-      /* if the API is slow or blocked, poll briefly rather than fail silently */
-      var tries = 0;
-      var t = setInterval(function(){
-        tries++;
-        if(window.YT && window.YT.Player && !vidState.player){ make(); }
-        if(vidState.player || tries > 40) clearInterval(t);
-      }, 250);
-    }
-
-    function open(id, vertical){
-      vidState.scrollY = window.scrollY || window.pageYOffset || 0;
-      mount.innerHTML = '';
-      modal.classList.toggle('vertical', !!vertical);
-      build(id);
-      modal.hidden = false;
-      document.body.style.overflow = 'hidden';
-      var x = modal.querySelector('.vidclose');
-      if(x) x.focus();
-      attachApi(id);
-    }
-
-    document.querySelectorAll('.vidcard, .vidcard-btn').forEach(function(c){
-      if(c.__done) return; c.__done = 1;
-      c.addEventListener('click', function(){
-        vidState.opener = c;
-        open(c.getAttribute('data-video'), c.getAttribute('data-vertical') === '1');
-      });
-    });
-    if(!modal.__done){
-      modal.__done = 1;
-      modal.querySelectorAll('[data-close]').forEach(function(el){
-        el.addEventListener('click', close);
-      });
-      document.addEventListener('keydown', function(e){
-        if(e.key === 'Escape' && !modal.hidden){ e.preventDefault(); close(); }
-      });
-    }
-  }
-
-
-  /* ---------- menu panel ----------
-     Anchored dropdown, so it must close on an outside click and on Escape
-     the way any menu does.                                            */
-  function wireMenu(){
-    var btn = document.getElementById('navtoggle');
-    var panel = document.getElementById('dr');
-    if(!btn || !panel || btn.__done) return;
-    btn.__done = 1;
-
-    function setOpen(open){
-      panel.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      setOpen(!panel.classList.contains('open'));
-    });
-    panel.addEventListener('click', function(e){ e.stopPropagation(); });
-    document.addEventListener('click', function(){ setOpen(false); });
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape' && panel.classList.contains('open')){ setOpen(false); btn.focus(); }
-    });
-    window.addEventListener('resize', function(){ setOpen(false); }, {passive:true});
-  }
-
-  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); }
-  window.__wire = boot2;
-  boot2();
-})();
-`);
+fs.copyFileSync(path.join(__dirname, 'open.js'), path.join(OUT, 'open.js'));
 
 /* ---------- home ---------- */
 let home = `<div class="hero">
@@ -777,7 +601,7 @@ ${videoCard()}
 <a class="btn btn-quiet btn-sm2" href="${DECK.down}" target="_blank" rel="noopener noreferrer">Download the PDF</a></div>
 </div></div>`;
 
-home += `<section class="connect-home-callout"><div><h2>Find your Bitcoin Wealth connection</h2><p>Meet a member near you, connect online or discover a local event.</p></div><a class="connect-button connect-primary" href="/connect.html">Find a member ↗</a></section>`;
+home += `<section class="course-home-callout" aria-label="Start the course"><div><h2>17 free lessons. A clear path from start to finish.</h2><p>Begin with lesson 1 and see your place in the course on every page.</p></div><a class="btn btn-primary" href="/topics/how-to-read-this-site.html">Start lesson 1 of 17 →</a></section>`;
 
 writePage('index.html', page({
   url: "/", nav: "/", custody: true,
@@ -794,25 +618,6 @@ writePage('index.html', page({
 }));
 add("/", "1.0", "weekly");
 
-/* ---------- worldwide community directory ---------- */
-writePage('connect.html', page({
-  url: '/connect.html', nav: '/connect.html',
-  title: 'Bitcoin Wealth Connect | Find Members & Local Events',
-  desc: 'Find a Bitcoin Wealth member in your country, connect on WhatsApp, and discover local meet-ups, presentations and online sessions.',
-  image: '/connect-share.png',
-  imageAlt: 'Bitcoin Wealth Connect: Find a member. Meet. Learn together.',
-  scripts: ['/connect-data.js', '/connect.js'],
-  body: fs.readFileSync(path.join(__dirname, 'connect-body.txt'), 'utf8'),
-  schema: {
-    '@context': 'https://schema.org', '@type': 'CollectionPage',
-    name: 'Bitcoin Wealth Connect', url: SITE.origin + '/connect.html',
-    description: 'An independent worldwide member directory and events hub.',
-    inLanguage: 'en', publisher: authorSchema
-  }
-}));
-add('/connect.html', '0.9', 'weekly');
-
-
 /* ---------- what is bitcoin wealth ---------- */
 const overviewTopics = TOPICS.slice(0, 8);
 let ov = `<div class="crumbs"><a href="/">Home</a> &rsaquo; <b>What Is Bitcoin Wealth</b></div>
@@ -827,7 +632,7 @@ ${legend()}
 <div class="box box-fact" style="max-width:var(--read)">${LABEL.fact}
 <p>The contract address given in the programme's material is <code>0x1ad09b043E0Fe59243C9a18ee1c855bd7792Cd29</code>. Anyone can inspect it at <code>bscscan.com</code> without an account.</p></div>
 <div class="sec"><h2>Start here</h2><span class="ln"></span></div>
-<p style="color:var(--muted);max-width:var(--read);margin-bottom:20px">Eight short pages take you from the basics to how the matrix actually moves money. Read them in order, or start wherever you like.</p>
+<p style="color:var(--muted);max-width:var(--read);margin-bottom:20px">The course has 17 lessons. These first eight take you from the basics to how the matrix moves money. Follow them in order, then continue through all 17.</p>
 <div class="pathwrap">`;
 [[0,4,"First, the groundwork","What the words mean, and what you are actually dealing with"],
  [4,8,"Then, the mechanism","How the system places members and moves money"]].forEach(([a,b,label,sub]) => {
@@ -856,8 +661,8 @@ add("/what-is-bitcoin-wealth.html", "0.9", "monthly");
 
 /* ---------- topics index ---------- */
 let ti = `<div class="crumbs"><a href="/">Home</a> &rsaquo; <b>All Topics</b></div>
-<h1 style="font-size:clamp(26px,6.5vw,36px);margin-bottom:12px">All 17 Topics</h1>
-<p style="color:var(--muted);max-width:var(--read);margin-bottom:26px">Read straight through, or go directly to whatever you need. Nothing is locked.</p>`;
+<h1 style="font-size:clamp(26px,6.5vw,36px);margin-bottom:12px">All 17 Lessons</h1>
+<p style="color:var(--muted);max-width:var(--read);margin-bottom:26px">17 numbered lessons. Start with lesson 1, follow Previous and Next, and check your progress at the top of every lesson. Nothing is locked.</p>`;
 MODULES.forEach(m => {
   ti += `<h2 style="font-family:var(--disp);font-size:17px;color:var(--gold);letter-spacing:.06em;margin:30px 0 6px">${esc(m.title)}</h2>
 <p style="color:var(--muted);max-width:var(--read);margin-bottom:13px;font-size:14.5px">${adapt(esc(m.blurb),"")}</p><div class="tgrid">`;
@@ -887,6 +692,7 @@ add("/topics/", "0.9", "weekly");
 TOPICS.forEach((t, i) => {
   const prev = i > 0 ? TOPICS[i-1] : null, next = i < TOPICS.length-1 ? TOPICS[i+1] : null;
   let b = `<div class="crumbs"><a href="/">Home</a> &rsaquo; <a href="/topics/">Topics</a> &rsaquo; <b>${esc(t.mod.title)}</b></div>
+<section class="lesson-progress" aria-label="Course progress"><div class="lesson-progress-head"><strong>Lesson ${t.n} of ${TOPICS.length}</strong><span>${TOPICS.length-t.n} lesson${TOPICS.length-t.n===1?'':'s'} remaining after this one</span></div><progress value="${t.n}" max="${TOPICS.length}" aria-label="Lesson ${t.n} of ${TOPICS.length}"></progress><a href="/topics/">View all ${TOPICS.length} lessons</a></section>
 <h1 style="font-size:clamp(25px,6.5vw,36px);margin-bottom:14px;max-width:var(--read)">${esc(t.title)}</h1>
 <div class="box box-note" style="margin-top:0;max-width:var(--read);border-color:rgba(63,193,31,.3);background:rgba(63,193,31,.04)">
 <span class="tag" style="color:var(--green);border-color:rgba(63,193,31,.45);background:rgba(63,193,31,.08);margin-bottom:9px">What this page covers</span>
@@ -907,8 +713,8 @@ ${t.quiz.opts.map((o,k)=>`<button class="opt" data-q-opt="${k}"><span class="k">
 <div data-q-fb></div></div>`;
   }
   b += `<div class="pn">`;
-  if (prev) b += `<a class="pn-prev" href="/topics/${prev.slug}.html"><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span><span class="pn-tx"><span class="d">Previous</span><span class="t">${esc(prev.title)}</span></span></a>`;
-  if (next) b += `<a class="pn-next" href="/topics/${next.slug}.html"><span class="pn-tx"><span class="d">Next</span><span class="t">${esc(next.title)}</span></span><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></a>`;
+  if (prev) b += `<a class="pn-prev" href="/topics/${prev.slug}.html"><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span><span class="pn-tx"><span class="d">Previous · Lesson ${prev.n}</span><span class="t">${esc(prev.title)}</span></span></a>`;
+  if (next) b += `<a class="pn-next" href="/topics/${next.slug}.html"><span class="pn-tx"><span class="d">Next · Lesson ${next.n}</span><span class="t">${esc(next.title)}</span></span><span class="pn-ar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span></a>`;
   b += `</div>`;
   if (t.slug === "questions-worth-asking") b += contactPanel("Some of these are quicker to ask than to research.");
   if (!next) b += contactPanel("You have read the whole site.") + `<div class="ctabar">
@@ -918,7 +724,7 @@ ${t.quiz.opts.map((o,k)=>`<button class="opt" data-q-opt="${k}"><span class="k">
 
   writePage('topics/' + t.slug + '.html', page({
     url: "/topics/" + t.slug + ".html", nav: "/topics/",
-    title: (t.title.length > 40 ? t.title + " | Bitcoin Wealth" : t.title + " | Bitcoin Wealth Explained"),
+    title: t.title + ' | Lesson ' + t.n + ' of 17 | Bitcoin Wealth',
     desc: clip(padDesc(adapt(t.objective, t.slug), t), 155),
     body: b,
     schema: [

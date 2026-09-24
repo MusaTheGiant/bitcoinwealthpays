@@ -113,13 +113,14 @@
       return f;
     }
 
-    function buildLocal(src){
+    function buildLocal(src, poster, label){
       var video = document.createElement('video');
       video.controls = true;
       video.autoplay = true;
       video.playsInline = true;
       video.preload = 'metadata';
-      video.setAttribute('aria-label', 'Bitcoin Wealth introduction video');
+      if(poster) video.poster = poster;
+      video.setAttribute('aria-label', label || 'Bitcoin Wealth video');
       var source = document.createElement('source');
       source.src = src;
       source.type = 'video/mp4';
@@ -156,12 +157,12 @@
       }, 250);
     }
 
-    function open(id, vertical, localSrc){
+    function open(id, vertical, localSrc, poster, label){
       vidState.scrollY = window.scrollY || window.pageYOffset || 0;
       mount.innerHTML = '';
       modal.classList.toggle('vertical', !!vertical);
       if(localSrc){
-        vidState.player = buildLocal(localSrc);
+        vidState.player = buildLocal(localSrc, poster, label);
       }else{
         build(id);
       }
@@ -176,7 +177,8 @@
       if(c.__done) return; c.__done = 1;
       c.addEventListener('click', function(){
         vidState.opener = c;
-        open(c.getAttribute('data-video'), c.getAttribute('data-vertical') === '1', c.getAttribute('data-src'));
+        open(c.getAttribute('data-video'), c.getAttribute('data-vertical') === '1',
+          c.getAttribute('data-src'), c.getAttribute('data-poster'), c.getAttribute('aria-label'));
       });
     });
     if(!modal.__done){

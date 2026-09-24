@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0e1a16"/><stop offset="1" stop-color="#060908"/></linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#c0ff72" stroke-opacity=".09"/></pattern>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/><rect width="1280" height="720" fill="url(#grid)"/>
+  <rect x="70" y="66" width="98" height="45" rx="10" fill="#ffa101"/>
+  <text x="119" y="98" text-anchor="middle" fill="#16110b" font-family="Arial,sans-serif" font-size="26" font-weight="700">BW</text>
+  <text x="189" y="97" fill="#eee7d8" font-family="Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="2">BITCOIN WEALTH</text>
+  <text x="70" y="238" fill="#ffa101" font-family="Arial,sans-serif" font-size="26" font-weight="700" letter-spacing="5">HOW IT WORKS</text>
+  <text x="68" y="331" fill="#ffffff" font-family="Arial,sans-serif" font-size="79" font-weight="700">THE</text>
+  <text x="68" y="431" fill="#c0ff72" font-family="Arial,sans-serif" font-size="79" font-weight="700">MATRIX</text>
+  <text x="72" y="502" fill="#ddd6c5" font-family="Arial,sans-serif" font-size="30">Positions · cycles · payments</text>
+  <g stroke="#c0ff72" stroke-opacity=".55" stroke-width="4" fill="none">
+    <path d="M1000 227v56H835v20M1000 283h165v20"/>
+    <path d="M835 324v65H742v18M835 389h95v18M1165 324v65h-91v18M1165 389h65v18"/>
+  </g>
+  <g fill="#ffa101" stroke="#ffe08a" stroke-width="3">
+    <circle cx="1000" cy="208" r="36"/><circle cx="835" cy="323" r="31"/><circle cx="1165" cy="323" r="31"/>
+  </g>
+  <g fill="#c0ff72" stroke="#e9ffcb" stroke-width="3">
+    <circle cx="742" cy="432" r="26"/><circle cx="930" cy="432" r="26"/><circle cx="1074" cy="432" r="26"/><circle cx="1230" cy="432" r="24"/>
+  </g>
+  <text x="1000" y="218" text-anchor="middle" fill="#241500" font-family="Arial,sans-serif" font-size="29" font-weight="700">1</text>
+  <text x="835" y="332" text-anchor="middle" fill="#241500" font-family="Arial,sans-serif" font-size="25" font-weight="700">2</text>
+  <text x="1165" y="332" text-anchor="middle" fill="#241500" font-family="Arial,sans-serif" font-size="25" font-weight="700">3</text>
+  <rect x="70" y="613" width="1140" height="1" fill="#f6e4c8" opacity=".22"/>
+  <text x="72" y="660" fill="#ddd6c5" font-family="Arial,sans-serif" font-size="24" letter-spacing="2">FOLLOW EVERY PAYMENT</text>
+  <rect x="2" y="2" width="1276" height="716" rx="16" fill="none" stroke="#ffa101" stroke-opacity=".45" stroke-width="4"/>
+</svg>

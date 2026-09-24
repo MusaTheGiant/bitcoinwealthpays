@@ -113,6 +113,24 @@
       return f;
     }
 
+    function buildLocal(src, poster, label){
+      var video = document.createElement('video');
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      if(poster) video.poster = poster;
+      video.setAttribute('aria-label', label || 'Bitcoin Wealth video');
+      var source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.appendChild(document.createTextNode('Your browser does not support video playback.'));
+      video.addEventListener('ended', close);
+      mount.appendChild(video);
+      return video;
+    }
+
     function attachApi(id){
       function make(){
         try{
@@ -139,23 +157,28 @@
       }, 250);
     }
 
-    function open(id, vertical){
+    function open(id, vertical, localSrc, poster, label){
       vidState.scrollY = window.scrollY || window.pageYOffset || 0;
       mount.innerHTML = '';
       modal.classList.toggle('vertical', !!vertical);
-      build(id);
+      if(localSrc){
+        vidState.player = buildLocal(localSrc, poster, label);
+      }else{
+        build(id);
+      }
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
       var x = modal.querySelector('.vidclose');
       if(x) x.focus();
-      attachApi(id);
+      if(!localSrc) attachApi(id);
     }
 
     document.querySelectorAll('.vidcard, .vidcard-btn').forEach(function(c){
       if(c.__done) return; c.__done = 1;
       c.addEventListener('click', function(){
         vidState.opener = c;
-        open(c.getAttribute('data-video'), c.getAttribute('data-vertical') === '1');
+        open(c.getAttribute('data-video'), c.getAttribute('data-vertical') === '1',
+          c.getAttribute('data-src'), c.getAttribute('data-poster'), c.getAttribute('aria-label'));
       });
     });
     if(!modal.__done){
@@ -169,7 +192,33 @@
     }
   }
 
-  function boot2(){ boot(); wireTop(); wireVideo(); }
+
+  /* ---------- menu panel ----------
+     Anchored dropdown, so it must close on an outside click and on Escape
+     the way any menu does.                                            */
+  function wireMenu(){
+    var btn = document.getElementById('navtoggle');
+    var panel = document.getElementById('dr');
+    if(!btn || !panel || btn.__done) return;
+    btn.__done = 1;
+
+    function setOpen(open){
+      panel.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      setOpen(!panel.classList.contains('open'));
+    });
+    panel.addEventListener('click', function(e){ e.stopPropagation(); });
+    document.addEventListener('click', function(){ setOpen(false); });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && panel.classList.contains('open')){ setOpen(false); btn.focus(); }
+    });
+    window.addEventListener('resize', function(){ setOpen(false); }, {passive:true});
+  }
+
+  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); }
   window.__wire = boot2;
   boot2();
 })();

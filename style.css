@@ -675,6 +675,28 @@ a,button,.soc,.btn,.card,.opt,.navlink,.bn,.rl,.mles,.mitem,.jrow,.lback,.burger
 .vidmodal-frame{position:relative;aspect-ratio:16/9;width:100%;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(198,128,16,.5), 0 30px 80px rgba(0,0,0,.9)}
 .vidmodal-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .vidmodal-frame video{position:absolute;inset:0;width:100%;height:100%;display:block;background:#000;object-fit:contain}
+
+/* Course orientation and video previews */
+.course-home-callout{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  margin:24px 0;padding:22px;border:1px solid rgba(192,255,114,.28);
+  border-radius:16px;background:linear-gradient(120deg,rgba(28,47,28,.88),rgba(9,17,14,.95));
+}
+.course-home-callout h2{font-size:clamp(19px,4.5vw,25px);margin:0 0 6px}
+.course-home-callout p{color:var(--muted);margin:0}
+.lesson-progress{
+  max-width:var(--read);margin:18px 0 24px;padding:15px 18px;
+  border:1px solid rgba(192,255,114,.25);border-radius:12px;background:rgba(192,255,114,.055);
+}
+.lesson-progress-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.lesson-progress-head strong{color:var(--green);font-family:var(--disp);font-size:17px}
+.lesson-progress-head span{font-size:13px;color:var(--muted)}
+.lesson-progress progress{display:block;width:100%;height:8px;margin:11px 0 8px;border:0;border-radius:8px;overflow:hidden;accent-color:var(--green)}
+.lesson-progress progress::-webkit-progress-bar{background:#283128}
+.lesson-progress progress::-webkit-progress-value{background:linear-gradient(90deg,var(--orange),var(--green))}
+.lesson-progress progress::-moz-progress-bar{background:var(--green)}
+.lesson-progress a{font-size:13px;color:var(--gold)}
+.lesson-video{max-width:var(--read);margin:20px 0 24px}
 .vidclose{
   position:absolute;top:-52px;right:0;width:44px;height:44px;border-radius:12px;
   display:grid;place-items:center;border:1px solid var(--line-hi);color:var(--orange);
