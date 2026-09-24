@@ -126,6 +126,11 @@
       source.type = 'video/mp4';
       video.appendChild(source);
       video.appendChild(document.createTextNode('Your browser does not support video playback.'));
+      video.addEventListener('loadedmetadata', function(){
+        if(video.videoWidth && video.videoHeight){
+          modal.classList.toggle('vertical', video.videoHeight > video.videoWidth);
+        }
+      });
       video.addEventListener('ended', close);
       mount.appendChild(video);
       return video;
