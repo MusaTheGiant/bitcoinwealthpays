@@ -673,7 +673,7 @@ function page(o) {
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=20260924-player">
 ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + '</script>' : ''}
 </head>
 <body>
@@ -716,7 +716,7 @@ ${o.custody ? custodyBlock() : ''}
 <button class="totop" id="totop" aria-label="Back to top" hidden>
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
-<script src="/open.js" defer></script>
+<script src="/open.js?v=20260924-player" defer></script>
 </body>
 </html>`;
 }
