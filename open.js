@@ -223,7 +223,42 @@
     window.addEventListener('resize', function(){ setOpen(false); }, {passive:true});
   }
 
-  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); }
+  function wireReferralCopy(){
+    document.querySelectorAll('[data-copy-referral]').forEach(function(button){
+      if(button.__done) return;
+      button.__done = 1;
+      button.addEventListener('click', async function(){
+        var panel = button.closest('.referral-panel');
+        var url = panel.querySelector('[data-referral-url]').textContent.trim();
+        var status = panel.querySelector('.referral-status');
+        try {
+          if(navigator.clipboard && window.isSecureContext){
+            await navigator.clipboard.writeText(url);
+          } else {
+            var field = document.createElement('textarea');
+            field.value = url;
+            field.setAttribute('readonly', '');
+            field.style.position = 'fixed';
+            field.style.opacity = '0';
+            document.body.appendChild(field);
+            field.select();
+            try {
+              if(!document.execCommand('copy')) throw new Error('Copy unavailable');
+            } finally {
+              field.remove();
+            }
+          }
+          status.textContent = 'Link copied. Paste it into your wallet browser.';
+          button.textContent = 'Copied!';
+          window.setTimeout(function(){ button.textContent = 'Copy link'; }, 2500);
+        } catch(e) {
+          status.textContent = 'Could not copy automatically. Select the full address above and copy it manually.';
+        }
+      });
+    });
+  }
+
+  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); wireReferralCopy(); }
   window.__wire = boot2;
   boot2();
 })();

@@ -400,6 +400,23 @@ const VIDEO_METADATA = {
   '/topics/bitcoin-blockchain-smart-contract-matrix.html': ['How the Bitcoin Wealth matrix works', 'A step-by-step video introduction to the Bitcoin Wealth matrix.', 'how-bitcoin-wealth-matrix-work', 'PT2M50S', '2026-09-24T21:05:58+02:00'],
   '/topics/the-14-positions.html': ['The 14 positions explained', 'The Bitcoin Wealth matrix and its positions explained in a short video.', 'how-bitcoin-wealth-matrix-work', 'PT2M50S', '2026-09-24T21:05:58+02:00']
 };
+/* Keep registration help at decision and setup points, not in every lesson. */
+const REFERRAL_URL = 'https://vowu.io/register?ref=14638';
+const REFERRAL_PAGES = new Set([
+  '/', '/what-is-bitcoin-wealth.html', '/topics/', '/guides/',
+  '/guides/safepal-wallet.html', '/guides/metamask-web3-wallet.html',
+  '/topics/wallets-and-exchanges.html', '/topics/what-you-now-know.html',
+  '/video-tutorials.html', '/faq.html'
+]);
+function referralPanel(){
+  return `<section class="referral-panel" aria-labelledby="referral-heading">
+<h2 id="referral-heading">Ready to register?</h2>
+<p>After reviewing the programme and setting up your Web3 wallet, copy this full address and paste it into the browser inside SafePal or another compatible wallet.</p>
+<div class="referral-copy"><span class="referral-url" data-referral-url>${esc(REFERRAL_URL)}</span><button type="button" class="referral-copy-btn" data-copy-referral aria-label="Copy Bitcoin Wealth registration referral link">Copy link</button></div>
+<span class="referral-status" role="status" aria-live="polite"></span>
+<p class="referral-note">This is my referral link, and I may benefit if you register. Check the address before connecting your wallet. Never share or enter your recovery phrase on a registration page.</p>
+</section>`;
+}
 function page(o) {
   const video = VIDEO_METADATA[o.url];
   if(video){
@@ -467,6 +484,7 @@ ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + 
 </header>
 <main class="wrap" style="padding-top:26px">
 ${o.body}
+${REFERRAL_PAGES.has(o.url) ? referralPanel() : ''}
 </main>
 ${o.custody ? custodyBlock() : ''}
 <footer class="sitefoot">
