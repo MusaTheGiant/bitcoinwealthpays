@@ -116,7 +116,7 @@ landing = '''<main>
       <button class="btn btn-quiet vidcard-btn" type="button" data-src="../videos/how-bitcoin-wealth-matrix-work.mp4" data-poster="../images/bitcoin-wealth-matrix.png" data-vertical="1" aria-label="Play Bitcoin Wealth matrix explanation video">Watch How The Matrix Works →</button></div>
   </section>
   <section class="mtg-compare" aria-labelledby="money-heading"><div class="premium-eyebrow">The question worth asking</div>
-    <h2 id="money-heading">Where does the money actually go?</h2><p class="mtg-compare-intro">Here is the published design in plain language. Check real transactions and contract permissions yourself before paying.</p>
+    <h2 id="money-heading">Where does the money actually go?</h2><p class="mtg-compare-intro">Here is the published design in plain language. Check real transactions and contract permissions yourself so you can make a smart move.</p>
     <div class="vs"><div class="vs-col vs-bad"><div class="vs-h">When a platform holds your balance</div><ul>
       <li>You deposited, and the operator held the balance</li><li>Your dashboard showed a number</li><li>Then withdrawals paused and the site went offline</li><li>That number turned out to be a promise, not possession</li>
     </ul></div><div class="vs-col vs-good"><div class="vs-h">How Bitcoin Wealth is designed to route payments</div><ul>
