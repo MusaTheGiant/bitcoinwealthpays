@@ -258,7 +258,26 @@
     });
   }
 
-  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); wireReferralCopy(); }
+  /* A return path on the dashboard, without claiming that opening a page
+     means the learner completed its quiz. */
+  function wireRecentLesson(){
+    var url = document.body.getAttribute('data-topic-url');
+    var title = document.body.getAttribute('data-topic-title');
+    if(url && title){
+      try { localStorage.setItem('bwp-recent-lesson', JSON.stringify({url:url,title:title})); } catch(e){}
+    }
+    var link = document.querySelector('[data-recent-lesson-link]');
+    if(!link) return;
+    try {
+      var recent = JSON.parse(localStorage.getItem('bwp-recent-lesson') || 'null');
+      if(!recent || !/^\/topics\/[a-z0-9-]+\.html$/.test(recent.url) || typeof recent.title !== 'string') return;
+      link.href = recent.url;
+      document.querySelector('[data-recent-lesson-title]').textContent = recent.title;
+      document.querySelector('[data-recent-lesson-context]').textContent = 'Return to the last lesson you opened.';
+    } catch(e){}
+  }
+
+  function boot2(){ boot(); wireTop(); wireVideo(); wireMenu(); wireReferralCopy(); wireRecentLesson(); }
   window.__wire = boot2;
   boot2();
 })();

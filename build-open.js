@@ -374,6 +374,7 @@ function contactPanel(line){
 /* ---------- shared page shell ---------- */
 const NAV = [
   ["/", "Home"],
+  ["/dashboard.html", "Course Dashboard"],
   ["/what-is-bitcoin-wealth.html", "What Is Bitcoin Wealth"],
   ["/topics/", "All Topics"],
   ["/guides/", "Setup Guides"],
@@ -418,6 +419,7 @@ function referralPanel(){
 </section>`;
 }
 function page(o) {
+  const currentLesson = TOPICS.find(t => o.url === '/topics/' + t.slug + '.html');
   const video = VIDEO_METADATA[o.url];
   if(video){
     const [name, description, file, duration, uploadDate] = video;
@@ -459,16 +461,16 @@ function page(o) {
 <meta name="twitter:image" content="${shareImage}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/style.css?v=20260924-player">
+<link rel="stylesheet" href="/style.css?v=20260926-premium">
 ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + '</script>' : ''}
 </head>
-<body>
+<body${o.url !== '/' && o.url !== '/404.html' ? ' class="course-site"' : ''}${currentLesson ? ` data-topic-url="${o.url}" data-topic-title="${esc(currentLesson.title)}"` : ''}>
 <header class="topnav">
   <div class="topnav-in">
     <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none">
@@ -476,17 +478,20 @@ ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + 
       <span><span class="wm" style="font-size:14px;display:block"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span>
       <span class="brand-sub">${esc(SITE.tagline)}</span></span>
     </a>
+    <nav class="desktop-nav" aria-label="Primary"><a href="/"${o.url === '/' ? ' aria-current="page"' : ''}>Home</a><a href="/dashboard.html"${o.url === '/dashboard.html' ? ' aria-current="page"' : ''}>Course Dashboard</a><a href="/topics/">17 Lessons</a><a href="/guides/">Setup Guides</a></nav>
     <button class="navtoggle" id="navtoggle" aria-label="Menu" aria-expanded="false" aria-controls="dr" aria-haspopup="true">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
   <nav class="drawer" id="dr" aria-label="Main"><div class="drawer-in">${drawer}</div></nav>
 </header>
+${o.url !== '/' && o.url !== '/404.html' ? `<aside class="course-sidebar" aria-label="Course navigation"><div class="side-label">LEARNING</div><a href="/dashboard.html"${o.url === '/dashboard.html' ? ' class="active" aria-current="page"' : ''}>▦ &nbsp;Course overview</a><a href="/topics/"${o.url === '/topics/' ? ' class="active" aria-current="page"' : ''}>▤ &nbsp;All 17 lessons</a><div class="side-label">EXPLORE</div><a href="/what-is-bitcoin-wealth.html">What Is Bitcoin Wealth</a><a href="/video-tutorials.html">Video tutorials</a><a href="/guides/">Wallet &amp; setup guides</a><a href="/glossary.html">Glossary</a><a href="/faq.html">Frequently asked questions</a><div class="side-label">THE COURSE</div>${MODULES.map((m, i) => `<a class="side-module" href="/dashboard.html#module-${i+1}">${String(i+1).padStart(2,'0')} &nbsp;${esc(m.title)}</a>`).join('')}</aside>` : ''}
 <main class="wrap" style="padding-top:26px">
 ${o.body}
-${REFERRAL_PAGES.has(o.url) ? referralPanel() : ''}
+${REFERRAL_PAGES.has(o.url) && o.url !== '/' ? referralPanel() : ''}
 </main>
 ${o.custody ? custodyBlock() : ''}
+${o.url === '/' ? `<div class="home-referral wrap">${referralPanel()}</div>` : ''}
 <footer class="sitefoot">
   <div class="wm" style="font-size:13px;margin-bottom:6px"><span class="o">Bitcoin</span> <span class="g">Wealth</span></div>
   <div class="slogan">Built by the <span class="o">People</span>. For the <span class="g">People</span>.</div>
@@ -509,7 +514,7 @@ ${o.custody ? custodyBlock() : ''}
 <button class="totop" id="totop" aria-label="Back to top" hidden>
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
-<script src="/open.js?v=20260924-player" defer></script>
+<script src="/open.js?v=20260926-premium" defer></script>
 ${(o.scripts || []).map(src => `<script src="${src}" defer></script>`).join("\n")}
 </body>
 </html>`;
@@ -598,28 +603,23 @@ const add = (u, pri, freq) => urls.push({ u, pri, freq });
 fs.copyFileSync(path.join(__dirname, 'open.js'), path.join(OUT, 'open.js'));
 
 /* ---------- home ---------- */
-let home = `<div class="hero">
-<div class="frame" style="margin-bottom:22px"><div class="frame-in" style="padding:22px 16px 18px">
-<div class="eyebrow" style="display:inline-block">Cycle 1 distribution</div>
-${nodeDiagram(true)}
-${legend()}
-</div></div>
-${videoCard()}
-<div class="panel beacon" style="padding:30px 22px;text-align:center">
-<h1 style="font-size:clamp(27px,7.5vw,44px);margin-bottom:10px"><span style="color:var(--orange)">Understand</span> Bitcoin Wealth<br><span style="color:var(--green)">Before You Decide</span></h1>
-<div class="slogan slogan-hero">Built by the <span class="o">People</span>. For the <span class="g">People</span>.</div>
-<p style="color:#DAD5C9;margin-bottom:12px;max-width:50ch;margin-left:auto;margin-right:auto;font-size:17px">${esc(SITE.blurb)}</p>
-<p style="color:var(--muted);margin-bottom:24px;max-width:50ch;margin-left:auto;margin-right:auto">Every statement is labelled, so you always know what the material shows, what it claims, and what its own numbers add up to. Free to read, nothing to sign up for.</p>
-<div style="display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:26px">${LABEL.fact}${LABEL.claim}${LABEL.math}</div>
-<div class="row" style="justify-content:center">
-<a class="btn btn-primary" href="/what-is-bitcoin-wealth.html">What is Bitcoin Wealth</a>
-<a class="btn btn-ghost" href="/guides/">Step-by-Step Guides</a></div>
-<div class="row secondrow" style="justify-content:center;margin-top:12px">
-<a class="btn btn-quiet btn-sm2" href="/video-tutorials.html">Tutorial videos</a>
-<a class="btn btn-quiet btn-sm2" href="${DECK.down}" target="_blank" rel="noopener noreferrer">Download the PDF</a></div>
-</div></div>`;
-
-home += `<section class="course-home-callout" aria-label="Start the course"><div><h2>17 free lessons. A clear path from start to finish.</h2><p>Begin with lesson 1 and see your place in the course on every page.</p></div><a class="btn btn-primary" href="/topics/how-to-read-this-site.html">Start lesson 1 of 17 →</a></section>`;
+let home = `<section class="premium-hero" aria-labelledby="home-title">
+  <div class="premium-eyebrow">Free independent 17 lesson course</div>
+  <h1 id="home-title">Understand Bitcoin Wealth <span>before you decide.</span></h1>
+  <p>A clear, step-by-step explanation of the mechanics, the claims, and the numbers. Watch the introduction, then explore the course at your own pace.</p>
+  <div class="premium-actions"><button class="btn btn-primary vidcard-btn" type="button" data-src="${VIDEO.src}" data-poster="${VIDEO.thumb}" aria-label="Play Bitcoin Wealth introduction video">▶ &nbsp;Play Introduction</button><a class="btn btn-quiet" href="/dashboard.html">Explore the 17 lessons →</a></div>
+  <div class="premium-detail"><i></i>Free to learn &nbsp;·&nbsp; Facts, claims and arithmetic clearly labelled</div>
+</section>
+<div class="premium-ribbon"><strong>Built by the People. For the People.</strong><span>Begin with the video, then follow the course from lesson one.</span></div>
+<section class="premium-section" aria-labelledby="learning-path-title">
+  <div class="premium-eyebrow">Your learning path</div>
+  <h2 id="learning-path-title">Everything you need, in the right order.</h2>
+  <p>17 free lessons. A clear path from start to finish. Begin with lesson 1 and see your place in the course on every page.</p>
+  <div class="premium-cards"><a href="/topics/how-to-read-this-site.html"><small>01 / FOUNDATION</small><h3>Get oriented</h3><p>Learn Bitcoin, blockchain, BTCB and the essential terms.</p></a><a href="/topics/the-14-positions.html"><small>02 / MECHANICS</small><h3>Follow the programme</h3><p>Understand the matrix, positions, cycles and payments.</p></a><a href="/topics/questions-worth-asking.html"><small>03 / YOUR DECISION</small><h3>Check the claims</h3><p>Examine the numbers and questions worth asking.</p></a></div>
+  <a class="btn btn-ghost premium-section-cta" href="/topics/how-to-read-this-site.html">Start lesson 1 of 17 →</a>
+</section>
+<section class="premium-mechanics" aria-labelledby="mechanics-title"><div class="premium-mechanics-copy"><div class="premium-eyebrow">The mechanics</div><h2 id="mechanics-title">How does a cycle distribute?</h2><p>The published material describes 14 positions in a cycle. Follow its diagram and inspect the explanation.</p><a class="btn btn-quiet btn-sm" href="/topics/the-14-positions.html">See all 14 positions →</a></div><div class="frame"><div class="frame-in" style="padding:20px 16px 17px"><div class="eyebrow">Cycle 1 distribution</div>${nodeDiagram(false)}${legend()}</div></div></section>
+<section class="premium-section premium-resources" aria-labelledby="resources-title"><div class="premium-eyebrow">Read the source. Check the claims.</div><h2 id="resources-title">Understand it in plain English.</h2><p>${esc(SITE.blurb)} Every statement is labelled, so you know what the material shows, what it claims, and what its own numbers add up to. Free to read, nothing to sign up for.</p><div class="premium-labels">${LABEL.fact}${LABEL.claim}${LABEL.math}</div><div class="premium-resource-links"><a href="/what-is-bitcoin-wealth.html">What is Bitcoin Wealth →</a><a href="/guides/">Step-by-Step Guides →</a><a href="/video-tutorials.html">Tutorial videos →</a><a href="${DECK.down}" target="_blank" rel="noopener noreferrer">Download the PDF →</a></div></section>`;
 
 writePage('index.html', page({
   url: "/", nav: "/", custody: true,
@@ -635,6 +635,16 @@ writePage('index.html', page({
   ]
 }));
 add("/", "1.0", "weekly");
+
+/* ---------- course dashboard ---------- */
+const dashboardModules = MODULES.map((m, index) => `<section class="dashboard-module" id="module-${index+1}" aria-labelledby="module-title-${index+1}"><div class="dashboard-module-head"><span>${String(index+1).padStart(2,'0')} / ${String(MODULES.length).padStart(2,'0')}</span><small>${m.lessons.length} lessons</small></div><h3 id="module-title-${index+1}">${esc(m.title)}</h3><p>${esc(m.blurb)}</p><div class="dashboard-module-links">${m.lessons.map(l => `<a href="/topics/${l.slug}.html">${esc(l.title)} <span aria-hidden="true">→</span></a>`).join('')}</div></section>`).join('');
+writePage('dashboard.html', page({
+  url: "/dashboard.html", nav: "/dashboard.html",
+  title: "Course Dashboard | Bitcoin Wealth Pays",
+  desc: "A clear overview of all 17 free Bitcoin Wealth lessons, video tutorials, wallet guides and practical resources.",
+  body: `<div class="dashboard-hero"><div class="premium-eyebrow">Your learning dashboard</div><h1>Learn at your own pace.</h1><p>All 17 lessons are free and open. Start with the basics, then follow the modules through to the final review.</p><div class="dashboard-continue"><div><small>YOUR NEXT STEP</small><h2 data-recent-lesson-title>How to Read This Site</h2><p data-recent-lesson-context>Begin with lesson 1 of 17.</p></div><a class="btn btn-primary" data-recent-lesson-link href="/topics/how-to-read-this-site.html">Open lesson →</a></div></div><div class="dashboard-head"><h2>Explore the six modules</h2><span>17 lessons · Nothing locked</span></div><div class="dashboard-modules">${dashboardModules}</div><div class="dashboard-head"><h2>Helpful resources</h2></div><div class="dashboard-resources"><a href="/video-tutorials.html">▷ Video tutorials <span>→</span></a><a href="/guides/">◇ Wallet &amp; setup guides <span>→</span></a><a href="/glossary.html">⌕ Plain English glossary <span>→</span></a></div>`
+}));
+add("/dashboard.html", "0.9", "weekly");
 
 /* ---------- what is bitcoin wealth ---------- */
 const overviewTopics = TOPICS.slice(0, 8);
