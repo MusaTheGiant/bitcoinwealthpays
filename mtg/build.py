@@ -7,6 +7,8 @@ full-course link near the bottom of the member landing page.
 from pathlib import Path
 import html
 import re
+import json
+from content import FAQ, TERMS
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'mtg'
@@ -27,6 +29,8 @@ def header(up, section=''):
     <a href="{up}"{' aria-current="page"' if section == 'home' else ''}>Home</a>
     <a href="{up}video-tutorials/"{' aria-current="page"' if section == 'video' else ''}>Video Tutorials</a>
     <a href="{up}setup-guides/"{' aria-current="page"' if section == 'guides' else ''}>Setup Guides</a>
+    <a href="{up}faq/"{' aria-current="page"' if section == 'faq' else ''}>FAQ</a>
+    <a href="{up}glossary/"{' aria-current="page"' if section == 'glossary' else ''}>Glossary</a>
     <a href="{up}#register">Join Bitcoin Wealth</a>
     <a href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">WhatsApp</a>
   </nav>
@@ -48,6 +52,7 @@ def footer(up):
   <div class="sig">Made with <span class="sig-heart">&#10084;&#65039;</span> by <span class="sig-name">Bitcoin</span> <span class="sig-role">Accumulators</span></div>
 </footer>
 <div class="vidmodal" id="vidmodal" hidden role="dialog" aria-modal="true" aria-label="Video player"><div class="vidmodal-bg" data-close></div><div class="vidmodal-box"><button class="vidclose" type="button" aria-label="Close video" data-close><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="vidmodal-frame" id="vidmount"></div></div></div>
+<button class="mtg-backtop" type="button" data-backtop aria-label="Back to top" hidden>↑ <span>Top</span></button>
 <script src="{up}member-config.js"></script><script src="{up}member.js"></script><script src="{up}../open.js" defer></script>'''
 
 
@@ -63,11 +68,33 @@ def panel():
 
 
 def page(up, title, description, canonical, body, section=''):
+    slug = canonical.rstrip('/').split('/')[-1]
+    picture = f'https://bitcoinwealthpays.com/mtg/share/{slug}.png' if slug != 'mtg' else 'https://bitcoinwealthpays.com/mtg/share/home.png'
+    schema = {
+        '@context': 'https://schema.org', '@type': 'WebPage', 'name': title,
+        'description': description, 'url': 'https://bitcoinwealthpays.com/' + canonical,
+        'isPartOf': {'@type': 'WebSite', 'name': 'Bitcoin Wealth Pays', 'url': 'https://bitcoinwealthpays.com/'},
+    }
+    crumbs = [
+        {'@type': 'ListItem', 'position': 1, 'name': 'MTG Home', 'item': 'https://bitcoinwealthpays.com/mtg/'},
+    ]
+    if slug != 'mtg':
+        if 'setup-guides/' in canonical:
+            crumbs.append({'@type': 'ListItem', 'position': 2, 'name': 'Setup Guides', 'item': 'https://bitcoinwealthpays.com/mtg/setup-guides/'})
+        if slug != 'setup-guides':
+            crumbs.append({'@type': 'ListItem', 'position': len(crumbs) + 1, 'name': title.split(' | ')[-1], 'item': 'https://bitcoinwealthpays.com/' + canonical})
+        elif len(crumbs) == 2:
+            pass
+        else:
+            crumbs.append({'@type': 'ListItem', 'position': 2, 'name': 'Setup Guides', 'item': 'https://bitcoinwealthpays.com/' + canonical})
+    schema_blob = json.dumps([schema, {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': crumbs}], ensure_ascii=False).replace('<', '\\u003c')
     return f'''<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#000000">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(description, quote=True)}">
-<link rel="canonical" href="https://bitcoinwealthpays.com/{canonical}"><meta name="robots" content="index,follow">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Bitcoin Wealth Pays"><meta property="og:title" content="{html.escape(title, quote=True)}"><meta property="og:description" content="{html.escape(description, quote=True)}"><meta property="og:url" content="https://bitcoinwealthpays.com/{canonical}"><meta property="og:image" content="https://bitcoinwealthpays.com/share.png">
+<link rel="canonical" href="https://bitcoinwealthpays.com/{canonical}"><meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Bitcoin Wealth Pays"><meta property="og:title" content="{html.escape(title, quote=True)}"><meta property="og:description" content="{html.escape(description, quote=True)}"><meta property="og:url" content="https://bitcoinwealthpays.com/{canonical}"><meta property="og:image" content="{picture}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="{html.escape(title, quote=True)} visual preview">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(title, quote=True)}"><meta name="twitter:description" content="{html.escape(description, quote=True)}"><meta name="twitter:image" content="{picture}">
+<script type="application/ld+json">{schema_blob}</script>
 <link rel="icon" href="{up}../favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{up}../style.css"><link rel="stylesheet" href="{up}style.css">
 </head><body class="mtg-site">
@@ -94,8 +121,8 @@ landing = '''<main>
       <li>No withdraw button, because there is no pooled balance</li><li>Activating a slot splits that payment inside the same transaction</li><li>Each portion goes straight to the receiving members' own wallets</li><li>Nobody ever holds the funds, so nobody can disappear with them</li>
     </ul></div></div>
   </section>
-  <section class="mtg-next" aria-labelledby="next-title"><div class="premium-eyebrow">Get the practical details</div><h2 id="next-title">Need help with the setup?</h2><p>Watch what is available now, or follow the written wallet and exchange steps before you decide whether to register.</p>
-    <div class="mtg-resource-grid"><a href="video-tutorials/"><span class="premium-eyebrow">Watch</span><strong>Video Tutorials →</strong><span>Start with the introduction. Upcoming setup videos are clearly marked.</span></a><a href="setup-guides/"><span class="premium-eyebrow">Follow along</span><strong>Step-by-Step Setup Guides →</strong><span>SafePal, MetaMask, Binance and VALR instructions in one place.</span></a></div>
+  <section class="mtg-next" aria-labelledby="next-title"><div class="premium-eyebrow">Find your next answer</div><h2 id="next-title">Explore before you decide.</h2><p>Watch the available videos, follow the wallet steps, or go straight to the questions and definitions that matter to you.</p>
+    <div class="mtg-resource-grid"><a href="video-tutorials/"><span class="premium-eyebrow">Watch</span><strong>Video Tutorials →</strong><span>Start with the introduction. Upcoming setup videos are clearly marked.</span></a><a href="setup-guides/"><span class="premium-eyebrow">Follow along</span><strong>Step-by-Step Setup Guides →</strong><span>SafePal, MetaMask, Binance and VALR instructions in one place.</span></a><a href="faq/"><span class="premium-eyebrow">Ask</span><strong>Frequently Asked Questions →</strong><span>Direct answers about costs, recruiting, payouts, risks, and verification.</span></a><a href="glossary/"><span class="premium-eyebrow">Understand</span><strong>Glossary →</strong><span>Look up any unfamiliar word in plain English.</span></a></div>
   </section>
   ''' + panel() + '''
   <section class="mtg-member-copy" aria-labelledby="copy-title"><div><h2 id="copy-title">Want a copy of this page for your team?</h2><p>Message us on WhatsApp to discuss a version with your own referral link, profile picture and social links.</p></div><a class="btn btn-ghost" href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">Ask about a copy →</a></section>
@@ -119,6 +146,69 @@ guide_cards = '''<main class="subbody"><div class="crumbs"><a href="../">Home</a
 (OUT / 'setup-guides').mkdir(exist_ok=True)
 (OUT / 'setup-guides/index.html').write_text(page('../', 'Bitcoin Wealth | Step-by-Step Setup Guides', 'Practical SafePal, MetaMask, Binance and VALR guides within the member page.', 'mtg/setup-guides/', guide_cards, 'guides'))
 
+
+def slugify(value):
+    return re.sub(r'[^a-z0-9]+', '-', value.lower()).strip('-')
+
+
+def accordion_item(title, answer, prefix, num=None):
+    anchor = prefix + slugify(title)
+    number = f'<span class="mtg-item-number">{num:02d}</span>' if num is not None else ''
+    searchable = f' data-search="{html.escape((title + " " + re.sub(r"<[^>]+>", " ", answer)).lower(), quote=True)}"' if prefix == 'term-' else ''
+    return f'''<details class="mtg-accordion" id="{anchor}" name="mtg-one-open" data-accordion{searchable}>
+      <summary>{number}<span>{html.escape(title)}</span><span class="mtg-chevron" aria-hidden="true">⌄</span></summary>
+      <div class="mtg-answer"><p>{answer}</p></div>
+    </details>'''
+
+
+def section_switch(current):
+    routes = [('Home', '../'), ('Video Tutorials', '../video-tutorials/'), ('Setup Guides', '../setup-guides/'), ('FAQ', '../faq/'), ('Glossary', '../glossary/')]
+    return '<nav class="mtg-section-switch" aria-label="Explore member pages">' + ''.join(
+        f'<a href="{path}"' + (' aria-current="page"' if name == current else '') + f'>{name}</a>' for name, path in routes
+    ) + '</nav>'
+
+
+def social_invite():
+    return '''<section class="mtg-social-invite" aria-labelledby="social-heading"><div class="premium-eyebrow">Stay in touch</div><h2 id="social-heading">Follow along, and ask directly.</h2><p>See updates on TikTok and Facebook, or message us on WhatsApp. Ask for the current community group link if you want to join the conversation.</p><div class="mtg-social-actions"><a class="btn btn-ghost" href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="btn btn-quiet" href="#" data-tiktok aria-disabled="true" target="_blank" rel="noopener noreferrer">TikTok</a><a class="btn btn-quiet" href="#" data-facebook aria-disabled="true" target="_blank" rel="noopener noreferrer">Facebook</a></div></section>'''
+
+
+faq_intro = '''<main class="subbody mtg-reference"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>FAQ</b></div>
+  <div class="mtg-subhead"><div class="premium-eyebrow">Straight answers, including the hard ones</div><h1>Frequently Asked Questions</h1><p>What the programme says, what you can check, and what no one can promise. Open one question at a time. Take your time before you decide.</p></div>
+  ''' + section_switch('FAQ') + '''<nav class="mtg-jump" aria-label="FAQ topics"><span>Jump to</span>'''
+faq_intro += ''.join(f'<a href="#faq-{slugify(group)}">{html.escape(group)}</a>' for group, _ in FAQ) + '</nav>'
+faq_index = 1
+for group, questions in FAQ:
+    faq_intro += f'<section class="mtg-group" id="faq-{slugify(group)}"><div class="mtg-group-head"><h2>{html.escape(group)}</h2><span>{len(questions)} questions</span></div>'
+    for question, answer in questions:
+        faq_intro += accordion_item(question, answer, 'question-', faq_index)
+        faq_index += 1
+    faq_intro += '</section>'
+faq_intro += '<div class="mtg-continue"><span>Want a plain-English definition?</span><a href="../glossary/">Open the Glossary →</a></div>' + social_invite() + panel() + '</main>'
+faq_description = 'Straight answers on Bitcoin Wealth, wallet payouts, recruitment, costs, risks, smart contracts, and how to check the claims yourself.'
+faq_html = page('../', 'Bitcoin Wealth FAQ | Direct Answers to Hard Questions', faq_description, 'mtg/faq/', faq_intro, 'faq')
+faq_schema = {'@context':'https://schema.org','@type':'FAQPage','mainEntity':[{'@type':'Question','name':question,'acceptedAnswer':{'@type':'Answer','text':html.unescape(re.sub(r'<[^>]+>','',answer))}} for _, questions in FAQ for question, answer in questions]}
+faq_html = faq_html.replace('</head>', '<script type="application/ld+json">' + json.dumps(faq_schema, ensure_ascii=False).replace('<','\\u003c') + '</script></head>', 1)
+(OUT / 'faq').mkdir(exist_ok=True)
+(OUT / 'faq/index.html').write_text(faq_html)
+
+glossary = '''<main class="subbody mtg-reference"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>Glossary</b></div>
+  <div class="mtg-subhead"><div class="premium-eyebrow">Plain English, no jargon</div><h1>Bitcoin Wealth Glossary</h1><p>Find a word, open its meaning, then get back to what you were doing. Every definition fits on a small screen.</p></div>
+  ''' + section_switch('Glossary') + '''<div class="mtg-search"><label for="term-search">Find a term</label><input id="term-search" type="search" data-term-search autocomplete="off" placeholder="Try “spillover”, “BTCB”, or “gas”" aria-controls="glossary-terms"><p data-search-count role="status" aria-live="polite"></p></div>
+  <nav class="mtg-jump" aria-label="Glossary sections"><span>Jump to</span>'''
+glossary += ''.join(f'<a href="#terms-{slugify(group)}">{html.escape(group)}</a>' for group, _ in TERMS) + '</nav><div id="glossary-terms">'
+for group, terms in TERMS:
+    glossary += f'<section class="mtg-group" id="terms-{slugify(group)}" data-term-group><div class="mtg-group-head"><h2>{html.escape(group)}</h2><span>{len(terms)} terms</span></div>'
+    for term, definition in terms:
+        glossary += accordion_item(term, definition, 'term-')
+    glossary += '</section>'
+glossary += '</div><div class="mtg-continue"><span>Have a question that a definition did not answer?</span><a href="../faq/">Read the FAQ →</a></div>' + social_invite() + panel() + '</main>'
+glossary_description = 'Plain-English definitions of Bitcoin Wealth, the matrix, wallets, BTCB, smart contracts, spillover, risk, and transaction fees.'
+glossary_html = page('../', 'Bitcoin Wealth Glossary | Clear Crypto Definitions', glossary_description, 'mtg/glossary/', glossary, 'glossary')
+glossary_schema = {'@context':'https://schema.org','@type':'DefinedTermSet','name':'Bitcoin Wealth Glossary','url':'https://bitcoinwealthpays.com/mtg/glossary/','hasDefinedTerm':[{'@type':'DefinedTerm','name':term,'description':definition,'url':'https://bitcoinwealthpays.com/mtg/glossary/#term-'+slugify(term)} for _, terms in TERMS for term, definition in terms]}
+glossary_html = glossary_html.replace('</head>', '<script type="application/ld+json">' + json.dumps(glossary_schema, ensure_ascii=False).replace('<','\\u003c') + '</script></head>', 1)
+(OUT / 'glossary').mkdir(exist_ok=True)
+(OUT / 'glossary/index.html').write_text(glossary_html)
+
 for slug, label in GUIDES.items():
     source = (ROOT / 'guides' / (slug + '.html')).read_text()
     main = re.search(r'<main\b[^>]*>(.*?)</main>', source, re.S).group(1)
@@ -135,4 +225,4 @@ for slug, label in GUIDES.items():
     directory.mkdir(exist_ok=True)
     body = '<main class="subbody">' + main + panel() + '</main>'
     (directory / 'index.html').write_text(page('../../', 'Bitcoin Wealth | ' + label + ' Setup Guide', 'Practical ' + label + ' setup steps within the Bitcoin Wealth member page.', 'mtg/setup-guides/' + slug + '/', body, 'guides'))
-print('Built MTG landing, tutorial page, guide index and four guide detail pages.')
+print('Built MTG landing, FAQ, glossary, tutorial page, guide index and four guide detail pages.')
