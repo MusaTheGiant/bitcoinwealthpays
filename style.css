@@ -964,4 +964,5 @@ h1,h2,h3,h4{letter-spacing:-.035em}
   .dashboard-continue{display:block;padding:19px}.dashboard-continue .btn{margin-top:18px;width:100%}
   .dashboard-head{display:block}.dashboard-head span{display:block;margin-top:5px}
 }
-@media(max-width:480px){.referral-panel{padding:17px}.referral-copy{gap:7px}.referral-copy-btn{padding:9px 10px}}
+@media(max-width:520px){.referral-copy{flex-direction:column;gap:12px}.referral-copy-btn{width:100%;min-height:46px}}
+@media(max-width:480px){.referral-panel{padding:17px}}

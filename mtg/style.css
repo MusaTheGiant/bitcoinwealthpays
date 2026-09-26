@@ -46,6 +46,12 @@
 .mtg-traffic{margin:22px 0 40px;padding:27px 29px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(120deg,#10180d,#070a07)}
 .mtg-traffic h2{font-size:clamp(20px,3vw,25px);margin:8px 0}
 .mtg-traffic p{max-width:760px;color:#DAD5C9;font-size:14px;line-height:1.7;margin:0 0 16px}
+.mtg-traffic-ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:17px 0 18px}
+.mtg-traffic-ways>div{min-width:0;padding:19px 20px;border:1px solid var(--line-hi);border-radius:11px;background:#080e07}
+.mtg-traffic-ways strong{display:block;color:var(--text);font:700 16px/1.45 var(--disp);margin-bottom:8px}
+.mtg-traffic-ways p{margin:0;font-size:13px}
+.mtg-traffic .mtg-traffic-note{font-size:12px;color:var(--muted);margin-bottom:18px}
+.mtg-traffic .btn{max-width:100%;white-space:normal;text-align:center}
 .mtg-order .mtg-traffic{margin-top:25px}
 .mtg-deeper{border-top:1px solid var(--line);padding:32px 0 50px;text-align:center;color:var(--muted);font-size:14px;line-height:1.65}
 .mtg-deeper a{display:inline-block;margin-top:13px}
@@ -109,9 +115,9 @@
 .mtg-payment h2,.mtg-order-form-area h2{font-size:clamp(20px,3.2vw,28px);margin:9px 0 12px}
 .mtg-payment>p,.mtg-order-form-area>p{color:#DAD5C9;line-height:1.7;max-width:800px;font-size:14px}
 .mtg-payment .mtg-payment-note{color:var(--muted);font-size:12px;margin-top:13px}
-.mtg-address{display:flex;align-items:center;gap:10px;border:1px solid var(--line-hi);border-radius:10px;background:#030603;margin:22px 0 8px;padding:10px 12px;max-width:840px}
+.mtg-address{display:flex;align-items:center;gap:20px;border:1px solid var(--line-hi);border-radius:10px;background:#030603;margin:22px 0 8px;padding:12px 15px;max-width:840px;min-width:0}
 .mtg-address span{flex:1;min-width:0;color:var(--lime);font:700 14px/1.6 var(--mono);overflow-wrap:anywhere}
-.mtg-address button,.mtg-order-after button{border:1px solid var(--line-hi);border-radius:8px;background:var(--ink-moss);color:var(--text);padding:9px 12px;font:700 12px var(--body);cursor:pointer}
+.mtg-address button,.mtg-order-after button{border:1px solid var(--line-hi);border-radius:8px;background:var(--ink-moss);color:var(--text);padding:11px 15px;font:700 12px var(--body);cursor:pointer}
 .mtg-address button:hover,.mtg-order-after button:hover{color:var(--orange)}
 .mtg-payment .mtg-address-status,.mtg-form-status{color:var(--lime);font-size:13px;min-height:20px}
 .mtg-payment .mtg-verify-label{display:block;font-size:12px;font-weight:700;margin:10px 0 5px;color:var(--text)}
@@ -145,6 +151,16 @@
 .mtg-order-questions h2{font-size:21px;color:var(--text);margin-bottom:9px}
 .mtg-order-questions p{max-width:780px;margin:0 0 12px}
 .mtg-order-questions a{color:var(--orange)}
+@media(max-width:760px){
+  .mtg-order-overview,.mtg-form-grid{grid-template-columns:1fr;gap:0}
+  .mtg-order-overview>div{margin-bottom:9px}
+}
+@media(max-width:640px){
+  .mtg-address{flex-direction:column;align-items:stretch;gap:0;padding:16px}
+  .mtg-address span{display:block;width:100%;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+  .mtg-address button{width:100%;min-height:48px;font-size:14px}
+  .mtg-traffic-ways{grid-template-columns:1fr}
+}
 @media(max-width:970px){
   .mtg-resource-grid{grid-template-columns:1fr}
   .mtg-member-copy{display:block}
@@ -167,12 +183,17 @@
   .mtg-backtop{right:14px;bottom:14px}
   .mtg-nav-inner{padding:0 16px}
   .mtg-links{right:16px}
-  .mtg-order-overview,.mtg-form-grid{grid-template-columns:1fr;gap:0}
-  .mtg-order-overview>div{margin-bottom:9px}
   .mtg-payment,.mtg-order-form-area{padding:21px 16px}
-  .mtg-address{display:block}
-  .mtg-address button{margin-top:10px}
   .mtg-submit{width:100%}
   .mtg-traffic{padding:22px 18px}
+  .mtg-traffic-ways>div{padding:16px}
+}
+@media(max-width:360px){
+  .mtg-nav-inner{gap:8px;padding:0 12px}
+  .mtg-brand{font-size:12px;gap:7px}
+  .mtg-nav .mtg-menu-toggle{gap:5px;padding:8px 9px;font-size:13px}
+  .mtg-site main{padding:0 14px}
+  .mtg-payment,.mtg-order-form-area{padding:18px 12px}
+  .mtg-address span{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){.mtg-chevron{transition:none}}
