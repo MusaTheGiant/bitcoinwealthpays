@@ -41,17 +41,18 @@
   }
   async function copy(text, statusNode) {
     try {
-      if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
-      else {
-        var box = document.createElement('textarea');
-        box.value = text;
-        box.setAttribute('readonly', '');
-        box.style.cssText = 'position:fixed;opacity:0';
-        document.body.appendChild(box);
-        box.select();
-        var copied = document.execCommand('copy');
-        box.remove();
-        if (!copied) throw new Error('Unavailable');
+      var box = document.createElement('textarea');
+      box.value = text;
+      box.setAttribute('readonly', '');
+      box.style.cssText = 'position:fixed;opacity:0;left:-9999px';
+      document.body.appendChild(box);
+      box.focus();
+      box.select();
+      var copied = document.execCommand('copy');
+      box.remove();
+      if (!copied) {
+        if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+        else throw new Error('Unavailable');
       }
       statusNode.textContent = 'Copied.';
     } catch (error) {
