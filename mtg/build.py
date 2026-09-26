@@ -78,7 +78,7 @@ def page(up, title, description, canonical, body, section=''):
         'isPartOf': {'@type': 'WebSite', 'name': 'Bitcoin Wealth Pays', 'url': 'https://bitcoinwealthpays.com/'},
     }
     crumbs = [
-        {'@type': 'ListItem', 'position': 1, 'name': 'MTG Home', 'item': 'https://bitcoinwealthpays.com/mtg/'},
+        {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://bitcoinwealthpays.com/mtg/'},
     ]
     if slug != 'mtg':
         if 'setup-guides/' in canonical:
