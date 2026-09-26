@@ -39,7 +39,7 @@
     }
     return true;
   }
-  async function copy(text, statusNode) {
+  async function copy(text, statusNode, needsVerification) {
     try {
       var box = document.createElement('textarea');
       box.value = text;
@@ -54,13 +54,28 @@
         if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
         else throw new Error('Unavailable');
       }
-      statusNode.textContent = 'Copied.';
+      statusNode.textContent = needsVerification ? 'Copy attempted. Paste below to verify the exact address.' : 'Copy attempted. Paste to confirm.';
     } catch (error) {
       statusNode.textContent = 'Please select and copy the text manually.';
     }
   }
   document.querySelector('[data-copy-address]').addEventListener('click', function () {
-    copy(paymentAddress, document.querySelector('[data-address-status]'));
+    copy(paymentAddress, document.querySelector('[data-address-status]'), true);
+  });
+  var addressCheck = document.querySelector('[data-verify-address]');
+  addressCheck.addEventListener('input', function () {
+    var message = document.querySelector('[data-verify-status]');
+    var pasted = addressCheck.value.trim();
+    message.classList.remove('matches', 'mismatch');
+    if (!pasted) {
+      message.textContent = 'A copy confirmation is not a payment confirmation. Always check the address and network in your wallet.';
+    } else if (pasted === paymentAddress) {
+      message.textContent = 'Exact match. Check the TRON (TRC-20) network in your wallet before sending.';
+      message.classList.add('matches');
+    } else {
+      message.textContent = 'This does not match the payment address. Do not send. Copy the address shown above and check again.';
+      message.classList.add('mismatch');
+    }
   });
   document.querySelector('[data-copy-request-details]').addEventListener('click', function () {
     if (requestText) copy(requestText, status);

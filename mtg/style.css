@@ -114,6 +114,12 @@
 .mtg-address button,.mtg-order-after button{border:1px solid var(--line-hi);border-radius:8px;background:var(--ink-moss);color:var(--text);padding:9px 12px;font:700 12px var(--body);cursor:pointer}
 .mtg-address button:hover,.mtg-order-after button:hover{color:var(--orange)}
 .mtg-payment .mtg-address-status,.mtg-form-status{color:var(--lime);font-size:13px;min-height:20px}
+.mtg-payment .mtg-verify-label{display:block;font-size:12px;font-weight:700;margin:10px 0 5px;color:var(--text)}
+.mtg-verify-label input{display:block;width:100%;max-width:570px;margin-top:8px;padding:10px 12px;border:1px solid var(--line-hi);border-radius:8px;background:#050905;color:var(--text);font:500 13px var(--mono);outline:none}
+.mtg-verify-label input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.mtg-payment .mtg-verify-status{color:var(--muted);font-size:12px;margin-top:5px}
+.mtg-payment .mtg-verify-status.matches{color:var(--lime)}
+.mtg-payment .mtg-verify-status.mismatch{color:#F4A3A6}
 .mtg-order-form-area fieldset{border:0;border-top:1px solid var(--line);margin:28px 0 0;padding:18px 0 0}
 .mtg-order-form-area legend{padding-right:12px;font:700 17px var(--disp);color:var(--orange)}
 .mtg-order-form-area label{display:block;color:var(--text);font-size:13px;font-weight:750;margin:13px 0 18px}
