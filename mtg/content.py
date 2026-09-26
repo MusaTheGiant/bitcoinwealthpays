@@ -30,11 +30,18 @@ FAQ = [
  ('Getting help', [
   ('Where should I start if I am still unsure?', 'Watch both short videos on the <a href="../">MTG home page</a>, read the <a href="../glossary/">glossary</a>, and ask us the question that remains. You can take your time; the registration link is here when you have enough information to make your own decision.'),
   ('Can I follow your updates and ask a question?', 'Yes. The WhatsApp, TikTok, and Facebook links below lead to the page owner’s current contact and social accounts. Use WhatsApp to ask a direct question. A WhatsApp contact link does not itself guarantee admission to a specific group; ask for the group link there.'),
-  ('Can I get a copy of this page for my own team?', 'Yes. <a href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">Message us on WhatsApp</a> and ask about a member copy. We can explain the setup and any fee before you decide. A copy can carry your profile picture, referral address, and social links.'),
+  ('Can I get a copy of this page for myself or my team?', 'Yes. <a href="../request-a-copy/">Open the request form</a> to see the one-time $20 USDT price and the details needed for your own page. Updates to your page are included for its lifetime. You can use your own profile picture, referral address, and social links.'),
+  ('How can I bring visitors to my page if I do not do TikTok lives?', 'You can share your page where it is welcome and explore a paid traffic option such as <a href="https://clickbaitpaysus.com/" target="_blank" rel="noopener noreferrer">ClickBaitPays</a>. Its educational site explains how ad campaigns can send viewers to approved websites or links. Check its current content rules and campaign cost first, especially for a crypto referral page. More visitors do not guarantee registrations or a completed cycle.'),
  ])
 ]
 
 TERMS = [
+ ('Sharing your page', [
+  ('ClickBaitPays', 'A separate paid-to-click advertising platform described at clickbaitpaysus.com. Advertisers may create approved campaigns to bring attention to a website or link; this does not guarantee sign-ups.'),
+  ('Ad campaign', 'A paid placement shown to viewers, with a destination link and content subject to platform approval.'),
+  ('Web traffic', 'People who visit a website or page. A visit does not mean that a person has registered or joined.'),
+  ('Conversion', 'A desired action after a visit, such as someone choosing to register. A campaign can bring traffic without producing conversions.'),
+ ]),
  ('The programme', [
   ('Activation', 'A paid action that opens a slot or fills a matrix position, according to the stated contract rules.'),
   ('Auto entry', 'The described use of cycle payments to activate a higher slot. It depends on the previous cycle filling; it is not automatic income.'),

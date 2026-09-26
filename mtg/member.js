@@ -24,23 +24,28 @@
     var toggle = menu.querySelector('[data-menu-toggle]');
     var links = menu.querySelector('[data-menu-links]');
     if (!toggle || !links) return;
+    function closeMenu() {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation menu');
+      links.classList.remove('open');
+    }
     toggle.addEventListener('click', function () {
       var opened = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!opened));
+      toggle.setAttribute('aria-label', opened ? 'Open navigation menu' : 'Close navigation menu');
       links.classList.toggle('open', !opened);
     });
     links.addEventListener('click', function (event) {
-      if (event.target.closest('a')) {
-        toggle.setAttribute('aria-expanded', 'false');
-        links.classList.remove('open');
-      }
+      if (event.target.closest('a')) closeMenu();
     });
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        toggle.setAttribute('aria-expanded', 'false');
-        links.classList.remove('open');
+        closeMenu();
         toggle.focus();
       }
+    });
+    document.addEventListener('click', function (event) {
+      if (!menu.contains(event.target)) closeMenu();
     });
   });
   // Keep at most one definition or answer expanded, including across groups.

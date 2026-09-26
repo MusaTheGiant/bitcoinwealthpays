@@ -1,4 +1,4 @@
-"""Generate exact-text social cards for the nine MTG page URLs."""
+"""Generate exact-text social cards for the MTG page URLs."""
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
@@ -14,6 +14,7 @@ PAGES = {
     'glossary': ('CRYPTO GLOSSARY', 'Crypto terms.', 'Plain English.'),
     'video-tutorials': ('VIDEO TUTORIALS', 'Watch the videos.', 'See how it works.'),
     'setup-guides': ('SETUP GUIDES', 'Set up with care.', 'Follow every step.'),
+    'request-a-copy': ('PERSONALIZED PAGE', 'Your own page.', 'Your links. Your profile.'),
     'safepal-wallet': ('STEP-BY-STEP GUIDE', 'SafePal Wallet', 'Secure your setup.'),
     'metamask-web3-wallet': ('STEP-BY-STEP GUIDE', 'MetaMask Wallet', 'Secure your setup.'),
     'binance-account': ('STEP-BY-STEP GUIDE', 'Binance Account', 'Follow the setup.'),
@@ -46,6 +47,6 @@ for filename, (label, headline, subline) in PAGES.items():
     mask = Image.new('L', logo.size, 0)
     ImageDraw.Draw(mask).ellipse((0, 0, 269, 269), fill=255)
     art.paste(logo, (831, 166), mask)
-    # Palette encoding keeps nine share cards lightweight for social crawlers.
+    # Palette encoding keeps the share cards lightweight for social crawlers.
     art.convert('RGB').quantize(colors=128, method=Image.Quantize.MEDIANCUT).save(DEST / (filename + '.png'), optimize=True)
 print('Generated', len(PAGES), 'social cards in', DEST)

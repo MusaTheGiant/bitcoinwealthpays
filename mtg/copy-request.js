@@ -1,0 +1,125 @@
+/* Static-site handoff. WhatsApp only receives data after the visitor presses Send. */
+(function () {
+  'use strict';
+  var form = document.querySelector('[data-copy-request]');
+  if (!form) return;
+  var destination = 'https://wa.me/27721714626';
+  var paymentAddress = 'TFx7DMtb5PuSmGTVe6LnCwLxEF7b8mutBt';
+  var status = document.querySelector('[data-form-status]');
+  var after = document.querySelector('[data-order-after]');
+  var reopen = document.querySelector('[data-whatsapp-reopen]');
+  var requestText = '';
+
+  function clean(value) { return String(value || '').trim().replace(/[\r\n]+/g, ' '); }
+  function field(name) { return form.elements.namedItem(name); }
+  function get(name) { return clean(field(name).value); }
+  function showError(input, message) {
+    input.setCustomValidity(message);
+    input.reportValidity();
+    status.textContent = message;
+    input.focus();
+  }
+  function validUrl(name, hosts, message) {
+    var input = field(name), value = clean(input.value);
+    if (!value) return true;
+    try {
+      var url = new URL(value);
+      if (url.protocol === 'https:' && (!hosts || hosts.some(function (host) { return url.hostname === host || url.hostname.endsWith('.' + host); }))) return true;
+    } catch (error) { /* report using the field below */ }
+    showError(input, message);
+    return false;
+  }
+  function validFile(name, allowed, limit, message) {
+    var input = field(name), file = input.files && input.files[0];
+    if (!file) return name === 'profilePhoto';
+    var suffix = (file.name.split('.').pop() || '').toLowerCase();
+    if (file.size > limit || !allowed.includes(suffix)) {
+      showError(input, message);
+      return false;
+    }
+    return true;
+  }
+  async function copy(text, statusNode) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+      else {
+        var box = document.createElement('textarea');
+        box.value = text;
+        box.setAttribute('readonly', '');
+        box.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(box);
+        box.select();
+        var copied = document.execCommand('copy');
+        box.remove();
+        if (!copied) throw new Error('Unavailable');
+      }
+      statusNode.textContent = 'Copied.';
+    } catch (error) {
+      statusNode.textContent = 'Please select and copy the text manually.';
+    }
+  }
+  document.querySelector('[data-copy-address]').addEventListener('click', function () {
+    copy(paymentAddress, document.querySelector('[data-address-status]'));
+  });
+  document.querySelector('[data-copy-request-details]').addEventListener('click', function () {
+    if (requestText) copy(requestText, status);
+  });
+  form.querySelectorAll('input,textarea,select').forEach(function (input) {
+    input.addEventListener('input', function () { input.setCustomValidity(''); status.textContent = ''; });
+    input.addEventListener('change', function () { input.setCustomValidity(''); status.textContent = ''; });
+  });
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    status.textContent = '';
+    var contact = field('contactNumber');
+    if (!/^[+0-9 ()-]{7,24}$/.test(get('contactNumber'))) {
+      showError(contact, 'Enter your WhatsApp number with country code, such as +27 72 123 4567.'); return;
+    }
+    if (!validUrl('referralUrl', null, 'Use a complete https:// referral link.')) return;
+    if (!validUrl('memberWhatsapp', ['wa.me', 'api.whatsapp.com', 'whatsapp.com'], 'Use a complete WhatsApp link, such as https://wa.me/27721234567.')) return;
+    if (!validUrl('memberGroup', ['chat.whatsapp.com'], 'Use a complete WhatsApp group invite link from chat.whatsapp.com.')) return;
+    if (!validUrl('tiktokUrl', ['tiktok.com'], 'Use a complete TikTok profile link.')) return;
+    if (!validUrl('facebookUrl', ['facebook.com', 'fb.com'], 'Use a complete Facebook page link.')) return;
+    if (get('whatsappChoice') === 'group' && !get('memberGroup')) {
+      showError(field('memberGroup'), 'Paste your group invite link if you want the page to open your WhatsApp group.'); return;
+    }
+    if (!validFile('profilePhoto', ['jpg', 'jpeg', 'png', 'webp'], 8 * 1024 * 1024, 'Use a JPG, PNG or WebP profile image smaller than 8 MB.')) return;
+    if (!validFile('paymentProof', ['jpg', 'jpeg', 'png', 'webp', 'pdf'], 10 * 1024 * 1024, 'Use an image or PDF payment proof smaller than 10 MB.')) return;
+    var photo = field('profilePhoto').files[0], proof = field('paymentProof').files[0];
+    if (!proof) { showError(field('paymentProof'), 'Choose your payment proof before continuing.'); return; }
+    var lines = [
+      'PERSONALIZED BITCOIN WEALTH PAGE REQUEST',
+      'Name: ' + get('fullName'),
+      'My WhatsApp contact: ' + get('contactNumber'),
+      'Preferred page name: ' + (get('pageName') || 'Please choose with me'),
+      'My referral link: ' + get('referralUrl'),
+      'Use this WhatsApp destination: ' + (get('whatsappChoice') === 'group' ? 'Group invite' : 'Personal contact'),
+      'My WhatsApp link: ' + (get('memberWhatsapp') || 'Use my contact number above'),
+      'My WhatsApp group: ' + (get('memberGroup') || 'None'),
+      'My TikTok: ' + (get('tiktokUrl') || 'None'),
+      'My Facebook: ' + (get('facebookUrl') || 'None'),
+      'Other details: ' + (get('notes') || 'None'),
+      '',
+      'Payment: 20 USDT, TRON (TRC-20)',
+      'Sent to: ' + paymentAddress,
+      'Transaction ID / reference: ' + get('paymentReference'),
+      'Profile image selected: ' + (photo ? clean(photo.name) : 'Use the Bitcoin Wealth logo'),
+      'Payment proof selected: ' + clean(proof.name),
+      '',
+      'I will attach the selected files to this chat before pressing Send.'
+    ];
+    requestText = lines.join('\n');
+    var url = destination + '?text=' + encodeURIComponent(requestText);
+    reopen.href = url;
+    after.hidden = false;
+    status.textContent = 'WhatsApp is opening. Attach your selected files there and tap Send. Your request has not been delivered yet.';
+    var link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    after.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  });
+})();

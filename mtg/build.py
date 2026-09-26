@@ -24,13 +24,14 @@ GUIDES = {
 def header(up, section=''):
     return f'''<header class="mtg-nav" data-member-nav><div class="mtg-nav-inner">
   <a class="mtg-brand" href="{up}"><span class="mark">BW</span><span><span class="o">Bitcoin</span> <span class="g">Wealth</span></span></a>
-  <button class="mtg-menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mtg-links">Menu</button>
+  <button class="mtg-menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mtg-links" aria-label="Open navigation menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
   <nav class="mtg-links" id="mtg-links" data-menu-links aria-label="Member page navigation">
     <a href="{up}"{' aria-current="page"' if section == 'home' else ''}>Home</a>
     <a href="{up}video-tutorials/"{' aria-current="page"' if section == 'video' else ''}>Video Tutorials</a>
     <a href="{up}setup-guides/"{' aria-current="page"' if section == 'guides' else ''}>Setup Guides</a>
     <a href="{up}faq/"{' aria-current="page"' if section == 'faq' else ''}>FAQ</a>
     <a href="{up}glossary/"{' aria-current="page"' if section == 'glossary' else ''}>Glossary</a>
+    <a href="{up}request-a-copy/"{' aria-current="page"' if section == 'request' else ''}>Request a Copy</a>
     <a href="{up}#register">Join Bitcoin Wealth</a>
     <a href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">WhatsApp</a>
   </nav>
@@ -125,7 +126,8 @@ landing = '''<main>
     <div class="mtg-resource-grid"><a href="video-tutorials/"><span class="premium-eyebrow">Watch</span><strong>Video Tutorials →</strong><span>Start with the introduction. Upcoming setup videos are clearly marked.</span></a><a href="setup-guides/"><span class="premium-eyebrow">Follow along</span><strong>Step-by-Step Setup Guides →</strong><span>SafePal, MetaMask, Binance and VALR instructions in one place.</span></a><a href="faq/"><span class="premium-eyebrow">Ask</span><strong>Frequently Asked Questions →</strong><span>Direct answers about costs, recruiting, payouts, risks, and verification.</span></a><a href="glossary/"><span class="premium-eyebrow">Understand</span><strong>Glossary →</strong><span>Look up any unfamiliar word in plain English.</span></a></div>
   </section>
   ''' + panel() + '''
-  <section class="mtg-member-copy" aria-labelledby="copy-title"><div><h2 id="copy-title">Want a copy of this page for your team?</h2><p>Message us on WhatsApp to discuss a version with your own referral link, profile picture and social links.</p></div><a class="btn btn-ghost" href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">Ask about a copy →</a></section>
+  <section class="mtg-member-copy" aria-labelledby="copy-title"><div><h2 id="copy-title">Want a page for yourself or your team?</h2><p>Get your own copy with your referral link, profile image and social links. One-time $20 USDT includes updates for the lifetime of your page.</p></div><a class="btn btn-ghost" href="request-a-copy/">Request your page →</a></section>
+  <section class="mtg-traffic" aria-labelledby="traffic-title"><div class="premium-eyebrow">For page owners</div><h2 id="traffic-title">Need visitors for your new page?</h2><p>ClickBaitPays explains how advertisers can run campaigns that point viewers to an approved website or link. Explore it as one possible traffic channel, even if you do not host live sessions. Campaign costs are separate, approval is subject to platform rules, and visits do not guarantee sign-ups.</p><a class="btn btn-quiet" href="https://clickbaitpaysus.com/" target="_blank" rel="noopener noreferrer">Explore ClickBaitPays →</a></section>
   <aside class="mtg-deeper">Prefer the full explanation? Read the complete 17 lesson Bitcoin Wealth course at your own pace.<br><a class="btn btn-quiet" href="../">Explore the full course →</a></aside>
 </main>'''
 (OUT / 'index.html').write_text(page('./', 'Bitcoin Wealth | See How It Works', 'Watch the introduction and matrix explanation, explore practical setup, and decide whether Bitcoin Wealth is right for you.', 'mtg/', landing, 'home'))
@@ -162,7 +164,7 @@ def accordion_item(title, answer, prefix, num=None):
 
 
 def section_switch(current):
-    routes = [('Home', '../'), ('Video Tutorials', '../video-tutorials/'), ('Setup Guides', '../setup-guides/'), ('FAQ', '../faq/'), ('Glossary', '../glossary/')]
+    routes = [('Home', '../'), ('Video Tutorials', '../video-tutorials/'), ('Setup Guides', '../setup-guides/'), ('FAQ', '../faq/'), ('Glossary', '../glossary/'), ('Request a Copy', '../request-a-copy/')]
     return '<nav class="mtg-section-switch" aria-label="Explore member pages">' + ''.join(
         f'<a href="{path}"' + (' aria-current="page"' if name == current else '') + f'>{name}</a>' for name, path in routes
     ) + '</nav>'
@@ -209,6 +211,45 @@ glossary_html = glossary_html.replace('</head>', '<script type="application/ld+j
 (OUT / 'glossary').mkdir(exist_ok=True)
 (OUT / 'glossary/index.html').write_text(glossary_html)
 
+request_body = '''<main class="subbody mtg-order"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>Request a Copy</b></div>
+  <div class="mtg-subhead"><div class="premium-eyebrow">Your own Bitcoin Wealth page</div><h1>A page for you or your team.</h1><p>Your own profile image, referral link and social links, set up on a separate member page. The complete 17-lesson course link stays on your copy.</p></div>
+  ''' + section_switch('Request a Copy') + '''
+  <div class="mtg-order-overview"><div><strong>$20 USDT</strong><span>One-time setup fee</span></div><div><strong>Lifetime updates</strong><span>Updates to your page at no further service fee for the lifetime of your page</span></div><div><strong>Your links</strong><span>Registration and social destinations personalized to you</span></div></div>
+  <section class="mtg-payment" aria-labelledby="payment-title"><div class="premium-eyebrow">Step 1 of 2 · Make your payment</div><h2 id="payment-title">Send exactly 20 USDT on TRON (TRC-20).</h2><p>Use the TRON (TRC-20) network only. Double-check the full address in your wallet before sending. If your exchange deducts a withdrawal fee, make sure the amount received is 20 USDT. Keep your transaction ID and a screenshot or PDF of your payment confirmation.</p>
+    <div class="mtg-address"><span id="payment-address" data-payment-address>TFx7DMtb5PuSmGTVe6LnCwLxEF7b8mutBt</span><button type="button" data-copy-address aria-label="Copy TRON USDT payment address">Copy address</button></div><p class="mtg-address-status" data-address-status role="status" aria-live="polite"></p>
+    <p class="mtg-payment-note">This payment is for a personalized page service. It is separate from any Bitcoin Wealth slot activation. Do not send BTCB or use another network. Network fees may apply.</p>
+  </section>
+  <section class="mtg-order-form-area" aria-labelledby="form-title"><div class="premium-eyebrow">Step 2 of 2 · Tell us what to customize</div><h2 id="form-title">Complete your request after paying.</h2><p>The fields below prepare a message to <strong>+27 72 171 4626</strong>. Your browser cannot attach these files automatically: after WhatsApp opens, add the selected image and proof of payment there and press Send.</p>
+    <form id="copy-request-form" data-copy-request>
+      <fieldset><legend>Your contact details</legend>
+        <div class="mtg-form-grid"><label>Full name <span aria-hidden="true">*</span><input name="fullName" type="text" autocomplete="name" minlength="2" maxlength="80" required placeholder="Your name"></label><label>WhatsApp contact number <span aria-hidden="true">*</span><input name="contactNumber" type="tel" autocomplete="tel" inputmode="tel" minlength="7" maxlength="24" required placeholder="+27 72 123 4567"></label></div>
+        <label>Preferred page name or URL ending <span class="mtg-optional">optional</span><input name="pageName" type="text" maxlength="80" placeholder="For example, /thandi or Thandi’s Bitcoin Wealth page"></label>
+      </fieldset>
+      <fieldset><legend>Your page details</legend>
+        <label>Your Bitcoin Wealth referral link <span aria-hidden="true">*</span><input name="referralUrl" type="url" required maxlength="250" placeholder="https://...your-referral-link" autocomplete="off"><small>This is the link visitors will copy from your page. Paste the complete address.</small></label>
+        <label>Profile picture or logo <span class="mtg-optional">optional</span><input name="profilePhoto" type="file" accept="image/png,image/jpeg,image/webp"><small>JPG, PNG or WebP, up to 8 MB. Leave blank to use the Bitcoin Wealth logo. You will attach this image in WhatsApp.</small></label>
+        <div class="mtg-form-grid"><label>Your WhatsApp link <span class="mtg-optional">optional</span><input name="memberWhatsapp" type="url" maxlength="250" placeholder="https://wa.me/..." autocomplete="off"><small>If blank, we can make a link from your contact number.</small></label><label>WhatsApp group invite <span class="mtg-optional">optional</span><input name="memberGroup" type="url" maxlength="250" placeholder="https://chat.whatsapp.com/..." autocomplete="off"><small>Only if you want visitors directed to your group.</small></label></div>
+        <label>Which WhatsApp link should appear on your page? <select name="whatsappChoice"><option value="contact">My personal WhatsApp link or contact number</option><option value="group">My WhatsApp group invite link</option></select></label>
+        <div class="mtg-form-grid"><label>TikTok page link <span class="mtg-optional">optional</span><input name="tiktokUrl" type="url" maxlength="250" placeholder="https://www.tiktok.com/@..." autocomplete="off"></label><label>Facebook page link <span class="mtg-optional">optional</span><input name="facebookUrl" type="url" maxlength="250" placeholder="https://www.facebook.com/..." autocomplete="off"></label></div>
+        <label>Other details or changes you want <span class="mtg-optional">optional</span><textarea name="notes" rows="3" maxlength="600" placeholder="Tell me what you want your page to say or show."></textarea></label>
+      </fieldset>
+      <fieldset><legend>Payment confirmation</legend>
+        <label>TRON transaction ID or exchange withdrawal reference <span aria-hidden="true">*</span><input name="paymentReference" type="text" minlength="8" maxlength="120" required placeholder="Paste the transaction hash or payment reference"><small>This helps us match your payment to your request.</small></label>
+        <label>Proof of payment <span aria-hidden="true">*</span><input name="paymentProof" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" required><small>Screenshot or PDF, up to 10 MB. You will attach it to the WhatsApp chat after the message opens.</small></label>
+        <label class="mtg-checkbox"><input name="paymentConfirmed" type="checkbox" required><span>I have sent 20 USDT on TRON (TRC-20) to the address above, and I will attach my payment proof in WhatsApp before sending this request.</span></label>
+      </fieldset>
+      <button class="btn btn-primary mtg-submit" type="submit">Open WhatsApp with my request →</button><p class="mtg-form-hint">This opens a prepared WhatsApp message. The request reaches us only after you attach the files and tap Send in WhatsApp. We verify payment before starting your page.</p>
+      <div class="mtg-form-status" data-form-status role="status" aria-live="polite"></div>
+    </form>
+  </section>
+  <div class="mtg-order-after" data-order-after hidden><strong>Finish in WhatsApp</strong><p>Attach your profile image (if selected) and your payment proof in the chat, then tap Send. Your form is still here if you need to check a detail.</p><a href="#" data-whatsapp-reopen target="_blank" rel="noopener noreferrer">Open the prepared WhatsApp message again →</a><button type="button" data-copy-request-details>Copy request text</button></div>
+  <section class="mtg-order-questions"><h2>Before you send</h2><p>Your copy includes a personalized profile image, referral address and selected social links. The “Explore the full course” button remains. Updates to your page are included for its lifetime. We start after matching your payment to your request; we will contact you on WhatsApp if any detail is missing.</p><a href="../faq/">Read the Bitcoin Wealth FAQ →</a></section>
+  <section class="mtg-traffic" aria-labelledby="traffic-title"><div class="premium-eyebrow">After your page is ready</div><h2 id="traffic-title">How will people find it?</h2><p>If going live on TikTok is not your thing, ClickBaitPays is one option to explore. It describes paid ad campaigns that can direct viewers to an approved page or link. Review its campaign rules and costs separately from this $20 page service. Visitors may learn about your page; sign-ups are never guaranteed.</p><a class="btn btn-quiet" href="https://clickbaitpaysus.com/" target="_blank" rel="noopener noreferrer">Learn about ClickBaitPays campaigns →</a></section>
+</main>
+<script src="../copy-request.js" defer></script>'''
+(OUT / 'request-a-copy').mkdir(exist_ok=True)
+(OUT / 'request-a-copy/index.html').write_text(page('../', 'Request Your Bitcoin Wealth Page | $20 USDT', 'Request a personalized Bitcoin Wealth page with your own referral and social links. One-time 20 USDT on TRON, with updates included.', 'mtg/request-a-copy/', request_body, 'request'))
+
 for slug, label in GUIDES.items():
     source = (ROOT / 'guides' / (slug + '.html')).read_text()
     main = re.search(r'<main\b[^>]*>(.*?)</main>', source, re.S).group(1)
@@ -225,4 +266,4 @@ for slug, label in GUIDES.items():
     directory.mkdir(exist_ok=True)
     body = '<main class="subbody">' + main + panel() + '</main>'
     (directory / 'index.html').write_text(page('../../', 'Bitcoin Wealth | ' + label + ' Setup Guide', 'Practical ' + label + ' setup steps within the Bitcoin Wealth member page.', 'mtg/setup-guides/' + slug + '/', body, 'guides'))
-print('Built MTG landing, FAQ, glossary, tutorial page, guide index and four guide detail pages.')
+print('Built MTG landing, FAQ, glossary, copy request, tutorial page, guide index and four guide detail pages.')
