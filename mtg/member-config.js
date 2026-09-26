@@ -3,6 +3,6 @@ window.MTG_MEMBER = {
   profileImage: '/logo.png',
   referralUrl: 'https://vowu.io/register?ref=14638',
   whatsappUrl: 'https://wa.me/27721714626',
-  tiktokUrl: 'https://www.tiktok.com/@bitcoinwealthexpl',
+  tiktokUrl: 'https://www.tiktok.com/@bitcoinwealthpays',
   facebookUrl: 'https://www.facebook.com/bitcoinwealthexplained/'
 };
