@@ -21,11 +21,17 @@
 .mtg-site .premium-actions{margin:30px auto 0}
 .mtg-compare{margin:8px 0 0;padding:30px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(155deg,#0c130b,#060807)}
 .mtg-compare h2{font-size:clamp(25px,4vw,34px);margin:10px 0 22px}
+.mtg-compare .mtg-compare-intro{max-width:750px;color:#DAD5C9;font-size:14px;line-height:1.7;margin:-8px 0 20px}
 .mtg-compare .vs{margin:0}
 .mtg-compare .vs-h{font-size:15px;letter-spacing:0}
 .mtg-next{padding:62px 0 22px}
 .mtg-next h2{font-size:clamp(25px,4vw,34px);margin:10px 0 12px}
 .mtg-next>p{max-width:680px;color:#DAD5C9;line-height:1.7}
+.mtg-sharing{margin:8px 0 24px;padding:28px 30px;border:1px solid var(--line-hi);border-radius:16px;background:linear-gradient(135deg,#10190e,#080d07)}
+.mtg-sharing h2{font-size:clamp(22px,3vw,28px);margin:9px 0 11px}
+.mtg-sharing p{max-width:790px;color:#DAD5C9;font-size:14px;line-height:1.75}
+.mtg-sharing-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.mtg-sharing-actions .btn{max-width:100%;white-space:normal;text-align:center}
 .mtg-resource-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0 10px}
 .mtg-resource-grid a{display:block;padding:25px;border-radius:15px;background:var(--ink-green);border:1px solid var(--line);text-decoration:none;color:var(--text)}
 .mtg-resource-grid a:hover{border-color:var(--line-hi)}
@@ -175,6 +181,8 @@
   .mtg-compare{padding:22px 15px}
   .mtg-site .referral-panel{padding:21px 16px}
   .mtg-next{padding-top:45px}
+  .mtg-sharing{padding:22px 18px}
+  .mtg-sharing-actions{display:grid;grid-template-columns:1fr}
   .mtg-accordion summary{padding:15px 13px;font-size:14px}
   .mtg-answer{padding:0 15px 17px 15px}
   .mtg-continue{display:block}
