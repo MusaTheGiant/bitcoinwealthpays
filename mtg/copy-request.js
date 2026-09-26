@@ -104,7 +104,7 @@
     var photo = field('profilePhoto').files[0], proof = field('paymentProof').files[0];
     if (!proof) { showError(field('paymentProof'), 'Choose your payment proof before continuing.'); return; }
     var lines = [
-      'PERSONALIZED BITCOIN WEALTH PAGE REQUEST',
+      'PERSONALIZED BITCOIN WEALTH WEBSITE COPY REQUEST',
       'Name: ' + get('fullName'),
       'My WhatsApp contact: ' + get('contactNumber'),
       'Preferred page name: ' + (get('pageName') || 'Please choose with me'),

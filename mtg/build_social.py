@@ -14,7 +14,7 @@ PAGES = {
     'glossary': ('CRYPTO GLOSSARY', 'Crypto terms.', 'Plain English.'),
     'video-tutorials': ('VIDEO TUTORIALS', 'Watch the videos.', 'See how it works.'),
     'setup-guides': ('SETUP GUIDES', 'Set up with care.', 'Follow every step.'),
-    'request-a-copy': ('PERSONALIZED PAGE', 'Your own page.', 'Your links. Your profile.'),
+    'request-a-copy': ('PERSONALIZED COPY', 'This site. Yours.', 'Your links. Your profile.'),
     'safepal-wallet': ('STEP-BY-STEP GUIDE', 'SafePal Wallet', 'Secure your setup.'),
     'metamask-web3-wallet': ('STEP-BY-STEP GUIDE', 'MetaMask Wallet', 'Secure your setup.'),
     'binance-account': ('STEP-BY-STEP GUIDE', 'Binance Account', 'Follow the setup.'),
@@ -42,7 +42,8 @@ for filename, (label, headline, subline) in PAGES.items():
     d.text((74, 258), headline, font=font, fill=WHITE)
     d.text((77, 357), subline, font=ImageFont.truetype(FONT_BOLD, 36), fill=ORANGE)
     d.line((78, 469, 733, 469), fill=(198, 128, 16, 120), width=2)
-    d.text((78, 506), 'bitcoinwealthpays.com/mtg', font=ImageFont.truetype(FONT_REG, 21), fill=MUTED)
+    share_url = 'bitcoinwealthpays.com/mtg/request-a-copy/' if filename == 'request-a-copy' else 'bitcoinwealthpays.com/mtg'
+    d.text((78, 506), share_url, font=ImageFont.truetype(FONT_REG, 21), fill=MUTED)
     d.ellipse((811, 146, 1121, 456), fill=(6, 9, 6, 255), outline=(255, 161, 1, 190), width=3)
     mask = Image.new('L', logo.size, 0)
     ImageDraw.Draw(mask).ellipse((0, 0, 269, 269), fill=255)
