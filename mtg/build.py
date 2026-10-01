@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'mtg'
 SOURCE = 'https://drive.google.com/file/d/1ygN1kA2dZqbDqFJZOQswK426g6Md2fer/view'
 PDF_DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1ygN1kA2dZqbDqFJZOQswK426g6Md2fer'
+# Pages that get the animated premium motion layer (motion.css + motion.js)
+MOTION_PAGES = {'mtg', 'video-tutorials', 'setup-guides', 'faq', 'glossary', 'request-a-copy'}
 GUIDES = {
     'safepal-wallet': 'SafePal Wallet',
     'metamask-web3-wallet': 'MetaMask Web3 Wallet',
@@ -69,6 +71,9 @@ def panel():
 
 def page(up, title, description, canonical, body, section=''):
     slug = canonical.rstrip('/').split('/')[-1]
+    motion = slug in MOTION_PAGES
+    motion_css = f'<link rel="stylesheet" href="{up}motion.css?v=1">' if motion else ''
+    motion_js = f'\n<script src="{up}motion.js?v=1" defer></script>' if motion else ''
     picture = f'https://bitcoinwealthpays.com/mtg/share/{slug}.png' if slug != 'mtg' else 'https://bitcoinwealthpays.com/mtg/share/home.png'
     if slug == 'request-a-copy':
         picture += '?v=2'
@@ -98,11 +103,11 @@ def page(up, title, description, canonical, body, section=''):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(title, quote=True)}"><meta name="twitter:description" content="{html.escape(description, quote=True)}"><meta name="twitter:image" content="{picture}">
 <script type="application/ld+json">{schema_blob}</script>
 <link rel="icon" href="{up}../favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{up}../style.css?v=20260926b"><link rel="stylesheet" href="{up}style.css?v=20260926d">
+<link rel="stylesheet" href="{up}../style.css?v=20260926b"><link rel="stylesheet" href="{up}style.css?v=20260926d">{motion_css}
 </head><body class="mtg-site">
 {header(up, section)}
 {body}
-{footer(up)}
+{footer(up)}{motion_js}
 </body></html>
 '''
 
