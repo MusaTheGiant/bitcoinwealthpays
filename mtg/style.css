@@ -208,3 +208,27 @@
   .mtg-address span{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){.mtg-chevron{transition:none}}
+/* Video cards: thumbnail + play button so they read as videos at a glance */
+.mtg-video-grid .mtg-video-card{position:relative;display:flex;flex-direction:column;padding:0;overflow:hidden;border-radius:16px;background:var(--ink-green);border:1px solid var(--line-hi);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.mtg-video-grid .mtg-video-card:hover{transform:translateY(-3px);border-color:var(--orange);box-shadow:0 18px 42px rgba(0,0,0,.6),0 0 0 1px rgba(255,161,1,.35)}
+.mtg-video-grid .mtg-video-card:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.mvc-thumb{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;background:#050805}
+.mvc-thumb img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease}
+.mtg-video-card:hover .mvc-thumb img{transform:scale(1.05);filter:brightness(.85)}
+.mvc-shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(0,0,0,.05),rgba(0,0,0,.45) 75%),linear-gradient(transparent 55%,rgba(0,0,0,.65))}
+.mvc-play{position:absolute;left:50%;top:50%;width:76px;height:76px;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;background:var(--orange);box-shadow:0 10px 30px rgba(255,161,1,.55),0 0 0 8px rgba(255,161,1,.18);transition:transform .25s ease,box-shadow .25s ease}
+.mvc-play:before{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(255,161,1,.7);animation:mvcPulse 2.2s ease-out infinite}
+.mvc-play svg{width:34px;height:34px;margin-left:5px;fill:#160d00}
+.mtg-video-card:hover .mvc-play{transform:translate(-50%,-50%) scale(1.1);box-shadow:0 14px 40px rgba(255,161,1,.75),0 0 0 12px rgba(255,161,1,.2)}
+@keyframes mvcPulse{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.55);opacity:0}}
+.mvc-badge{position:absolute;right:12px;top:12px;display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:999px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.14);color:#fff;font:700 11px/1 var(--disp);letter-spacing:.12em;text-transform:uppercase}
+.mvc-badge i{width:7px;height:7px;border-radius:50%;background:#ff3b30;box-shadow:0 0 8px #ff3b30}
+.mtg-video-grid .mvc-dur{display:inline-block;font-size:12px;position:absolute;right:12px;bottom:12px;padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.8);color:#fff;font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.04em}
+.mtg-resource-grid .mvc-body{display:block;color:var(--text);font-size:15px;padding:18px 20px 20px}
+.mtg-video-grid .mtg-video-card .mvc-body strong{margin:8px 0 6px;color:var(--text);font-size:19px}
+.mtg-resource-grid .mvc-desc{display:block;color:var(--muted);font-size:14px;line-height:1.6}
+.mtg-resource-grid .mtg-video-card .mvc-cta{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:9px 16px;border-radius:9px;background:rgba(255,161,1,.12);border:1px solid rgba(255,161,1,.45);color:var(--orange);font:700 14px/1 var(--disp);line-height:1;transition:background .2s,color .2s}
+.mvc-cta svg{width:14px;height:14px;fill:currentColor}
+.mtg-video-card:hover .mvc-cta{background:var(--orange);color:#160d00}
+@media(max-width:700px){.mtg-video-grid{grid-template-columns:1fr}.mvc-play{width:64px;height:64px}.mvc-play svg{width:28px;height:28px}}
+@media(prefers-reduced-motion:reduce){.mvc-play:before{animation:none}.mtg-video-grid .mtg-video-card,.mvc-thumb img,.mvc-play{transition:none}}
