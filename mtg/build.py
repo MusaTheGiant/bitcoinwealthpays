@@ -103,7 +103,7 @@ def page(up, title, description, canonical, body, section=''):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(title, quote=True)}"><meta name="twitter:description" content="{html.escape(description, quote=True)}"><meta name="twitter:image" content="{picture}">
 <script type="application/ld+json">{schema_blob}</script>
 <link rel="icon" href="{up}../favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{up}../style.css?v=20260926b"><link rel="stylesheet" href="{up}style.css?v=20261001a">{motion_css}
+<link rel="stylesheet" href="{up}../style.css?v=20261001-video"><link rel="stylesheet" href="{up}style.css?v=20261001a">{motion_css}
 </head><body class="mtg-site">
 {header(up, section)}
 {body}

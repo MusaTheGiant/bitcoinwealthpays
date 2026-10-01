@@ -966,3 +966,29 @@ h1,h2,h3,h4{letter-spacing:-.035em}
 }
 @media(max-width:520px){.referral-copy{flex-direction:column;gap:12px}.referral-copy-btn{width:100%;min-height:46px}}
 @media(max-width:480px){.referral-panel{padding:17px}}
+
+/* ---------- video cards v2: thumbnail on top, details below, clearly a video ---------- */
+.vidcard{display:grid;grid-template-columns:1fr;aspect-ratio:auto;background:#0b100a;border-radius:14px;text-align:left;color:inherit;font:inherit;box-shadow:0 0 0 1px rgba(198,128,16,.55),0 10px 30px rgba(0,0,0,.65)}
+.vidcard>.vidthumb,.vidcard>.vidshade,.vidcard>.vidplay,.vidcard>.vidbadge,.vidcard>.viddur{grid-area:1/1}
+.vidcard>.vidthumb{position:relative;inset:auto;aspect-ratio:16/9;height:auto;opacity:1;transition:transform .5s ease,filter .5s ease}
+.vidcard>.vidshade{position:relative;inset:auto;background:radial-gradient(circle at 50% 50%,rgba(0,0,0,.05),rgba(0,0,0,.42) 78%),linear-gradient(transparent 60%,rgba(0,0,0,.55))}
+.vidcard>.vidplay{position:relative;left:auto;top:auto;transform:none;place-self:center;z-index:2}
+.vidcard>.vidplay:before{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid rgba(255,161,1,.75);animation:bwVidPulse 2.2s ease-out infinite}
+@keyframes bwVidPulse{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.55);opacity:0}}
+.vidbadge{place-self:start end;margin:12px;z-index:2;display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:999px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.16);color:#fff;font:700 11px/1 var(--disp);letter-spacing:.12em;text-transform:uppercase}
+.vidbadge i{width:7px;height:7px;border-radius:50%;background:#ff3b30;box-shadow:0 0 8px #ff3b30}
+.viddur{place-self:end end;margin:12px;z-index:2;padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.8);color:#fff;font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.04em}
+.vidcard>.vidmeta{position:relative;padding:15px 18px 18px;background:linear-gradient(180deg,#0e140c,#090d08);border-top:1px solid rgba(198,128,16,.3)}
+.vidcard .vidtitle{font-size:17px}
+.vidcard .vidblurb{font-size:14px;color:rgba(255,255,255,.7);margin-top:5px;line-height:1.5}
+.vidcta{display:inline-flex;align-items:center;gap:8px;margin-top:13px;padding:9px 16px;border-radius:9px;background:rgba(255,161,1,.12);border:1px solid rgba(255,161,1,.5);color:var(--orange);font:700 14px/1 var(--disp);transition:background .2s,color .2s}
+.vidcta svg{width:14px;height:14px;fill:currentColor;stroke:none}
+.vidcard:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){
+  .vidcard:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--orange),0 18px 42px rgba(0,0,0,.7)}
+  .vidcard:hover>.vidplay{transform:scale(1.1);box-shadow:0 14px 40px rgba(255,161,1,.75)}
+  .vidcard:hover>.vidthumb{transform:scale(1.04);filter:brightness(.88)}
+  .vidcard:hover .vidcta{background:var(--orange);color:#140b00}
+}
+@media(max-width:520px){.vidcard>.vidplay{width:64px;height:64px}.vidcard>.vidplay svg{width:30px;height:30px}}
+@media(prefers-reduced-motion:reduce){.vidcard>.vidplay:before{animation:none}.vidcard,.vidcard>.vidthumb,.vidcard>.vidplay{transition:none}}

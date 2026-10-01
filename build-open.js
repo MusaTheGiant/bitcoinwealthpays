@@ -467,7 +467,7 @@ function page(o) {
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/style.css?v=20260926-premium">
+<link rel="stylesheet" href="/style.css?v=20261001-video">
 ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + '</script>' : ''}
 </head>
 <body${o.url !== '/' && o.url !== '/404.html' ? ' class="course-site"' : ''}${currentLesson ? ` data-topic-url="${o.url}" data-topic-title="${esc(currentLesson.title)}"` : ''}>
