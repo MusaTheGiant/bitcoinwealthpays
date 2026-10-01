@@ -72,7 +72,7 @@ def panel():
 def page(up, title, description, canonical, body, section=''):
     slug = canonical.rstrip('/').split('/')[-1]
     motion = slug in MOTION_PAGES
-    motion_css = f'<link rel="stylesheet" href="{up}motion.css?v=1">' if motion else ''
+    motion_css = f'<link rel="stylesheet" href="{up}motion.css?v=2">' if motion else ''
     motion_js = f'\n<script src="{up}motion.js?v=1" defer></script>' if motion else ''
     picture = f'https://bitcoinwealthpays.com/mtg/share/{slug}.png' if slug != 'mtg' else 'https://bitcoinwealthpays.com/mtg/share/home.png'
     if slug == 'request-a-copy':
