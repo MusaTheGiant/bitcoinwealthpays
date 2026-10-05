@@ -32,6 +32,26 @@ const TUTORIALS = [
 const INTRO_VIDEO = { src: "/videos/bitcoin-wealth-intro.mp4", thumb: "/images/bitcoin-wealth-intro.png", title: "Start here: Bitcoin Wealth explained",
   blurb: "A short introduction before you work through the tutorials." };
 
+/* For members who have already joined, not for people still deciding.
+   Shown in its own section at the foot of the tutorials page.          */
+const MEMBER_VIDEO = { src: "/videos/14-position-matrix-placement.mp4", thumb: "/images/matrix-placement.png",
+  title: "How to place members on the matrix board",
+  blurb: "Team training on choosing a position, 6 min 51" };
+
+/* ---------- EXTRA FAQ ----------
+   Hand written questions that do not come from a lesson quiz. The key is
+   the FAQ_GROUPS index the question appears under, counting from 0:
+   0 the basics, 1 how the matrix works, 2 the numbers, 3 wallets and fees,
+   4 checking it yourself.                                              */
+const EXTRA_FAQ = {
+  1: [{
+    q: "Does the smart contract decide where new members are placed?",
+    short: "Not entirely. Placement involves a person.",
+    a: "The deck lists matrix placement alongside Bitcoin distribution as something the contract handles automatically. The programme's own member training tells a different story for placement: a sponsor chooses the branch and the position, confirms it in a back office, notifies the member and updates the matrix record. Distribution and placement are worth separating. Payments really are split and sent inside the transaction and you can watch that on a block explorer. Placement, on the evidence of the training, is a human judgement. Before you join, ask whoever introduces you who places your recruits, on what basis, and how you would check where they ended up.",
+    link: ["/topics/the-14-positions.html", "The 14 Positions"]
+  }]
+};
+
 const TOPIC_VIDEOS = {
   "what-is-bitcoin-wealth": {
     src: "/videos/why-bitcoin-wealth.mp4",
@@ -313,7 +333,25 @@ function tutorialsBody(){
   });
 
   b += `</div>
-<div class="box box-note" style="max-width:var(--read);margin-top:26px"><p>Tutorials are added as they are recorded. In the meantime, every step is written out in full on the <a href="/guides/">Step-by-Step Setup Guides</a> page.</p></div>`;
+<div class="box box-note" style="max-width:var(--read);margin-top:26px"><p>Tutorials are added as they are recorded. In the meantime, every step is written out in full on the <a href="/guides/">Step-by-Step Setup Guides</a> page.</p></div>
+
+<div class="sec"><h2>Already a member</h2><span class="ln"></span></div>
+<p style="color:var(--muted);max-width:var(--read);margin-bottom:20px">This section is for people who have already joined. If you are still deciding, the pages on this site will serve you better first.</p>
+
+<div class="frame vidframe" style="margin-bottom:22px"><div class="frame-in" style="padding:18px 16px 16px">
+<div class="eyebrow" style="display:inline-block">Member training</div>
+<button class="vidcard" type="button" data-src="${MEMBER_VIDEO.src}" data-poster="${MEMBER_VIDEO.thumb}" data-vertical="1" aria-label="Play video: ${esc(MEMBER_VIDEO.title)}">
+  <img class="vidthumb" src="${MEMBER_VIDEO.thumb}" alt="" loading="lazy" width="1280" height="720">
+  <span class="vidshade"></span>
+  <span class="vidplay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+  <span class="vidmeta">
+    <span class="vidtitle">${esc(MEMBER_VIDEO.title)}</span>
+    <span class="vidblurb">${esc(MEMBER_VIDEO.blurb)}</span>
+  </span>
+</button>
+</div></div>
+<div class="box box-note" style="max-width:var(--read)"><p><strong>Why this video is on an independent site.</strong> It is a training session recorded by a team inside the programme, not by us, and it is here because it answers a question the presentation does not: who actually decides where a new member is seated.</p>
+<p>The deck says the contract handles matrix placement automatically. This session teaches a sponsor to choose the branch and position, confirm it in a back office, notify the member and update the matrix record. Both things are worth knowing, and the difference between them is the reason we have kept the video rather than summarised it. <a href="/topics/the-14-positions.html">The 14 Positions</a> explains what that difference means for you.</p></div>`;
 
   b += sourcePanel("The programme is explained in full across this site, drawing on its own presentation.");
   b += contactPanel("Stuck on a step in one of the tutorials?");
@@ -396,10 +434,16 @@ function socialRow() {
 
 const VIDEO_METADATA = {
   '/': ['Bitcoin Wealth explained', 'A short introduction to the Bitcoin Wealth programme and the questions to ask before you decide.', 'bitcoin-wealth-intro', 'PT4M11S', '2026-09-24T20:10:25+02:00'],
-  '/video-tutorials.html': ['Bitcoin Wealth explained', 'A short introduction before the Bitcoin Wealth tutorial sequence.', 'bitcoin-wealth-intro', 'PT4M11S', '2026-09-24T20:10:25+02:00'],
+  /* Two films on this page, so the value is a list of entries. */
+  '/video-tutorials.html': [
+    ['Bitcoin Wealth explained', 'A short introduction before the Bitcoin Wealth tutorial sequence.', 'bitcoin-wealth-intro', 'PT4M11S', '2026-09-24T20:10:25+02:00'],
+    ['How to place members on the matrix board', 'Team training for existing members on choosing where a new member is seated on the fourteen position board, including the sponsor decision, the back office confirmation and the placement checklist.', '14-position-matrix-placement', 'PT6M51S', '2026-10-05T10:40:00+02:00']
+  ],
   '/what-is-bitcoin-wealth.html': ['Why Bitcoin Wealth?', 'A short overview of Bitcoin Wealth before you begin the lessons.', 'why-bitcoin-wealth', 'PT1M35S', '2026-09-24T20:52:48+02:00'],
   '/topics/bitcoin-blockchain-smart-contract-matrix.html': ['How the Bitcoin Wealth matrix works', 'A step-by-step video introduction to the Bitcoin Wealth matrix.', 'how-bitcoin-wealth-matrix-work', 'PT2M50S', '2026-09-24T21:05:58+02:00'],
-  '/topics/the-14-positions.html': ['The 14 positions explained', 'The Bitcoin Wealth matrix and its positions explained in a short video.', 'how-bitcoin-wealth-matrix-work', 'PT2M50S', '2026-09-24T21:05:58+02:00']
+  /* Same film as the page above. The name and duration must describe the file
+     that actually loads, or the schema claims a video that does not exist.   */
+  '/topics/the-14-positions.html': ['How the Bitcoin Wealth matrix works', 'The Bitcoin Wealth matrix and its fourteen positions explained in a short video.', 'how-bitcoin-wealth-matrix-work', 'PT2M50S', '2026-09-24T21:05:58+02:00']
 };
 /* Keep registration help at decision and setup points, not in every lesson. */
 const REFERRAL_URL = 'https://vowu.io/register?ref=14638';
@@ -422,14 +466,21 @@ function page(o) {
   const currentLesson = TOPICS.find(t => o.url === '/topics/' + t.slug + '.html');
   const video = VIDEO_METADATA[o.url];
   if(video){
-    const [name, description, file, duration, uploadDate] = video;
-    const thumb = file === 'how-bitcoin-wealth-matrix-work' ? 'bitcoin-wealth-matrix' : file;
-    o.image = '/images/' + thumb + '.png';
-    o.imageAlt = name + ' video thumbnail';
-    const videoSchema = { '@context':'https://schema.org', '@type':'VideoObject',
-      name, description, thumbnailUrl:SITE.origin+o.image, uploadDate, duration,
-      contentUrl:SITE.origin+'/videos/'+file+'.mp4', mainEntityOfPage:SITE.origin+o.url };
-    o.schema = o.schema ? [].concat(o.schema, videoSchema) : videoSchema;
+    /* A page may carry one film or several. Normalise to a list. */
+    const entries = Array.isArray(video[0]) ? video : [video];
+    const POSTER = { 'how-bitcoin-wealth-matrix-work': 'bitcoin-wealth-matrix',
+                     '14-position-matrix-placement': 'matrix-placement' };
+    entries.forEach((entry, i) => {
+      const [name, description, file, duration, uploadDate] = entry;
+      const thumb = POSTER[file] || file;
+      const image = '/images/' + thumb + '.png';
+      /* The share card uses the first film on the page. */
+      if(i === 0){ o.image = image; o.imageAlt = name + ' video thumbnail'; }
+      const videoSchema = { '@context':'https://schema.org', '@type':'VideoObject',
+        name, description, thumbnailUrl:SITE.origin+image, uploadDate, duration,
+        contentUrl:SITE.origin+'/videos/'+file+'.mp4', mainEntityOfPage:SITE.origin+o.url };
+      o.schema = o.schema ? [].concat(o.schema, videoSchema) : videoSchema;
+    });
   }
   const canonical = SITE.origin + o.url;
   const shareImage = SITE.origin + (o.image || "/share.png");
@@ -467,7 +518,7 @@ function page(o) {
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/style.css?v=20261001-video">
+<link rel="stylesheet" href="/style.css?v=20261001-video"><link rel="stylesheet" href="/motion-site.css?v=1">
 ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + '</script>' : ''}
 </head>
 <body${o.url !== '/' && o.url !== '/404.html' ? ' class="course-site"' : ''}${currentLesson ? ` data-topic-url="${o.url}" data-topic-title="${esc(currentLesson.title)}"` : ''}>
@@ -515,6 +566,7 @@ ${o.url === '/' ? `<div class="home-referral wrap">${referralPanel()}</div>` : '
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 <script src="/open.js?v=20260926-premium" defer></script>
+<script src="/motion-site.js?v=1" defer></script>
 ${(o.scripts || []).map(src => `<script src="${src}" defer></script>`).join("\n")}
 </body>
 </html>`;
@@ -536,9 +588,13 @@ function breadcrumb(items) {
     "itemListElement": items.map((it, i) => ({ "@type": "ListItem", "position": i + 1, "name": it[0], "item": SITE.origin + it[1] })) };
 }
 function faqSchema(list) {
+  const fromQuiz = list.map(t => ({ "@type": "Question", "name": strip(adapt(t.quiz.q, t.slug)),
+    "acceptedAnswer": { "@type": "Answer", "text": strip(adapt(t.quiz.opts[t.quiz.a] + ". " + strip(t.quiz.ok), t.slug)) } }));
+  const fromExtra = Object.keys(EXTRA_FAQ).reduce((acc, k) => acc.concat(EXTRA_FAQ[k]), [])
+    .map(x => ({ "@type": "Question", "name": strip(x.q),
+      "acceptedAnswer": { "@type": "Answer", "text": strip(x.short + " " + x.a) } }));
   return { "@context": "https://schema.org", "@type": "FAQPage",
-    "mainEntity": list.map(t => ({ "@type": "Question", "name": strip(adapt(t.quiz.q, t.slug)),
-      "acceptedAnswer": { "@type": "Answer", "text": strip(adapt(t.quiz.opts[t.quiz.a] + ". " + strip(t.quiz.ok), t.slug)) } })) };
+    "mainEntity": fromQuiz.concat(fromExtra) };
 }
 
 /* ---------- output ---------- */
@@ -884,14 +940,17 @@ let fq = `<div class="crumbs"><a href="/">Home</a> &rsaquo; <b>FAQ</b></div>
 <div class="faqjump">`;
 FAQ_GROUPS.forEach((g,i) => {
   const items = TOPICS.filter(t => t.quiz && g[1](t));
-  if(items.length) fq += `<a href="#g${i}">${esc(g[0])} <span>${items.length}</span></a>`;
+  const n = items.length + (EXTRA_FAQ[i] ? EXTRA_FAQ[i].length : 0);
+  if(n) fq += `<a href="#g${i}">${esc(g[0])} <span>${n}</span></a>`;
 });
 fq += `</div>`;
 let qn = 0;
 FAQ_GROUPS.forEach((g,i) => {
   const items = TOPICS.filter(t => t.quiz && g[1](t));
-  if(!items.length) return;
-  fq += `<h2 class="faqhead" id="g${i}"><span>${esc(g[0])}</span><i>${items.length} question${items.length>1?'s':''}</i></h2><div class="faqlist">`;
+  const extra = EXTRA_FAQ[i] || [];
+  const n = items.length + extra.length;
+  if(!n) return;
+  fq += `<h2 class="faqhead" id="g${i}"><span>${esc(g[0])}</span><i>${n} question${n>1?'s':''}</i></h2><div class="faqlist">`;
   items.forEach(t => {
     qn++;
     fq += `<details class="faqitem">
@@ -900,6 +959,16 @@ FAQ_GROUPS.forEach((g,i) => {
   <p class="faqshort">${adapt(esc(t.quiz.opts[t.quiz.a]), t.slug)}</p>
   <p>${adapt(esc(strip(t.quiz.ok).replace(/^Correct[.,]?\s*/i,'')), t.slug)}</p>
   <p class="faqlink"><a href="/topics/${t.slug}.html">Read the full page: ${esc(t.title)}</a></p>
+</div></details>`;
+  });
+  extra.forEach(x => {
+    qn++;
+    fq += `<details class="faqitem">
+<summary><span class="faqn">${qn}</span><span class="faqq">${esc(x.q)}</span><span class="faqchev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+<div class="faqa">
+  <p class="faqshort">${esc(x.short)}</p>
+  <p>${esc(x.a)}</p>
+  <p class="faqlink"><a href="${x.link[0]}">Read the full page: ${esc(x.link[1])}</a></p>
 </div></details>`;
   });
   fq += `</div>`;
@@ -928,12 +997,31 @@ writePage('404.html', page({
 <a class="btn btn-quiet" href="/guides/">Setup guides</a></div></div>`
 }));
 
-/* ---------- sitemap, robots ---------- */
+/* ---------- sitemap, robots ----------
+   The /mtg/ section is produced by mtg/build.py, not by this script. Its
+   URLs are listed here so that rebuilding the open site does not quietly
+   drop ten live pages out of the sitemap. Add to this list if that
+   section grows.                                                        */
+const EXTERNAL_URLS = [
+  { u:'/mtg/',                            freq:'weekly',  pri:'0.9' },
+  { u:'/mtg/video-tutorials/',            freq:'monthly', pri:'0.7' },
+  { u:'/mtg/faq/',                        freq:'monthly', pri:'0.8' },
+  { u:'/mtg/glossary/',                   freq:'monthly', pri:'0.8' },
+  { u:'/mtg/setup-guides/',               freq:'monthly', pri:'0.9' },
+  { u:'/mtg/setup-guides/safepal-wallet/',       freq:'monthly', pri:'0.8' },
+  { u:'/mtg/setup-guides/metamask-web3-wallet/', freq:'monthly', pri:'0.8' },
+  { u:'/mtg/setup-guides/binance-account/',      freq:'monthly', pri:'0.8' },
+  { u:'/mtg/setup-guides/valr-account/',         freq:'monthly', pri:'0.8' },
+  { u:'/mtg/request-a-copy/',             freq:'monthly', pri:'0.7' }
+];
 const today = new Date().toISOString().slice(0,10);
+const allUrls = urls.concat(EXTERNAL_URLS.filter(x =>
+  fs.existsSync(path.join(__dirname, x.u.replace(/^\//,''), 'index.html'))));
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
-  + urls.map(x=>`  <url><loc>${SITE.origin}${x.u}</loc><lastmod>${today}</lastmod><changefreq>${x.freq}</changefreq><priority>${x.pri}</priority></url>`).join('\n')
+  + allUrls.map(x=>`  <url><loc>${SITE.origin}${x.u}</loc><lastmod>${today}</lastmod><changefreq>${x.freq}</changefreq><priority>${x.pri}</priority></url>`).join('\n')
   + `\n</urlset>\n`);
+console.log("  sitemap : " + allUrls.length + " urls (" + urls.length + " built here, " + (allUrls.length - urls.length) + " from /mtg/)");
 
 fs.writeFileSync(path.join(OUT, 'robots.txt'),
 `User-agent: *
