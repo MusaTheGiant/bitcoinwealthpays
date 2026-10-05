@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0e1a16"/><stop offset="1" stop-color="#060908"/></linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#c0ff72" stroke-opacity=".09"/></pattern>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/><rect width="1280" height="720" fill="url(#grid)"/>
+  <rect x="70" y="66" width="98" height="45" rx="10" fill="#ffa101"/>
+  <text x="119" y="98" text-anchor="middle" fill="#16110b" font-family="Arial,sans-serif" font-size="26" font-weight="700">BW</text>
+  <text x="189" y="97" fill="#eee7d8" font-family="Arial,sans-serif" font-size="23" font-weight="700" letter-spacing="2">BITCOIN WEALTH</text>
+  <text x="70" y="238" fill="#ffa101" font-family="Arial,sans-serif" font-size="26" font-weight="700" letter-spacing="5">MEMBER TRAINING</text>
+  <text x="68" y="331" fill="#ffffff" font-family="Arial,sans-serif" font-size="79" font-weight="700">PLACING</text>
+  <text x="68" y="431" fill="#c0ff72" font-family="Arial,sans-serif" font-size="79" font-weight="700">MEMBERS</text>
+  <text x="72" y="502" fill="#ddd6c5" font-family="Arial,sans-serif" font-size="30">Who chooses the seat, and on what basis</text>
+  <g stroke="#c0ff72" stroke-opacity=".55" stroke-width="4" fill="none">
+    <path d="M1000 244v44H862v22M1000 288h138v22"/>
+    <path d="M862 352v52H790v20M862 404h72v20M1138 352v52h-72v20M1138 404h72v20"/>
+  </g>
+  <g fill="#ffa101" stroke="#ffe08a" stroke-width="3">
+    <circle cx="1000" cy="208" r="36"/>
+  </g>
+  <g fill="#c0ff72" stroke="#e9ffcb" stroke-width="3">
+    <circle cx="862" cy="321" r="31"/><circle cx="1138" cy="321" r="31"/>
+  </g>
+  <g fill="none" stroke="#f6e4c8" stroke-opacity=".5" stroke-width="3" stroke-dasharray="7 7">
+    <circle cx="790" cy="446" r="24"/><circle cx="934" cy="446" r="24"/><circle cx="1066" cy="446" r="24"/><circle cx="1210" cy="446" r="24"/>
+  </g>
+  <text x="1000" y="219" text-anchor="middle" fill="#241500" font-family="Arial,sans-serif" font-size="29" font-weight="700">YOU</text>
+  <text x="862" y="331" text-anchor="middle" fill="#132000" font-family="Arial,sans-serif" font-size="25" font-weight="700">1</text>
+  <text x="1138" y="331" text-anchor="middle" fill="#132000" font-family="Arial,sans-serif" font-size="25" font-weight="700">2</text>
+  <text x="1000" y="534" text-anchor="middle" fill="#ddd6c5" font-family="Arial,sans-serif" font-size="22" letter-spacing="1">OPEN POSITIONS</text>
+  <rect x="70" y="613" width="1140" height="1" fill="#f6e4c8" opacity=".22"/>
+  <text x="72" y="660" fill="#ddd6c5" font-family="Arial,sans-serif" font-size="24" letter-spacing="2">PLACEMENT IS A HUMAN DECISION</text>
+  <rect x="2" y="2" width="1276" height="716" rx="16" fill="none" stroke="#ffa101" stroke-opacity=".45" stroke-width="4"/>
+</svg>

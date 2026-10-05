@@ -95,6 +95,11 @@ var MODULES = [
 <h3>Smart contract</h3>
 <p>A smart contract is a small program that lives on the Blockchain. It is not a legal document. It is code, and it runs automatically when someone interacts with it. If the code says "when a payment arrives, split it and send the parts to these addresses," that is what happens, every time, with no person approving it.</p>
 <p>According to the material, the Bitcoin Wealth contract automatically handles registrations, matrix placement, qualifications, and Bitcoin distributions according to its programmed rules.</p>
+<div class="box box-claim"><span class="tag tag-claim">Source claim</span>
+<p><strong>Placement is the part of that sentence to check.</strong> The deck lists matrix placement alongside distributions as something the code does on its own. Distribution and placement are not the same kind of operation, and the evidence for them is not equally strong.</p></div>
+<div class="box box-note"><p><strong>What the programme's own training shows.</strong> Bitcoin Wealth member training teaches placement as a <em>human</em> decision. The placement session walks through choosing a sponsor and a branch, checking the sequence, confirming the placement in a back office, notifying the member, and updating the matrix record, and it ends with a checklist to run before you place anyone. You can watch it on the <a href="/video-tutorials.html">Video Tutorials</a> page and judge for yourself.</p>
+<p>That does not make the deck wrong about distributions. Payments really are split and sent inside the transaction, and you can watch that happen on chain. It does mean the word "automatically" is carrying two different claims in one sentence, and only one of them is visible in the block explorer.</p></div>
+<div class="box box-note"><p><strong>Why it matters to you.</strong> If a person decides where new members are seated, then who fills your positions is partly a judgement call made by someone above you, rather than a rule you can read in the code. That is worth knowing before you join, and it is a fair question to put to whoever introduces you: who places my recruits, on what basis, and can I see where they went?</p></div>
 <h3>Matrix</h3>
 <p>A matrix is a seating plan. It decides where each new member is placed relative to the members who arrived before them, and it decides who gets paid when a seat is filled.</p>
 <p>The material is precise about this: the matrix is not something separate from the Blockchain. It is the business logic inside the smart contract. The compensation structure is the code.</p>
@@ -193,6 +198,8 @@ var MODULES = [
 <div class="box box-fact">${LABEL.fact}
 <p>Transparent smart contract, immutable Blockchain code, instant transactions, fully automated execution, no admin control, no owner control, no human interference. These are properties of the deployed code. Anyone can read the contract at the published address and verify whether they hold.</p></div>
 <div class="box box-note"><p>Verifying these requires reading Solidity code or using a contract audit tool. If you cannot do that yourself, treat them as unverified until someone you trust has checked. Lesson 8 walks through how to inspect the contract at <code>bscscan.com</code>, the official BNB Smart Chain explorer.</p></div>
+<div class="box box-note"><p><strong>One of these is already in tension with the programme's own training.</strong> "No human interference" and "fully automated execution" sit awkwardly next to a member training session that teaches a sponsor how to choose where a new member is placed, confirm it in a back office and update the matrix record. You can watch that session on the <a href="/video-tutorials.html">Video Tutorials</a> page.</p>
+<p>The likeliest reading is that the phrase describes <em>payment execution</em>, which is genuinely automatic and visible on chain, rather than <em>placement</em>, which is not. That is a reasonable thing for a deck to compress into one line. It is not a reasonable thing for you to leave uncompressed when you are deciding, so take "no human interference" as applying to the money, not to the seating plan, unless somebody shows you otherwise in the code.</p></div>
 <h4>Group 2: statements about how the system pays</h4>
 <div class="box box-claim">${LABEL.claim}
 <p>Auto-spillover mechanism, unlimited recycles and re-entries, code-based fair distribution, anti-manipulation mechanism, real-time dashboard updates, self-sustained reward cycle, no withdraw charges, no hidden charges, no company dependency, fully decentralised system.</p></div>
@@ -241,7 +248,9 @@ var MODULES = [
 <div class="box box-claim">${LABEL.claim}
 <p>The deck states that once the first two members join, the spillover system becomes active, and that after activation you start enjoying free bonus benefits generated automatically from both your uplines and your downlines.</p></div>
 <p>Spillover means positions beneath you can be filled by people you did not personally introduce, because your upline's overflow drops into your structure. This is the mechanism behind the phrase "you are not starting alone."</p>
-<div class="box box-note"><p><strong>What spillover does and does not change.</strong> Spillover changes who fills a position. It does not change that the position has to be filled by someone paying. The fourteen payments still require fourteen activations regardless of who recruited whom.</p></div>`,
+<div class="box box-note"><p><strong>What spillover does and does not change.</strong> Spillover changes who fills a position. It does not change that the position has to be filled by someone paying. The fourteen payments still require fourteen activations regardless of who recruited whom.</p></div>
+<div class="box box-note"><p><strong>Who decides where a new member lands.</strong> The deck describes placement as something the contract does automatically. The programme's own member training describes it differently: a sponsor chooses the branch and the position, confirms it in a back office, and updates the matrix record. The <a href="/video-tutorials.html">placement training video</a> on the Video Tutorials page shows that process end to end.</p>
+<p>So when you read "spillover," read it as overflow that still passes through somebody's hands. Ask your sponsor who places your recruits and how you would check where they were put. <a href="/topics/bitcoin-blockchain-smart-contract-matrix.html">Bitcoin, Blockchain, Smart Contract, Matrix</a> covers this in more detail.</p></div>`,
     takeaways:["A cycle is fourteen positions: two, then four, then eight.","Nine of the fourteen payments go to you or your progression, which is why income is always nine times the slot price.","Two go to your upline and three to your downline.","Every position is filled by a member paying the slot price. The material describes no other source of funds."],
     quiz:{q:"In a Cycle 1 completion, how many of the fourteen payments are directed to you or your own progression?",
       opts:["Nine","Six","Fourteen","Two"],
@@ -899,7 +908,8 @@ var GLOSSARY = [
   ["Self-custody","Holding your own crypto with no company able to freeze, restore, or access it."],
   ["Slot","One of twelve purchasable tiers, doubling in price from 0.001 BTC to 2.048 BTC."],
   ["Smart contract","A program stored on a Blockchain that runs automatically when interacted with."],
-  ["Spillover","Positions in your matrix filled by members you did not personally introduce."],
+  ["Spillover","Positions in your matrix filled by members you did not personally introduce. The deck describes this as automatic. The programme's own member training describes a sponsor choosing the branch and position, so treat spillover as overflow that still passes through a person."],
+  ["Placement","Deciding where a new member is seated in a matrix. Worth separating from distribution: payments are split and sent by the contract and can be checked on chain, while placement, on the evidence of the programme's own training video, involves a human choice and a back office confirmation."],
   ["Upline","The member positioned above you in the matrix."],
   ["Vow Unity","The name the deck gives to its matrix engine."],
   ["Wallet address","The public identifier you share to receive crypto, beginning with 0x on BNB Smart Chain. Safe to share, unlike your seed phrase."]
