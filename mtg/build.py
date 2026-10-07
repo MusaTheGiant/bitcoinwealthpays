@@ -103,7 +103,7 @@ def page(up, title, description, canonical, body, section=''):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(title, quote=True)}"><meta name="twitter:description" content="{html.escape(description, quote=True)}"><meta name="twitter:image" content="{picture}">
 <script type="application/ld+json">{schema_blob}</script>
 <link rel="icon" href="{up}../favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{up}../style.css?v=20261001-video"><link rel="stylesheet" href="{up}style.css?v=20261001a">{motion_css}
+<link rel="stylesheet" href="{up}../style.css?v=20261007-testimonials"><link rel="stylesheet" href="{up}style.css?v=20261007-testimonials">{motion_css}
 </head><body class="mtg-site">
 {header(up, section)}
 {body}
@@ -128,18 +128,14 @@ landing = '''<main>
       <li>No withdraw button for a routed payment, because it goes to a wallet</li><li>Activating a slot is designed to split that payment inside the same transaction</li><li>Each portion is directed to receiving members' own wallets</li><li>A completed wallet transfer does not depend on an operator approving a later withdrawal</li>
     </ul></div></div>
   </section>
-  <section class="mtg-voices" aria-labelledby="voices-title"><div class="premium-eyebrow">From members</div>
-    <h2 id="voices-title">What members say, in their own words.</h2><p class="mtg-voices-intro">A short clip of members describing why they started small and what caught their attention.</p>
-    <style>.mtg-voices-grid{display:block}.roundplay-row{display:flex;justify-content:flex-start;margin:2px 0 22px;padding:10px 0 10px 10px}
-.roundplay{position:relative;width:76px;height:76px;border-radius:50%;border:0;padding:0;display:grid;place-items:center;cursor:pointer;color:#160d00;background:#FFA101;box-shadow:0 10px 30px rgba(255,161,1,.5),0 0 0 8px rgba(255,161,1,.16);transition:transform .2s ease,box-shadow .2s ease;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.roundplay svg{width:34px;height:34px;fill:currentColor;stroke:none;margin-left:4px;pointer-events:none}
-.roundplay:before{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid rgba(255,161,1,.75);animation:rpPulse 2.2s ease-out infinite;pointer-events:none}
-@keyframes rpPulse{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.55);opacity:0}}
-.roundplay:focus-visible{outline:3px solid #fff;outline-offset:6px}
-@media (hover:hover) and (pointer:fine){.roundplay:hover{transform:scale(1.08);box-shadow:0 14px 40px rgba(255,161,1,.7),0 0 0 12px rgba(255,161,1,.2)}}
-@media(prefers-reduced-motion:reduce){.roundplay:before{animation:none}.roundplay{transition:none}}</style>
-    <div class="mtg-voices-grid"><div class="roundplay-row"><button class="roundplay vidcard-btn" type="button" data-src="../videos/bitcoin-wealth-testimonials.mp4" data-poster="../images/member-stories-poster.png" data-vertical="1" aria-label="Play member stories video, 34 seconds"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button></div>
-    </div>
+  <section class="testimonial-card" aria-labelledby="voices-title">
+    <div class="premium-eyebrow">Member stories</div>
+    <h2 id="voices-title">They started small. Hear why.</h2>
+    <p>What caught their attention? Watch members share their stories in 34 seconds.</p>
+    <button class="testimonial-play vidcard-btn" type="button" data-src="../videos/bitcoin-wealth-testimonials.mp4" data-poster="../images/member-stories-poster.png" data-vertical="1" aria-label="Watch member testimonials, 34 seconds">
+      <span class="testimonial-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      <span>Watch Testimonials</span>
+    </button>
   </section>
   <section class="mtg-next" aria-labelledby="next-title"><div class="premium-eyebrow">Find your next answer</div><h2 id="next-title">Explore before you decide.</h2><p>Watch the available videos, follow the wallet steps, or go straight to the questions and definitions that matter to you.</p>
     <div class="mtg-resource-grid"><a href="video-tutorials/"><span class="premium-eyebrow">Watch</span><strong>Video Tutorials →</strong><span>Start with the introduction. Upcoming setup videos are clearly marked.</span></a><a href="setup-guides/"><span class="premium-eyebrow">Follow along</span><strong>Setup Guides →</strong><span>SafePal, MetaMask, Binance and VALR instructions in one place.</span></a><a href="faq/"><span class="premium-eyebrow">Ask</span><strong>FAQ →</strong><span>Direct answers about costs, recruiting, payouts, risks, and verification.</span></a><a href="glossary/"><span class="premium-eyebrow">Understand</span><strong>Glossary →</strong><span>Look up any unfamiliar word in plain English.</span></a></div>

@@ -518,7 +518,7 @@ function page(o) {
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="stylesheet" href="/style.css?v=20261001-video"><link rel="stylesheet" href="/motion-site.css?v=1">
+<link rel="stylesheet" href="/style.css?v=20261007-testimonials"><link rel="stylesheet" href="/motion-site.css?v=1">
 ${o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema) + '</script>' : ''}
 </head>
 <body${o.url !== '/' && o.url !== '/404.html' ? ' class="course-site"' : ''}${currentLesson ? ` data-topic-url="${o.url}" data-topic-title="${esc(currentLesson.title)}"` : ''}>
@@ -675,6 +675,15 @@ let home = `<section class="premium-hero" aria-labelledby="home-title">
   <a class="btn btn-ghost premium-section-cta" href="/topics/how-to-read-this-site.html">Start lesson 1 of 17 →</a>
 </section>
 <section class="premium-mechanics" aria-labelledby="mechanics-title"><div class="premium-mechanics-copy"><div class="premium-eyebrow">The mechanics</div><h2 id="mechanics-title">How does a cycle distribute?</h2><p>The published material describes 14 positions in a cycle. Follow its diagram and inspect the explanation.</p><a class="btn btn-quiet btn-sm" href="/topics/the-14-positions.html">See all 14 positions →</a></div><div class="frame"><div class="frame-in" style="padding:20px 16px 17px"><div class="eyebrow">Cycle 1 distribution</div>${nodeDiagram(false)}${legend()}</div></div></section>
+<section class="testimonial-card" aria-labelledby="voices-title">
+    <div class="premium-eyebrow">Member stories</div>
+    <h2 id="voices-title">They started small. Hear why.</h2>
+    <p>What caught their attention? Watch members share their stories in 34 seconds.</p>
+    <button class="testimonial-play vidcard-btn" type="button" data-src="/videos/bitcoin-wealth-testimonials.mp4" data-poster="/images/member-stories-poster.png" data-vertical="1" aria-label="Watch member testimonials, 34 seconds">
+      <span class="testimonial-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      <span>Watch Testimonials</span>
+    </button>
+  </section>
 <section class="premium-section premium-resources" aria-labelledby="resources-title"><div class="premium-eyebrow">Read the source. Check the claims.</div><h2 id="resources-title">Understand it in plain English.</h2><p>${esc(SITE.blurb)} Every statement is labelled, so you know what the material shows, what it claims, and what its own numbers add up to. Free to read, nothing to sign up for.</p><div class="premium-labels">${LABEL.fact}${LABEL.claim}${LABEL.math}</div><div class="premium-resource-links"><a href="/what-is-bitcoin-wealth.html">What is Bitcoin Wealth →</a><a href="/guides/">Step-by-Step Guides →</a><a href="/video-tutorials.html">Tutorial videos →</a><a href="${DECK.down}" target="_blank" rel="noopener noreferrer">Download the PDF →</a></div></section>`;
 
 writePage('index.html', page({

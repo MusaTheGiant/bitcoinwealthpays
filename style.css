@@ -992,3 +992,14 @@ h1,h2,h3,h4{letter-spacing:-.035em}
 }
 @media(max-width:520px){.vidcard>.vidplay{width:64px;height:64px}.vidcard>.vidplay svg{width:30px;height:30px}}
 @media(prefers-reduced-motion:reduce){.vidcard>.vidplay:before{animation:none}.vidcard,.vidcard>.vidthumb,.vidcard>.vidplay{transition:none}}
+
+/* Compact member testimonial card shared by both home pages. */
+.testimonial-card{width:100%;max-width:520px;margin:34px auto 0;padding:clamp(24px,5vw,36px) clamp(20px,4vw,32px);border:1px solid var(--line-hi);border-radius:20px;background:radial-gradient(ellipse at top,rgba(255,161,1,.08),transparent 70%),linear-gradient(155deg,#0c130b,#060807);text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.2)}
+.testimonial-card h2{max-width:18ch;margin:12px auto;font:700 clamp(24px,4vw,32px)/1.2 var(--disp);letter-spacing:-.035em;text-wrap:balance}
+.testimonial-card p{max-width:36ch;margin:0 auto;color:#DAD5C9;font-size:15px;line-height:1.65;text-wrap:pretty}
+.testimonial-play{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:17px;max-width:100%;margin:26px auto 0;padding:0;border:0;background:none;color:var(--orange);font:700 14px/1.4 var(--disp);text-align:center;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.testimonial-play-icon{display:grid;place-items:center;width:clamp(64px,12vw,76px);height:clamp(64px,12vw,76px);border-radius:50%;background:linear-gradient(135deg,#FFB730,#FFA101);color:#160d00;box-shadow:0 0 0 7px rgba(255,161,1,.1),0 8px 24px rgba(255,161,1,.25);transition:transform .2s ease,box-shadow .2s ease}
+.testimonial-play-icon svg{display:block;width:32px;height:32px;margin-left:3px;fill:currentColor;stroke:none}
+.testimonial-play:focus-visible{outline:3px solid var(--orange);outline-offset:10px;border-radius:8px}
+@media(hover:hover) and (pointer:fine){.testimonial-play:hover .testimonial-play-icon{transform:scale(1.06);box-shadow:0 0 0 9px rgba(255,161,1,.14),0 10px 28px rgba(255,161,1,.35)}.testimonial-play:hover{color:#FFD27A}}
+@media(prefers-reduced-motion:reduce){.testimonial-play-icon{transition:none}}
