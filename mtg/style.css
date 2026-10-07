@@ -24,6 +24,14 @@
 .mtg-compare .mtg-compare-intro{max-width:750px;color:#DAD5C9;font-size:14px;line-height:1.7;margin:-8px 0 20px}
 .mtg-compare .vs{margin:0}
 .mtg-compare .vs-h{font-size:15px;letter-spacing:0}
+.mtg-voices{margin:34px 0 0;padding:30px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(155deg,#0c130b,#060807)}
+.mtg-voices h2{font-size:clamp(25px,4vw,34px);margin:10px 0 12px}
+.mtg-voices-intro{max-width:700px;color:#DAD5C9;font-size:14px;line-height:1.7;margin:0 0 22px}
+.mtg-voices-grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start}
+.mtg-voices-note{margin:0}
+.mtg-voices-note p{font-size:14px;line-height:1.7}
+.mtg-voices-note p+p{margin-top:12px}
+@media(max-width:760px){.mtg-voices{padding:20px 16px}.mtg-voices-grid{grid-template-columns:1fr}}
 .mtg-next{padding:62px 0 22px}
 .mtg-next h2{font-size:clamp(25px,4vw,34px);margin:10px 0 12px}
 .mtg-next>p{max-width:680px;color:#DAD5C9;line-height:1.7}
