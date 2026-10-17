@@ -9,6 +9,9 @@ import html
 import re
 import json
 from content import FAQ, TERMS
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'tools'))
+from bw_parts import flow, truth  # shared landing parts (payment flow diagram, arithmetic panel)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'mtg'
@@ -24,21 +27,66 @@ GUIDES = {
 }
 
 
+ICONS = {
+    'home': '<path d="M3.5 11L12 4l8.5 7M6 9.5V20h12V9.5"/>',
+    'play': '<circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor"/>',
+    'wallet': '<path d="M19 7V5.5A1.5 1.5 0 0 0 17.5 4h-12A2.5 2.5 0 0 0 3 6.5v11A2.5 2.5 0 0 0 5.5 20h14a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 19.5 7H5.5"/><circle cx="16.5" cy="13.5" r="1.2"/>',
+    'help': '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.6 2.6 0 0 1 5 .9c0 1.8-2.5 2.2-2.5 3.8M12 17.2h.01"/>',
+    'book': '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5"/>',
+    'copy': '<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>',
+    'join': '<path d="M5 15c-1.5 1-2 3.5-2 6 2.5 0 5-.5 6-2M14.5 4.5c3-1.5 5.5-1.5 5.5-1.5s0 2.5-1.5 5.5L12 15l-3-3 5.5-7.5z"/>',
+    'chat': '<path d="M20 12a8 8 0 0 1-11.7 7.1L4 20l.9-4.3A8 8 0 1 1 20 12z"/>',
+    'grid': '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>',
+    'chev': '<path d="M9 6l6 6-6 6"/>',
+    'left': '<path d="M15 6l-6 6 6 6"/>',
+}
+CRUMB = {'home': 'Home', 'video': 'Video Tutorials', 'guides': 'Setup Guides', 'faq': 'FAQ', 'glossary': 'Glossary', 'request': 'Request a Copy'}
+
+
+def ic(name):
+    return f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{ICONS[name]}</svg>'
+
+
 def header(up, section=''):
-    return f'''<header class="mtg-nav" data-member-nav><div class="mtg-nav-inner">
-  <a class="mtg-brand" href="{up}"><span class="mark">BW</span><span><span class="o">Bitcoin</span> <span class="g">Wealth</span></span></a>
-  <button class="mtg-menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mtg-links" aria-label="Open navigation menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
-  <nav class="mtg-links" id="mtg-links" data-menu-links aria-label="Member page navigation">
-    <a href="{up}"{' aria-current="page"' if section == 'home' else ''}>Home</a>
-    <a href="{up}video-tutorials/"{' aria-current="page"' if section == 'video' else ''}>Video Tutorials</a>
-    <a href="{up}setup-guides/"{' aria-current="page"' if section == 'guides' else ''}>Setup Guides</a>
-    <a href="{up}faq/"{' aria-current="page"' if section == 'faq' else ''}>FAQ</a>
-    <a href="{up}glossary/"{' aria-current="page"' if section == 'glossary' else ''}>Glossary</a>
-    <a href="{up}request-a-copy/"{' aria-current="page"' if section == 'request' else ''}>Request a Copy</a>
-    <a href="{up}#register">Join Bitcoin Wealth</a>
-    <a href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-  </nav>
-</div></header>'''
+    """MTG Dashboard Standard side menu (shared bw-dash.css / bw-dash.js), replacing the old pull-down menu."""
+    def item(href, icon, title, sub, key, extra=''):
+        cur = ' aria-current="page"' if key and key == section else ''
+        return f'<a class="md-nav" href="{href}"{cur}{extra}><span class="ic">{ic(icon)}</span><span class="tx"><b>{title}</b><small>{sub}</small></span></a>'
+    landing = section == 'home'
+    # GO HOME: inner pages go back to this member page; the member page itself goes to the owner's own home page (member-config.js homeUrl)
+    home_attrs = ' data-home-external hidden' if landing else ''
+    home_href = '#' if landing else up
+    home_label = 'the page owner&#39;s home page' if landing else 'the Bitcoin Wealth member home page'
+    go_home = f'<a class="md-btn md-home" href="{home_href}"{home_attrs} aria-label="Go Home: back to {home_label}"><span class="emo" aria-hidden="true">🏡</span>Go Home</a>'
+    dash = f'<a class="md-btn md-dash md-hide-sm" href="{up}../dashboard.html" aria-label="Dashboard: the full Bitcoin Wealth course"><span class="emo" aria-hidden="true">📊</span>Dashboard</a>'
+    crumb = CRUMB.get(section, '')
+    crumbs = f'<a href="{up}">Bitcoin Wealth</a>{ic("chev")}<span aria-current="page">{crumb}</span>' if crumb and not landing else '<span aria-current="page">Bitcoin Wealth</span>'
+    return f'''<div class="md-shell">
+<script>try{{if(localStorage.getItem("bw-side")==="off"&&innerWidth>1060)document.querySelector(".md-shell").classList.add("md-off")}}catch(e){{}}</script>
+<aside class="md-side" id="bw-menu" aria-label="Bitcoin Wealth member menu">
+ <a class="bw-brand" href="{up}"><span class="mark">BW</span><span><span class="wm"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span><span class="brand-sub">Explained clearly, at your pace</span></span></a>
+ <p class="md-label">Start here</p>
+ {item(up, 'home', 'Home', 'Two short videos', 'home')}
+ {item(up + 'video-tutorials/', 'play', 'Video Tutorials', 'Watch the steps', 'video')}
+ {item(up + 'setup-guides/', 'wallet', 'Setup Guides', 'SafePal, MetaMask, Binance, VALR', 'guides')}
+ <p class="md-label">Answers</p>
+ {item(up + 'faq/', 'help', 'FAQ', 'Costs, sharing, risks', 'faq')}
+ {item(up + 'glossary/', 'book', 'Glossary', 'Plain English definitions', 'glossary')}
+ <p class="md-label">Go further</p>
+ {item(up + '../dashboard.html', 'grid', 'Full 17 Lesson Course', 'Mechanics, claims, arithmetic', '')}
+ {item(up + 'request-a-copy/', 'copy', 'Request a Copy', 'Your own version of this page', 'request')}
+ {item(up + '#register', 'join', 'Join Bitcoin Wealth', 'Registration link and notes', '')}
+ {item('#', 'chat', 'WhatsApp', 'Ask a question first', '', ' data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer"')}
+ <div class="md-bot">{go_home if not landing else dash}</div>
+</aside>
+<button class="md-toggle" type="button" aria-controls="bw-menu" aria-expanded="true" aria-label="Collapse menu" title="Collapse menu">{ic("left")}</button>
+<div class="md-scrim" aria-hidden="true"></div>
+<div class="md-main">
+<header class="md-top">
+ <button class="md-menu" type="button" aria-controls="bw-menu" aria-expanded="false" aria-label="Open menu"><span class="bars" aria-hidden="true"></span><span class="lbl">Menu</span></button>
+ <nav class="md-crumb" aria-label="You are here">{crumbs}</nav>
+ <div class="md-act">{dash}{go_home}</div>
+</header>'''
 
 
 def footer(up):
@@ -53,9 +101,11 @@ def footer(up):
   An independent educational resource. Not financial advice.<br>
   <div class="sig">Made with <span class="sig-heart">&#10084;&#65039;</span> by <span class="sig-name">Bitcoin</span> <span class="sig-role">Accumulators</span></div>
 </footer>
+</div>
+</div>
 <div class="vidmodal" id="vidmodal" hidden role="dialog" aria-modal="true" aria-label="Video player"><div class="vidmodal-bg" data-close></div><div class="vidmodal-box"><button class="vidclose" type="button" aria-label="Close video" data-close><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="vidmodal-frame" id="vidmount"></div></div></div>
 <button class="mtg-backtop" type="button" data-backtop aria-label="Back to top" hidden>↑ <span>Top</span></button>
-<script src="{up}member-config.js"></script><script src="{up}member.js"></script><script src="{up}../open.js" defer></script>'''
+<script src="{up}member-config.js"></script><script src="{up}member.js"></script><script src="{up}../open.js" defer></script><script src="{up}../bw-dash.js?v=20261017" defer></script>'''
 
 
 def panel():
@@ -103,7 +153,7 @@ def page(up, title, description, canonical, body, section=''):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(title, quote=True)}"><meta name="twitter:description" content="{html.escape(description, quote=True)}"><meta name="twitter:image" content="{picture}">
 <script type="application/ld+json">{schema_blob}</script>
 <link rel="icon" href="{up}../favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{up}../style.css?v=20261007-testimonials"><link rel="stylesheet" href="{up}style.css?v=20261007-testimonials">{motion_css}
+<link rel="stylesheet" href="{up}../style.css?v=20261007-testimonials"><link rel="stylesheet" href="{up}style.css?v=20261007-testimonials">{motion_css}<link rel="stylesheet" href="{up}../bw-dash.css?v=20261017">
 </head><body class="mtg-site">
 {header(up, section)}
 {body}
@@ -114,11 +164,13 @@ def page(up, title, description, canonical, body, section=''):
 
 landing = '''<main>
   <div class="mtg-identity"><img data-profile-image src="../logo.png" alt="Bitcoin Wealth logo" width="96" height="96"></div>
-  <section class="premium-hero" aria-labelledby="mtg-title"><div class="premium-eyebrow">Bitcoin Wealth, explained clearly</div>
+  <section class="premium-hero bw-hero" aria-labelledby="mtg-title"><div class="bw-hero-copy"><div class="premium-eyebrow">Bitcoin Wealth, explained clearly</div>
     <h1 id="mtg-title">You've heard about Bitcoin Wealth. <span>See how it works.</span></h1>
     <p>Watch two short videos, understand where payments are designed to go, and get straight answers about sharing and risk. Take your time. Your decision should make sense to you.</p>
     <div class="premium-actions"><button class="btn btn-primary vidcard-btn" type="button" data-src="../videos/bitcoin-wealth-intro.mp4" data-poster="../images/bitcoin-wealth-intro.png" aria-label="Play Bitcoin Wealth introduction video">▶ &nbsp;Play Intro</button>
       <button class="btn btn-quiet vidcard-btn" type="button" data-src="../videos/how-bitcoin-wealth-matrix-work.mp4" data-poster="../images/bitcoin-wealth-matrix.png" data-vertical="1" aria-label="Play Bitcoin Wealth matrix explanation video">Watch How The Matrix Works →</button></div>
+    <ul class="bw-proof" aria-label="What is here"><li><b>2</b> short videos</li><li><b>4</b> setup guides</li><li><b>0</b> pressure</li></ul></div>
+  ''' + flow('../') + '''
   </section>
   <section class="mtg-compare" aria-labelledby="money-heading"><div class="premium-eyebrow">The question worth asking</div>
     <h2 id="money-heading">Where does the money actually go?</h2><p class="mtg-compare-intro">Here is the published design in plain language. Check real transactions and contract permissions yourself so you can make a smart move.</p>
@@ -128,6 +180,7 @@ landing = '''<main>
       <li>No withdraw button for a routed payment, because it goes to a wallet</li><li>Activating a slot is designed to split that payment inside the same transaction</li><li>Each portion is directed to receiving members' own wallets</li><li>A completed wallet transfer does not depend on an operator approving a later withdrawal</li>
     </ul></div></div>
   </section>
+  ''' + truth('../') + '''
   <section class="testimonial-card" aria-labelledby="voices-title">
     <div class="premium-eyebrow">Member stories</div>
     <h2 id="voices-title">They started small. Hear why.</h2>

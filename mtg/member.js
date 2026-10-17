@@ -17,6 +17,10 @@
     document.querySelectorAll('[data-referral-url]').forEach(function (el) { el.textContent = member.referralUrl; });
     document.querySelectorAll('[data-copy-referral]').forEach(function (el) { el.disabled = false; });
   }
+  // 🏡 GO HOME on the member page: leads to the owner's own home page when one is configured
+  if (member.homeUrl && /^https:\/\//.test(member.homeUrl)) {
+    document.querySelectorAll('[data-home-external]').forEach(function (anchor) { anchor.href = member.homeUrl; anchor.hidden = false; });
+  }
   var image = document.querySelector('[data-profile-image]');
   if (image && member.profileImage) image.src = member.profileImage;
   // The root logo path is relative to the page, so keep a depth-specific default in HTML.
