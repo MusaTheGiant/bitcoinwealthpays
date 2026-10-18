@@ -65,9 +65,8 @@ def header(up, section=''):
     landing = section == 'home'
     # GO HOME: inner pages go back to this member page; the member page itself goes to the owner's own home page (member-config.js homeUrl)
     # GO HOME always leads back to the member home page (the site root). On the home page itself the
-    # top bar shows a DASHBOARD button that opens this side menu instead (bw-dash.js, .md-open-menu).
+    # top bar has no buttons: the Menu button (phones) and the edge pill already open the side menu.
     go_home = f'<a class="md-btn md-home" href="{root(up)}" aria-label="Go Home: back to the Bitcoin Wealth home page"><span class="emo" aria-hidden="true">🏡</span>Go Home</a>'
-    menu_dash = '<button class="md-btn md-dash md-open-menu" type="button" aria-controls="bw-menu" aria-expanded="false" aria-label="Dashboard: open the menu"><span class="emo" aria-hidden="true">📊</span>Dashboard</button>'
     dash = f'<a class="md-btn md-dash md-hide-sm" href="{root(up)}dashboard.html" aria-label="Dashboard: the full Bitcoin Wealth course"><span class="emo" aria-hidden="true">📊</span>Dashboard</a>'
     crumb = CRUMB.get(section, '')
     crumbs = f'<a href="{root(up)}">Bitcoin Wealth</a>{ic("chev")}<span aria-current="page">{crumb}</span>' if crumb and not landing else '<span aria-current="page">Bitcoin Wealth</span>'
@@ -95,7 +94,7 @@ def header(up, section=''):
 <header class="md-top">
  <button class="md-menu" type="button" aria-controls="bw-menu" aria-expanded="false" aria-label="Open menu"><span class="bars" aria-hidden="true"></span><span class="lbl">Menu</span></button>
  <nav class="md-crumb" aria-label="You are here">{crumbs}</nav>
- <div class="md-act">{menu_dash if landing else dash + go_home}</div>
+ <div class="md-act">{'' if landing else dash + go_home}</div>
 </header>'''
 
 
