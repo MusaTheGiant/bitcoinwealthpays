@@ -2,8 +2,9 @@
 
 Since 18 Oct 2026 the member landing page is the site home page (bitcoinwealthpays.com/,
 written to the repo root index.html). Its inner pages (video tutorials, setup guides, FAQ,
-glossary, request a copy) stay under /mtg/. The full course home page now lives at /mtg/
-(mtg/index.html, a hand-maintained page), so this script never writes mtg/index.html.
+glossary, request a copy) stay under /mtg/. The full course home page lives at /course/
+(course/index.html, hand maintained). mtg/index.html is a small forwarding page to /course/
+(kept for old /mtg links), so this script never writes either of them.
 
 `up` is the path from a page back to the mtg/ folder ('mtg/' on the root landing page,
 '../' one level inside /mtg/). root(up) is the path back to the site root.
@@ -208,7 +209,7 @@ landing = '''<main>
   ''' + panel() + '''
   <section class="mtg-member-copy" aria-labelledby="copy-title"><div><h2 id="copy-title">Want a copy of this exact website for yourself or your team?</h2><p>For a one-time 32 USDT payment, get a mobile-friendly landing page, videos, FAQ, glossary and setup guides with your referral link, profile image and social links. Share one clear destination instead of explaining everything from scratch. Hosting on bitcoinwealthpays.com has no additional charge or monthly hosting fee, and updates to your page are included for its lifetime. Want your own domain? We can help set it up for a small additional fee quoted in advance; domain costs are separate.</p></div><a class="btn btn-ghost" href="mtg/request-a-copy/">Get Your Copy →</a></section>
   <section class="mtg-traffic" aria-labelledby="traffic-title"><div class="premium-eyebrow">For page owners</div><h2 id="traffic-title">Let your page be seen beyond your own feed.</h2><p>Keep your TikTok lives, videos and conversations if they work for you. A separate ClickBaitPays ad campaign can place an approved link in front of participating viewers, including people you may never meet; visitors and registrations are not guaranteed. Qualifying ad views may separately earn USDT under its rules, with campaign costs, activity and withdrawal terms to check. Explore both options to see how they could fit the way you share.</p><a class="btn btn-primary" href="https://clickbaitpaysus.com/" target="_blank" rel="noopener noreferrer">Learn How ClickBaitPays Works →</a></section>
-  <aside class="mtg-deeper">Prefer the full explanation? Read the complete 17 lesson Bitcoin Wealth course at your own pace.<div class="mtg-deeper-actions"><a class="btn btn-quiet" href="mtg/">Explore The Full Course →</a><a class="btn btn-ghost" href="''' + PDF_DOWNLOAD + '''" target="_blank" rel="noopener noreferrer">Download PDF Slides ↓</a></div></aside>
+  <aside class="mtg-deeper">Prefer the full explanation? Read the complete 17 lesson Bitcoin Wealth course at your own pace.<div class="mtg-deeper-actions"><a class="btn btn-quiet" href="course/">Explore The Full Course →</a><a class="btn btn-ghost" href="''' + PDF_DOWNLOAD + '''" target="_blank" rel="noopener noreferrer">Download PDF Slides ↓</a></div></aside>
 </main>'''
 (ROOT / 'index.html').write_text(page('mtg/', 'Bitcoin Wealth | See How It Works', 'Watch the introduction, understand wallet payments and explore ways to share at your own pace. Straight answers and practical setup in one place.', '', landing, 'home'))
 
