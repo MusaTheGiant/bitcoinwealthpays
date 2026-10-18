@@ -5,12 +5,15 @@ course page with the shared collapsible side menu (bw-dash.css / bw-dash.js).
 Safe to run again: pages that already have the shell are rebuilt from their saved content.
 
     python3 tools/dashboard_shell.py
+
+Since 18 Oct 2026 the course home page lives at /mtg/ (mtg/index.html) and the site root
+(index.html) is the member landing page built by mtg/build.py. Course Home links point to mtg/.
 """
 import html, re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SKIP = {'videos/videos.html'}
+SKIP = {'videos/videos.html', 'index.html'}  # index.html is the member landing page (mtg/build.py)
 V = '20261017'
 
 I = {
@@ -66,7 +69,7 @@ def shell(page, up, crumb, key, lesson=None):
         if active:
             subs = ''.join(f'<a class="md-subl" href="{up}topics/{s}.html"{" aria-current=\"page\"" if s == lesson else ""}>{html.escape(LESSON_TITLE.get(s, s))}</a>' for s in slugs)
             mods.append(f'<div class="md-sub">{subs}</div>')
-    home_btn = f'<a class="md-btn md-home" href="{up}index.html" aria-label="Go Home: back to the Bitcoin Wealth home page"><span class="emo" aria-hidden="true">🏡</span>Go Home</a>'
+    home_btn = f'<a class="md-btn md-home" href="{up}mtg/" aria-label="Go Home: back to the Bitcoin Wealth home page"><span class="emo" aria-hidden="true">🏡</span>Go Home</a>'
     dash_btn = f'<a class="md-btn md-dash" href="{up}dashboard.html" aria-label="Dashboard: the course overview"><span class="emo" aria-hidden="true">📊</span>Dashboard</a>'
     if is_home:
         acts = dash_btn + f'<a class="md-btn md-start md-hide-sm" href="{up}topics/how-to-read-this-site.html">Start lesson 1</a>'
@@ -74,13 +77,13 @@ def shell(page, up, crumb, key, lesson=None):
     else:
         acts = dash_btn.replace('class="md-btn md-dash"', 'class="md-btn md-dash md-hide-sm"') + home_btn
         bot = home_btn
-    crumbs = f'<a href="{up}index.html">Bitcoin Wealth</a>{svg("chev")}<span aria-current="page">{html.escape(crumb)}</span>'
+    crumbs = f'<a href="{up}mtg/">Bitcoin Wealth</a>{svg("chev")}<span aria-current="page">{html.escape(crumb)}</span>'
     return f'''<div class="md-shell">
 <script>try{{if(localStorage.getItem("bw-side")==="off"&&innerWidth>1060)document.querySelector(".md-shell").classList.add("md-off")}}catch(e){{}}</script>
 <aside class="md-side" id="bw-menu" aria-label="Bitcoin Wealth course menu">
- <a class="bw-brand" href="{up}index.html"><span class="mark">BW</span><span><span class="wm"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span><span class="brand-sub">Built by the People. For the People.</span></span></a>
+ <a class="bw-brand" href="{up}mtg/"><span class="mark">BW</span><span><span class="wm"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span><span class="brand-sub">Built by the People. For the People.</span></span></a>
  <p class="md-label">Start here</p>
- {nav(up, 'index.html', 'home', 'Home', 'Watch the introduction', key == 'home')}
+ {nav(up, 'mtg/', 'home', 'Home', 'Watch the introduction', key == 'home')}
  {nav(up, 'dashboard.html', 'grid', 'Course Dashboard', 'Your progress, all modules', key == 'dash')}
  {nav(up, 'what-is-bitcoin-wealth.html', 'info', 'What Is Bitcoin Wealth', 'The short explanation', key == 'what')}
  <p class="md-label">The course</p>

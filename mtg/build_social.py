@@ -42,7 +42,8 @@ for filename, (label, headline, subline) in PAGES.items():
     d.text((74, 258), headline, font=font, fill=WHITE)
     d.text((77, 357), subline, font=ImageFont.truetype(FONT_BOLD, 36), fill=ORANGE)
     d.line((78, 469, 733, 469), fill=(198, 128, 16, 120), width=2)
-    share_url = 'bitcoinwealthpays.com/mtg/request-a-copy/' if filename == 'request-a-copy' else 'bitcoinwealthpays.com/mtg'
+    # The member home page is the site root since 18 Oct 2026; inner pages stay under /mtg/
+    share_url = {'request-a-copy': 'bitcoinwealthpays.com/mtg/request-a-copy/', 'home': 'bitcoinwealthpays.com'}.get(filename, 'bitcoinwealthpays.com/mtg')
     d.text((78, 506), share_url, font=ImageFont.truetype(FONT_REG, 21), fill=MUTED)
     d.ellipse((811, 146, 1121, 456), fill=(6, 9, 6, 255), outline=(255, 161, 1, 190), width=3)
     mask = Image.new('L', logo.size, 0)

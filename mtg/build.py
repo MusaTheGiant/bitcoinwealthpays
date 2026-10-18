@@ -1,8 +1,12 @@
-"""Rebuild the standalone member pages from the current course content.
+"""Rebuild the member pages from the current course content.
 
-For a new member, copy the generated mtg/ directory and edit member-config.js.
-All internal paths remain within the copied directory except the explicit
-full-course link near the bottom of the member landing page.
+Since 18 Oct 2026 the member landing page is the site home page (bitcoinwealthpays.com/,
+written to the repo root index.html). Its inner pages (video tutorials, setup guides, FAQ,
+glossary, request a copy) stay under /mtg/. The full course home page now lives at /mtg/
+(mtg/index.html, a hand-maintained page), so this script never writes mtg/index.html.
+
+`up` is the path from a page back to the mtg/ folder ('mtg/' on the root landing page,
+'../' one level inside /mtg/). root(up) is the path back to the site root.
 """
 from pathlib import Path
 import html
@@ -43,6 +47,11 @@ ICONS = {
 CRUMB = {'home': 'Home', 'video': 'Video Tutorials', 'guides': 'Setup Guides', 'faq': 'FAQ', 'glossary': 'Glossary', 'request': 'Request a Copy'}
 
 
+def root(up):
+    """Path back to the site root, which is also the member home page."""
+    return './' if up == 'mtg/' else up + '../'
+
+
 def ic(name):
     return f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{ICONS[name]}</svg>'
 
@@ -55,27 +64,27 @@ def header(up, section=''):
     landing = section == 'home'
     # GO HOME: inner pages go back to this member page; the member page itself goes to the owner's own home page (member-config.js homeUrl)
     home_attrs = ' data-home-external hidden' if landing else ''
-    home_href = '#' if landing else up
+    home_href = '#' if landing else root(up)
     home_label = 'the page owner&#39;s home page' if landing else 'the Bitcoin Wealth member home page'
     go_home = f'<a class="md-btn md-home" href="{home_href}"{home_attrs} aria-label="Go Home: back to {home_label}"><span class="emo" aria-hidden="true">🏡</span>Go Home</a>'
-    dash = f'<a class="md-btn md-dash md-hide-sm" href="{up}../dashboard.html" aria-label="Dashboard: the full Bitcoin Wealth course"><span class="emo" aria-hidden="true">📊</span>Dashboard</a>'
+    dash = f'<a class="md-btn md-dash md-hide-sm" href="{root(up)}dashboard.html" aria-label="Dashboard: the full Bitcoin Wealth course"><span class="emo" aria-hidden="true">📊</span>Dashboard</a>'
     crumb = CRUMB.get(section, '')
-    crumbs = f'<a href="{up}">Bitcoin Wealth</a>{ic("chev")}<span aria-current="page">{crumb}</span>' if crumb and not landing else '<span aria-current="page">Bitcoin Wealth</span>'
+    crumbs = f'<a href="{root(up)}">Bitcoin Wealth</a>{ic("chev")}<span aria-current="page">{crumb}</span>' if crumb and not landing else '<span aria-current="page">Bitcoin Wealth</span>'
     return f'''<div class="md-shell">
 <script>try{{if(localStorage.getItem("bw-side")==="off"&&innerWidth>1060)document.querySelector(".md-shell").classList.add("md-off")}}catch(e){{}}</script>
 <aside class="md-side" id="bw-menu" aria-label="Bitcoin Wealth member menu">
- <a class="bw-brand" href="{up}"><span class="mark">BW</span><span><span class="wm"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span><span class="brand-sub">Explained clearly, at your pace</span></span></a>
+ <a class="bw-brand" href="{root(up)}"><span class="mark">BW</span><span><span class="wm"><span class="o">Bitcoin</span> <span class="g">Wealth</span></span><span class="brand-sub">Explained clearly, at your pace</span></span></a>
  <p class="md-label">Start here</p>
- {item(up, 'home', 'Home', 'Two short videos', 'home')}
+ {item(root(up), 'home', 'Home', 'Two short videos', 'home')}
  {item(up + 'video-tutorials/', 'play', 'Video Tutorials', 'Watch the steps', 'video')}
  {item(up + 'setup-guides/', 'wallet', 'Setup Guides', 'SafePal, MetaMask, Binance, VALR', 'guides')}
  <p class="md-label">Answers</p>
  {item(up + 'faq/', 'help', 'FAQ', 'Costs, sharing, risks', 'faq')}
  {item(up + 'glossary/', 'book', 'Glossary', 'Plain English definitions', 'glossary')}
  <p class="md-label">Go further</p>
- {item(up + '../dashboard.html', 'grid', 'Full 17 Lesson Course', 'Mechanics, claims, arithmetic', '')}
+ {item(root(up) + 'dashboard.html', 'grid', 'Full 17 Lesson Course', 'Mechanics, claims, arithmetic', '')}
  {item(up + 'request-a-copy/', 'copy', 'Request a Copy', 'Your own version of this page', 'request')}
- {item(up + '#register', 'join', 'Join Bitcoin Wealth', 'Registration link and notes', '')}
+ {item(root(up) + '#register', 'join', 'Join Bitcoin Wealth', 'Registration link and notes', '')}
  {item('#', 'chat', 'WhatsApp', 'Ask a question first', '', ' data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer"')}
  <div class="md-bot">{go_home if not landing else dash}</div>
 </aside>
@@ -105,7 +114,7 @@ def footer(up):
 </div>
 <div class="vidmodal" id="vidmodal" hidden role="dialog" aria-modal="true" aria-label="Video player"><div class="vidmodal-bg" data-close></div><div class="vidmodal-box"><button class="vidclose" type="button" aria-label="Close video" data-close><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="vidmodal-frame" id="vidmount"></div></div></div>
 <button class="mtg-backtop" type="button" data-backtop aria-label="Back to top" hidden>↑ <span>Top</span></button>
-<script src="{up}member-config.js"></script><script src="{up}member.js"></script><script src="{up}../open.js" defer></script><script src="{up}../bw-dash.js?v=20261017" defer></script>'''
+<script src="{up}member-config.js"></script><script src="{up}member.js"></script><script src="{root(up)}open.js" defer></script><script src="{root(up)}bw-dash.js?v=20261017" defer></script>'''
 
 
 def panel():
@@ -120,20 +129,22 @@ def panel():
 
 
 def page(up, title, description, canonical, body, section=''):
-    slug = canonical.rstrip('/').split('/')[-1]
+    slug = canonical.rstrip('/').split('/')[-1] or 'mtg'  # '' is the site root, the member home page
     motion = slug in MOTION_PAGES
     motion_css = f'<link rel="stylesheet" href="{up}motion.css?v=2">' if motion else ''
     motion_js = f'\n<script src="{up}motion.js?v=1" defer></script>' if motion else ''
     picture = f'https://bitcoinwealthpays.com/mtg/share/{slug}.png' if slug != 'mtg' else 'https://bitcoinwealthpays.com/mtg/share/home.png'
     if slug == 'request-a-copy':
         picture += '?v=2'
+    if slug == 'mtg':
+        picture += '?v=3'  # new card text after the 18 Oct 2026 home page swap
     schema = {
         '@context': 'https://schema.org', '@type': 'WebPage', 'name': title,
         'description': description, 'url': 'https://bitcoinwealthpays.com/' + canonical,
         'isPartOf': {'@type': 'WebSite', 'name': 'Bitcoin Wealth Pays', 'url': 'https://bitcoinwealthpays.com/'},
     }
     crumbs = [
-        {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://bitcoinwealthpays.com/mtg/'},
+        {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://bitcoinwealthpays.com/'},
     ]
     if slug != 'mtg':
         if 'setup-guides/' in canonical:
@@ -152,8 +163,8 @@ def page(up, title, description, canonical, body, section=''):
 <meta property="og:type" content="website"><meta property="og:site_name" content="Bitcoin Wealth Pays"><meta property="og:title" content="{html.escape(title, quote=True)}"><meta property="og:description" content="{html.escape(description, quote=True)}"><meta property="og:url" content="https://bitcoinwealthpays.com/{canonical}"><meta property="og:image" content="{picture}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="{html.escape(title, quote=True)} visual preview">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(title, quote=True)}"><meta name="twitter:description" content="{html.escape(description, quote=True)}"><meta name="twitter:image" content="{picture}">
 <script type="application/ld+json">{schema_blob}</script>
-<link rel="icon" href="{up}../favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{up}../style.css?v=20261007-testimonials"><link rel="stylesheet" href="{up}style.css?v=20261007-testimonials">{motion_css}<link rel="stylesheet" href="{up}../bw-dash.css?v=20261017">
+<link rel="icon" href="{root(up)}favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{root(up)}style.css?v=20261007-testimonials"><link rel="stylesheet" href="{up}style.css?v=20261007-testimonials">{motion_css}<link rel="stylesheet" href="{root(up)}bw-dash.css?v=20261017">
 </head><body class="mtg-site">
 {header(up, section)}
 {body}
@@ -163,14 +174,14 @@ def page(up, title, description, canonical, body, section=''):
 
 
 landing = '''<main>
-  <div class="mtg-identity"><img data-profile-image src="../logo.png" alt="Bitcoin Wealth logo" width="96" height="96"></div>
+  <div class="mtg-identity"><img data-profile-image src="logo.png" alt="Bitcoin Wealth logo" width="96" height="96"></div>
   <section class="premium-hero bw-hero" aria-labelledby="mtg-title"><div class="bw-hero-copy"><div class="premium-eyebrow">Bitcoin Wealth, explained clearly</div>
     <h1 id="mtg-title">You've heard about Bitcoin Wealth. <span>See how it works.</span></h1>
     <p>Watch two short videos, understand where payments are designed to go, and get straight answers about sharing and risk. Take your time. Your decision should make sense to you.</p>
-    <div class="premium-actions"><button class="btn btn-primary vidcard-btn" type="button" data-src="../videos/bitcoin-wealth-intro.mp4" data-poster="../images/bitcoin-wealth-intro.png" aria-label="Play Bitcoin Wealth introduction video">▶ &nbsp;Play Intro</button>
-      <button class="btn btn-quiet vidcard-btn" type="button" data-src="../videos/how-bitcoin-wealth-matrix-work.mp4" data-poster="../images/bitcoin-wealth-matrix.png" data-vertical="1" aria-label="Play Bitcoin Wealth matrix explanation video">Watch How The Matrix Works →</button></div>
+    <div class="premium-actions"><button class="btn btn-primary vidcard-btn" type="button" data-src="videos/bitcoin-wealth-intro.mp4" data-poster="images/bitcoin-wealth-intro.png" aria-label="Play Bitcoin Wealth introduction video">▶ &nbsp;Play Intro</button>
+      <button class="btn btn-quiet vidcard-btn" type="button" data-src="videos/how-bitcoin-wealth-matrix-work.mp4" data-poster="images/bitcoin-wealth-matrix.png" data-vertical="1" aria-label="Play Bitcoin Wealth matrix explanation video">Watch How The Matrix Works →</button></div>
     <ul class="bw-proof" aria-label="What is here"><li><b>2</b> short videos</li><li><b>4</b> setup guides</li><li><b>0</b> pressure</li></ul></div>
-  ''' + flow('../') + '''
+  ''' + flow('./') + '''
   </section>
   <section class="mtg-compare" aria-labelledby="money-heading"><div class="premium-eyebrow">The question worth asking</div>
     <h2 id="money-heading">Where does the money actually go?</h2><p class="mtg-compare-intro">Here is the published design in plain language. Check real transactions and contract permissions yourself so you can make a smart move.</p>
@@ -180,28 +191,28 @@ landing = '''<main>
       <li>No withdraw button for a routed payment, because it goes to a wallet</li><li>Activating a slot is designed to split that payment inside the same transaction</li><li>Each portion is directed to receiving members' own wallets</li><li>A completed wallet transfer does not depend on an operator approving a later withdrawal</li>
     </ul></div></div>
   </section>
-  ''' + truth('../') + '''
+  ''' + truth('./') + '''
   <section class="testimonial-card" aria-labelledby="voices-title">
     <div class="premium-eyebrow">Member stories</div>
     <h2 id="voices-title">They started small. Hear why.</h2>
     <p>What caught their attention? Watch members share their stories in 34 seconds.</p>
-    <button class="testimonial-play vidcard-btn" type="button" data-src="../videos/bitcoin-wealth-testimonials.mp4" data-poster="../images/member-stories-poster.png" data-vertical="1" aria-label="Watch member testimonials, 34 seconds">
+    <button class="testimonial-play vidcard-btn" type="button" data-src="videos/bitcoin-wealth-testimonials.mp4" data-poster="images/member-stories-poster.png" data-vertical="1" aria-label="Watch member testimonials, 34 seconds">
       <span class="testimonial-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
       <span>Watch Testimonials</span>
     </button>
   </section>
   <section class="mtg-next" aria-labelledby="next-title"><div class="premium-eyebrow">Find your next answer</div><h2 id="next-title">Explore before you decide.</h2><p>Watch the available videos, follow the wallet steps, or go straight to the questions and definitions that matter to you.</p>
-    <div class="mtg-resource-grid"><a href="video-tutorials/"><span class="premium-eyebrow">Watch</span><strong>Video Tutorials →</strong><span>Start with the introduction. Upcoming setup videos are clearly marked.</span></a><a href="setup-guides/"><span class="premium-eyebrow">Follow along</span><strong>Setup Guides →</strong><span>SafePal, MetaMask, Binance and VALR instructions in one place.</span></a><a href="faq/"><span class="premium-eyebrow">Ask</span><strong>FAQ →</strong><span>Direct answers about costs, recruiting, payouts, risks, and verification.</span></a><a href="glossary/"><span class="premium-eyebrow">Understand</span><strong>Glossary →</strong><span>Look up any unfamiliar word in plain English.</span></a></div>
+    <div class="mtg-resource-grid"><a href="mtg/video-tutorials/"><span class="premium-eyebrow">Watch</span><strong>Video Tutorials →</strong><span>Start with the introduction. Upcoming setup videos are clearly marked.</span></a><a href="mtg/setup-guides/"><span class="premium-eyebrow">Follow along</span><strong>Setup Guides →</strong><span>SafePal, MetaMask, Binance and VALR instructions in one place.</span></a><a href="mtg/faq/"><span class="premium-eyebrow">Ask</span><strong>FAQ →</strong><span>Direct answers about costs, recruiting, payouts, risks, and verification.</span></a><a href="mtg/glossary/"><span class="premium-eyebrow">Understand</span><strong>Glossary →</strong><span>Look up any unfamiliar word in plain English.</span></a></div>
   </section>
-  <section class="mtg-sharing" aria-labelledby="sharing-title"><div class="premium-eyebrow">A different way to share</div><h2 id="sharing-title">Not comfortable recruiting or going live?</h2><p>You can give curious people a place to explore without a sales pitch. Bitcoin Wealth still depends on real paid activations, and an ad campaign cannot promise sign-ups. Your own copy of this website can explain the basics while a paid ClickBaitPays campaign may bring visitors to an approved link. Give interested people one clear place to watch, read and decide for themselves.</p><div class="mtg-sharing-actions"><a class="btn btn-ghost" href="faq/#question-i-cannot-recruit-or-go-live-is-there-another-way-to-share">See Your Sharing Options →</a><a class="btn btn-primary" href="request-a-copy/">Get Your Website Copy →</a></div></section>
+  <section class="mtg-sharing" aria-labelledby="sharing-title"><div class="premium-eyebrow">A different way to share</div><h2 id="sharing-title">Not comfortable recruiting or going live?</h2><p>You can give curious people a place to explore without a sales pitch. Bitcoin Wealth still depends on real paid activations, and an ad campaign cannot promise sign-ups. Your own copy of this website can explain the basics while a paid ClickBaitPays campaign may bring visitors to an approved link. Give interested people one clear place to watch, read and decide for themselves.</p><div class="mtg-sharing-actions"><a class="btn btn-ghost" href="mtg/faq/#question-i-cannot-recruit-or-go-live-is-there-another-way-to-share">See Your Sharing Options →</a><a class="btn btn-primary" href="mtg/request-a-copy/">Get Your Website Copy →</a></div></section>
   ''' + panel() + '''
-  <section class="mtg-member-copy" aria-labelledby="copy-title"><div><h2 id="copy-title">Want a copy of this exact website for yourself or your team?</h2><p>For a one-time 32 USDT payment, get a mobile-friendly landing page, videos, FAQ, glossary and setup guides with your referral link, profile image and social links. Share one clear destination instead of explaining everything from scratch. Hosting on bitcoinwealthpays.com has no additional charge or monthly hosting fee, and updates to your page are included for its lifetime. Want your own domain? We can help set it up for a small additional fee quoted in advance; domain costs are separate.</p></div><a class="btn btn-ghost" href="request-a-copy/">Get Your Copy →</a></section>
+  <section class="mtg-member-copy" aria-labelledby="copy-title"><div><h2 id="copy-title">Want a copy of this exact website for yourself or your team?</h2><p>For a one-time 32 USDT payment, get a mobile-friendly landing page, videos, FAQ, glossary and setup guides with your referral link, profile image and social links. Share one clear destination instead of explaining everything from scratch. Hosting on bitcoinwealthpays.com has no additional charge or monthly hosting fee, and updates to your page are included for its lifetime. Want your own domain? We can help set it up for a small additional fee quoted in advance; domain costs are separate.</p></div><a class="btn btn-ghost" href="mtg/request-a-copy/">Get Your Copy →</a></section>
   <section class="mtg-traffic" aria-labelledby="traffic-title"><div class="premium-eyebrow">For page owners</div><h2 id="traffic-title">Let your page be seen beyond your own feed.</h2><p>Keep your TikTok lives, videos and conversations if they work for you. A separate ClickBaitPays ad campaign can place an approved link in front of participating viewers, including people you may never meet; visitors and registrations are not guaranteed. Qualifying ad views may separately earn USDT under its rules, with campaign costs, activity and withdrawal terms to check. Explore both options to see how they could fit the way you share.</p><a class="btn btn-primary" href="https://clickbaitpaysus.com/" target="_blank" rel="noopener noreferrer">Learn How ClickBaitPays Works →</a></section>
-  <aside class="mtg-deeper">Prefer the full explanation? Read the complete 17 lesson Bitcoin Wealth course at your own pace.<div class="mtg-deeper-actions"><a class="btn btn-quiet" href="../">Explore The Full Course →</a><a class="btn btn-ghost" href="''' + PDF_DOWNLOAD + '''" target="_blank" rel="noopener noreferrer">Download PDF Slides ↓</a></div></aside>
+  <aside class="mtg-deeper">Prefer the full explanation? Read the complete 17 lesson Bitcoin Wealth course at your own pace.<div class="mtg-deeper-actions"><a class="btn btn-quiet" href="mtg/">Explore The Full Course →</a><a class="btn btn-ghost" href="''' + PDF_DOWNLOAD + '''" target="_blank" rel="noopener noreferrer">Download PDF Slides ↓</a></div></aside>
 </main>'''
-(OUT / 'index.html').write_text(page('./', 'Bitcoin Wealth | See How It Works', 'Watch the introduction, understand wallet payments and explore ways to share at your own pace. Straight answers and practical setup in one place.', 'mtg/', landing, 'home'))
+(ROOT / 'index.html').write_text(page('mtg/', 'Bitcoin Wealth | See How It Works', 'Watch the introduction, understand wallet payments and explore ways to share at your own pace. Straight answers and practical setup in one place.', '', landing, 'home'))
 
-tutorials = '''<main class="subbody"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>Video Tutorials</b></div>
+tutorials = '''<main class="subbody"><div class="crumbs"><a href="../../">Home</a> &rsaquo; <b>Video Tutorials</b></div>
   <div class="mtg-subhead"><div class="premium-eyebrow">Watch and understand</div><h1>Video Tutorials</h1><p>Start with the available introduction and matrix explanation. The practical wallet tutorials are being prepared; the written setup guides are available now.</p></div>
   <div class="mtg-resource-grid mtg-video-grid"><button class="vidcard-btn mtg-video-card" type="button" data-src="../../videos/bitcoin-wealth-intro.mp4" data-poster="../../images/bitcoin-wealth-intro.png" aria-label="Play Bitcoin Wealth introduction video, 4 minutes"><span class="mvc-thumb"><img src="../../images/bitcoin-wealth-intro.png" alt="" loading="lazy" width="1280" height="720"><span class="mvc-shade" aria-hidden="true"></span><span class="mvc-badge" aria-hidden="true"><i></i>Video</span><span class="mvc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="mvc-dur">4:11</span></span><span class="mvc-body"><span class="premium-eyebrow">Watch now · 4 min</span><strong>Start Here: The Introduction</strong><span class="mvc-desc">Begin with the short introduction to Bitcoin Wealth.</span><span class="mvc-cta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>Play video</span></span></button><button class="vidcard-btn mtg-video-card" type="button" data-src="../../videos/how-bitcoin-wealth-matrix-work.mp4" data-poster="../../images/bitcoin-wealth-matrix.png" data-vertical="1" aria-label="Play Bitcoin Wealth matrix explanation video, 3 minutes"><span class="mvc-thumb"><img src="../../images/bitcoin-wealth-matrix.png" alt="" loading="lazy" width="1280" height="720"><span class="mvc-shade" aria-hidden="true"></span><span class="mvc-badge" aria-hidden="true"><i></i>Video</span><span class="mvc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="mvc-dur">2:50</span></span><span class="mvc-body"><span class="premium-eyebrow">Watch now · 3 min</span><strong>How the Matrix Works</strong><span class="mvc-desc">See positions, cycles and payments explained in one place.</span><span class="mvc-cta" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>Play video</span></span></button></div>
   <div class="sec"><h2>Setup tutorials</h2><span class="ln"></span></div>
@@ -214,7 +225,7 @@ tutorials = '''<main class="subbody"><div class="crumbs"><a href="../">Home</a> 
 (OUT / 'video-tutorials').mkdir(exist_ok=True)
 (OUT / 'video-tutorials/index.html').write_text(page('../', 'Bitcoin Wealth | Video Tutorials', 'Watch the introduction and matrix explanation. Read setup guides while wallet videos are being prepared.', 'mtg/video-tutorials/', tutorials, 'video'))
 
-guide_cards = '''<main class="subbody"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>Setup Guides</b></div>
+guide_cards = '''<main class="subbody"><div class="crumbs"><a href="../../">Home</a> &rsaquo; <b>Setup Guides</b></div>
   <div class="mtg-subhead"><div class="premium-eyebrow">Get ready safely</div><h1>Step-by-Step Setup Guides</h1><p>Follow the same practical wallet and exchange instructions from the main site, here within the member page.</p></div>
   <div class="tgrid two"><a class="tcard" href="safepal-wallet/"><i>&rarr;</i><span>SafePal Wallet<small>Create and protect your wallet</small></span></a><a class="tcard" href="metamask-web3-wallet/"><i>&rarr;</i><span>MetaMask Web3 Wallet<small>Set up MetaMask step by step</small></span></a><a class="tcard" href="binance-account/"><i>&rarr;</i><span>Binance Account<small>Register, verify and fund with Rand</small></span></a><a class="tcard" href="valr-account/"><i>&rarr;</i><span>VALR Account<small>Register, verify and buy BNB</small></span></a></div>
   <div class="box box-note"><p>Would you rather watch? <a href="../video-tutorials/">Visit the video tutorials</a>. The wallet setup recordings are labelled when available.</p></div>''' + panel() + '</main>'
@@ -237,7 +248,7 @@ def accordion_item(title, answer, prefix, num=None):
 
 
 def section_switch(current):
-    routes = [('Home', '../'), ('Video Tutorials', '../video-tutorials/'), ('Setup Guides', '../setup-guides/'), ('FAQ', '../faq/'), ('Glossary', '../glossary/'), ('Request a Copy', '../request-a-copy/')]
+    routes = [('Home', '../../'), ('Video Tutorials', '../video-tutorials/'), ('Setup Guides', '../setup-guides/'), ('FAQ', '../faq/'), ('Glossary', '../glossary/'), ('Request a Copy', '../request-a-copy/')]
     return '<nav class="mtg-section-switch" aria-label="Explore member pages">' + ''.join(
         f'<a href="{path}"' + (' aria-current="page"' if name == current else '') + f'>{name}</a>' for name, path in routes
     ) + '</nav>'
@@ -247,7 +258,7 @@ def social_invite():
     return '''<section class="mtg-social-invite" aria-labelledby="social-heading"><div class="premium-eyebrow">Stay in touch</div><h2 id="social-heading">Follow along, and ask directly.</h2><p>See updates on TikTok and Facebook, or message us on WhatsApp. Ask for the current community group link if you want to join the conversation.</p><div class="mtg-social-actions"><a class="btn btn-ghost" href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="btn btn-quiet" href="#" data-tiktok aria-disabled="true" target="_blank" rel="noopener noreferrer">TikTok</a><a class="btn btn-quiet" href="#" data-facebook aria-disabled="true" target="_blank" rel="noopener noreferrer">Facebook</a></div></section>'''
 
 
-faq_intro = '''<main class="subbody mtg-reference"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>FAQ</b></div>
+faq_intro = '''<main class="subbody mtg-reference"><div class="crumbs"><a href="../../">Home</a> &rsaquo; <b>FAQ</b></div>
   <div class="mtg-subhead"><div class="premium-eyebrow">The questions on your mind</div><h1>Frequently Asked Questions</h1><p>Explore the payments, risks and ways to share, one question at a time. These answers explain the published Bitcoin Wealth model in plain language; they do not promise an outcome or independently certify the contract. Take your time and check what matters to you.</p></div>
   ''' + section_switch('FAQ') + '''<nav class="mtg-jump" aria-label="FAQ topics"><span>Jump to</span>'''
 faq_intro += ''.join(f'<a href="#faq-{slugify(group)}">{html.escape(group)}</a>' for group, _ in FAQ) + '</nav>'
@@ -266,7 +277,7 @@ faq_html = faq_html.replace('</head>', '<script type="application/ld+json">' + j
 (OUT / 'faq').mkdir(exist_ok=True)
 (OUT / 'faq/index.html').write_text(faq_html)
 
-glossary = '''<main class="subbody mtg-reference"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>Glossary</b></div>
+glossary = '''<main class="subbody mtg-reference"><div class="crumbs"><a href="../../">Home</a> &rsaquo; <b>Glossary</b></div>
   <div class="mtg-subhead"><div class="premium-eyebrow">Plain English, no jargon</div><h1>Bitcoin Wealth Glossary</h1><p>Find a word, open its meaning, then get back to what you were doing. Every definition fits on a small screen.</p></div>
   ''' + section_switch('Glossary') + '''<div class="mtg-search"><label for="term-search">Find a term</label><input id="term-search" type="search" data-term-search autocomplete="off" placeholder="Try “spillover”, “BTCB”, or “gas”" aria-controls="glossary-terms"><p data-search-count role="status" aria-live="polite"></p></div>
   <nav class="mtg-jump" aria-label="Glossary sections"><span>Jump to</span>'''
@@ -284,7 +295,7 @@ glossary_html = glossary_html.replace('</head>', '<script type="application/ld+j
 (OUT / 'glossary').mkdir(exist_ok=True)
 (OUT / 'glossary/index.html').write_text(glossary_html)
 
-request_body = '''<main class="subbody mtg-order"><div class="crumbs"><a href="../">Home</a> &rsaquo; <b>Request a Copy</b></div>
+request_body = '''<main class="subbody mtg-order"><div class="crumbs"><a href="../../">Home</a> &rsaquo; <b>Request a Copy</b></div>
   <div class="mtg-subhead"><div class="premium-eyebrow">Your own Bitcoin Wealth website copy</div><h1>This website, personalized for you.</h1><p>Get the same landing page, navigation and resource pages for yourself or your team, with your profile image, referral link and social links.</p></div>
   ''' + section_switch('Request a Copy') + '''
   <div class="mtg-order-overview"><div><strong>32 USDT once</strong><span>One-time setup; no monthly website service fee</span></div><div><strong>Hosting included</strong><span>No additional hosting charge for your page on bitcoinwealthpays.com</span></div><div><strong>Lifetime updates</strong><span>Changes to your page at no further service fee for the lifetime of your page</span></div><div><strong>Ready to share</strong><span>Mobile-friendly pages, videos, FAQs and guides with your image, referral and social links</span></div></div>
@@ -329,14 +340,14 @@ request_body = '''<main class="subbody mtg-order"><div class="crumbs"><a href=".
 for slug, label in GUIDES.items():
     source = (ROOT / 'guides' / (slug + '.html')).read_text()
     main = re.search(r'<main\b[^>]*>(.*?)</main>', source, re.S).group(1)
-    main = re.sub(r'<div class="crumbs">.*?</div>', '<div class="crumbs"><a href="../../">Home</a> &rsaquo; <a href="../">Setup Guides</a> &rsaquo; <b>' + label + '</b></div>', main, count=1, flags=re.S)
+    main = re.sub(r'<div class="crumbs">.*?</div>', '<div class="crumbs"><a href="../../../">Home</a> &rsaquo; <a href="../">Setup Guides</a> &rsaquo; <b>' + label + '</b></div>', main, count=1, flags=re.S)
     main = re.sub(r'<section class="referral-panel".*?</section>', '', main, flags=re.S)
     main = main.replace('href="../video-tutorials.html"', 'href="../../video-tutorials/"')
     main = re.sub(r'href="\.\./guides/([a-z0-9-]+)\.html"', r'href="../\1/"', main)
-    main = main.replace('href="../index.html"', 'href="../../"')
+    main = main.replace('href="../index.html"', 'href="../../../"')
     # Do not leave a route back into the primary course navigation.
     for attr in re.findall(r'href="([^"]+)"', main):
-        if attr.startswith('../') and not (attr.startswith('../../video-tutorials/') or attr in ('../../', '../') or re.fullmatch(r'\.\./[a-z0-9-]+/', attr)):
+        if attr.startswith('../') and not (attr.startswith('../../video-tutorials/') or attr in ('../../../', '../') or re.fullmatch(r'\.\./[a-z0-9-]+/', attr)):
             raise ValueError(f'Unexpected navigation in {slug}: {attr}')
     directory = OUT / 'setup-guides' / slug
     directory.mkdir(exist_ok=True)
