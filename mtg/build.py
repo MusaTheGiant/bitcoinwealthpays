@@ -63,10 +63,10 @@ def header(up, section=''):
         return f'<a class="md-nav" href="{href}"{cur}{extra}><span class="ic">{ic(icon)}</span><span class="tx"><b>{title}</b><small>{sub}</small></span></a>'
     landing = section == 'home'
     # GO HOME: inner pages go back to this member page; the member page itself goes to the owner's own home page (member-config.js homeUrl)
-    home_attrs = ' data-home-external hidden' if landing else ''
-    home_href = '#' if landing else root(up)
-    home_label = 'the page owner&#39;s home page' if landing else 'the Bitcoin Wealth member home page'
-    go_home = f'<a class="md-btn md-home" href="{home_href}"{home_attrs} aria-label="Go Home: back to {home_label}"><span class="emo" aria-hidden="true">🏡</span>Go Home</a>'
+    # GO HOME always leads back to the member home page (the site root). On the home page itself the
+    # top bar shows a DASHBOARD button that opens this side menu instead (bw-dash.js, .md-open-menu).
+    go_home = f'<a class="md-btn md-home" href="{root(up)}" aria-label="Go Home: back to the Bitcoin Wealth home page"><span class="emo" aria-hidden="true">🏡</span>Go Home</a>'
+    menu_dash = '<button class="md-btn md-dash md-open-menu" type="button" aria-controls="bw-menu" aria-expanded="false" aria-label="Dashboard: open the menu"><span class="emo" aria-hidden="true">📊</span>Dashboard</button>'
     dash = f'<a class="md-btn md-dash md-hide-sm" href="{root(up)}dashboard.html" aria-label="Dashboard: the full Bitcoin Wealth course"><span class="emo" aria-hidden="true">📊</span>Dashboard</a>'
     crumb = CRUMB.get(section, '')
     crumbs = f'<a href="{root(up)}">Bitcoin Wealth</a>{ic("chev")}<span aria-current="page">{crumb}</span>' if crumb and not landing else '<span aria-current="page">Bitcoin Wealth</span>'
@@ -86,7 +86,7 @@ def header(up, section=''):
  {item(up + 'request-a-copy/', 'copy', 'Request a Copy', 'Your own version of this page', 'request')}
  {item(root(up) + '#register', 'join', 'Join Bitcoin Wealth', 'Registration link and notes', '')}
  {item('#', 'chat', 'WhatsApp', 'Ask a question first', '', ' data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer"')}
- <div class="md-bot">{go_home if not landing else dash}</div>
+ <div class="md-bot">{go_home}</div>
 </aside>
 <button class="md-toggle" type="button" aria-controls="bw-menu" aria-expanded="true" aria-label="Collapse menu" title="Collapse menu">{ic("left")}</button>
 <div class="md-scrim" aria-hidden="true"></div>
@@ -94,7 +94,7 @@ def header(up, section=''):
 <header class="md-top">
  <button class="md-menu" type="button" aria-controls="bw-menu" aria-expanded="false" aria-label="Open menu"><span class="bars" aria-hidden="true"></span><span class="lbl">Menu</span></button>
  <nav class="md-crumb" aria-label="You are here">{crumbs}</nav>
- <div class="md-act">{dash}{go_home}</div>
+ <div class="md-act">{menu_dash if landing else dash + go_home}</div>
 </header>'''
 
 
@@ -114,7 +114,7 @@ def footer(up):
 </div>
 <div class="vidmodal" id="vidmodal" hidden role="dialog" aria-modal="true" aria-label="Video player"><div class="vidmodal-bg" data-close></div><div class="vidmodal-box"><button class="vidclose" type="button" aria-label="Close video" data-close><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="vidmodal-frame" id="vidmount"></div></div></div>
 <button class="mtg-backtop" type="button" data-backtop aria-label="Back to top" hidden>↑ <span>Top</span></button>
-<script src="{up}member-config.js"></script><script src="{up}member.js"></script><script src="{root(up)}open.js" defer></script><script src="{root(up)}bw-dash.js?v=20261017" defer></script>'''
+<script src="{up}member-config.js"></script><script src="{up}member.js"></script><script src="{root(up)}open.js" defer></script><script src="{root(up)}bw-dash.js?v=20261018" defer></script>'''
 
 
 def panel():
@@ -164,7 +164,7 @@ def page(up, title, description, canonical, body, section=''):
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{html.escape(title, quote=True)}"><meta name="twitter:description" content="{html.escape(description, quote=True)}"><meta name="twitter:image" content="{picture}">
 <script type="application/ld+json">{schema_blob}</script>
 <link rel="icon" href="{root(up)}favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{root(up)}style.css?v=20261007-testimonials"><link rel="stylesheet" href="{up}style.css?v=20261007-testimonials">{motion_css}<link rel="stylesheet" href="{root(up)}bw-dash.css?v=20261017">
+<link rel="stylesheet" href="{root(up)}style.css?v=20261007-testimonials"><link rel="stylesheet" href="{up}style.css?v=20261007-testimonials">{motion_css}<link rel="stylesheet" href="{root(up)}bw-dash.css?v=20261018">
 </head><body class="mtg-site">
 {header(up, section)}
 {body}

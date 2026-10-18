@@ -6,7 +6,7 @@
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Bitcoin Wealth | See How It Works"><meta name="twitter:description" content="Watch the introduction, understand wallet payments and explore ways to share at your own pace. Straight answers and practical setup in one place."><meta name="twitter:image" content="https://bitcoinwealthpays.com/mtg/share/home.png?v=3">
 <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Bitcoin Wealth | See How It Works", "description": "Watch the introduction, understand wallet payments and explore ways to share at your own pace. Straight answers and practical setup in one place.", "url": "https://bitcoinwealthpays.com/", "isPartOf": {"@type": "WebSite", "name": "Bitcoin Wealth Pays", "url": "https://bitcoinwealthpays.com/"}}, {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://bitcoinwealthpays.com/"}]}]</script>
 <link rel="icon" href="./favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./style.css?v=20261007-testimonials"><link rel="stylesheet" href="mtg/style.css?v=20261007-testimonials"><link rel="stylesheet" href="mtg/motion.css?v=2"><link rel="stylesheet" href="./bw-dash.css?v=20261017">
+<link rel="stylesheet" href="./style.css?v=20261007-testimonials"><link rel="stylesheet" href="mtg/style.css?v=20261007-testimonials"><link rel="stylesheet" href="mtg/motion.css?v=2"><link rel="stylesheet" href="./bw-dash.css?v=20261018">
 </head><body class="mtg-site">
 <div class="md-shell">
 <script>try{if(localStorage.getItem("bw-side")==="off"&&innerWidth>1060)document.querySelector(".md-shell").classList.add("md-off")}catch(e){}</script>
@@ -24,7 +24,7 @@
  <a class="md-nav" href="mtg/request-a-copy/"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg></span><span class="tx"><b>Request a Copy</b><small>Your own version of this page</small></span></a>
  <a class="md-nav" href="./#register"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15c-1.5 1-2 3.5-2 6 2.5 0 5-.5 6-2M14.5 4.5c3-1.5 5.5-1.5 5.5-1.5s0 2.5-1.5 5.5L12 15l-3-3 5.5-7.5z"/></svg></span><span class="tx"><b>Join Bitcoin Wealth</b><small>Registration link and notes</small></span></a>
  <a class="md-nav" href="#" data-whatsapp aria-disabled="true" target="_blank" rel="noopener noreferrer"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.7 7.1L4 20l.9-4.3A8 8 0 1 1 20 12z"/></svg></span><span class="tx"><b>WhatsApp</b><small>Ask a question first</small></span></a>
- <div class="md-bot"><a class="md-btn md-dash md-hide-sm" href="./dashboard.html" aria-label="Dashboard: the full Bitcoin Wealth course"><span class="emo" aria-hidden="true">📊</span>Dashboard</a></div>
+ <div class="md-bot"><a class="md-btn md-home" href="./" aria-label="Go Home: back to the Bitcoin Wealth home page"><span class="emo" aria-hidden="true">🏡</span>Go Home</a></div>
 </aside>
 <button class="md-toggle" type="button" aria-controls="bw-menu" aria-expanded="true" aria-label="Collapse menu" title="Collapse menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
 <div class="md-scrim" aria-hidden="true"></div>
@@ -32,7 +32,7 @@
 <header class="md-top">
  <button class="md-menu" type="button" aria-controls="bw-menu" aria-expanded="false" aria-label="Open menu"><span class="bars" aria-hidden="true"></span><span class="lbl">Menu</span></button>
  <nav class="md-crumb" aria-label="You are here"><span aria-current="page">Bitcoin Wealth</span></nav>
- <div class="md-act"><a class="md-btn md-dash md-hide-sm" href="./dashboard.html" aria-label="Dashboard: the full Bitcoin Wealth course"><span class="emo" aria-hidden="true">📊</span>Dashboard</a><a class="md-btn md-home" href="#" data-home-external hidden aria-label="Go Home: back to the page owner&#39;s home page"><span class="emo" aria-hidden="true">🏡</span>Go Home</a></div>
+ <div class="md-act"><button class="md-btn md-dash md-open-menu" type="button" aria-controls="bw-menu" aria-expanded="false" aria-label="Dashboard: open the menu"><span class="emo" aria-hidden="true">📊</span>Dashboard</button></div>
 </header>
 <main>
   <div class="mtg-identity"><img data-profile-image src="logo.png" alt="Bitcoin Wealth logo" width="96" height="96"></div>
@@ -145,6 +145,6 @@
 </div>
 <div class="vidmodal" id="vidmodal" hidden role="dialog" aria-modal="true" aria-label="Video player"><div class="vidmodal-bg" data-close></div><div class="vidmodal-box"><button class="vidclose" type="button" aria-label="Close video" data-close><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="vidmodal-frame" id="vidmount"></div></div></div>
 <button class="mtg-backtop" type="button" data-backtop aria-label="Back to top" hidden>↑ <span>Top</span></button>
-<script src="mtg/member-config.js"></script><script src="mtg/member.js"></script><script src="./open.js" defer></script><script src="./bw-dash.js?v=20261017" defer></script>
+<script src="mtg/member-config.js"></script><script src="mtg/member.js"></script><script src="./open.js" defer></script><script src="./bw-dash.js?v=20261018" defer></script>
 <script src="mtg/motion.js?v=1" defer></script>
 </body></html>

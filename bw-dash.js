@@ -6,12 +6,13 @@
 var shell=document.querySelector('.md-shell'),side=document.querySelector('.md-side');
 if(!shell||!side)return;
 var KEY='bw-side',tog=document.querySelector('.md-toggle'),btn=document.querySelector('.md-menu'),scrim=document.querySelector('.md-scrim');
+var dashBtns=document.querySelectorAll('.md-open-menu'); /* DASHBOARD buttons that open this menu (member home page) */
 var wide=window.matchMedia('(min-width:1061px)'),open=false,lastFocus=null;
 function store(v){try{localStorage.setItem(KEY,v)}catch(e){}}
 function saved(){try{return localStorage.getItem(KEY)!=='off'}catch(e){return true}}
 function label(el,isOpen){if(!el)return;el.setAttribute('aria-expanded',isOpen?'true':'false');var t=isOpen?'Collapse menu':'Expand menu';if(el===btn){var l=el.querySelector('.lbl');if(l)l.textContent=isOpen&&!wide.matches?'Close':'Menu';el.setAttribute('aria-label',isOpen?'Close menu':'Open menu')}else{el.setAttribute('aria-label',t);el.setAttribute('title',t)}}
 function set(next,focus){
-  open=next;label(tog,next);label(btn,next);
+  open=next;label(tog,next);label(btn,next);dashBtns.forEach(function(d){d.setAttribute('aria-expanded',next?'true':'false')});
   if(wide.matches){
     shell.classList.toggle('md-off',!next);side.classList.remove('open');if(scrim)scrim.classList.remove('on');
     side.removeAttribute('inert');side.toggleAttribute('inert',!next);
@@ -28,6 +29,13 @@ sync();
 if(wide.addEventListener)wide.addEventListener('change',sync);else if(wide.addListener)wide.addListener(sync);
 if(tog)tog.addEventListener('click',flip);
 if(btn)btn.addEventListener('click',flip);
+/* DASHBOARD opens the menu. On laptops and desktops an open menu stays open (focus moves into it);
+   on phones and tablets a second press closes the drawer. */
+dashBtns.forEach(function(d){d.addEventListener('click',function(){
+  if(!open){flip();return}
+  if(!wide.matches){set(false,true);return}
+  var a=side.querySelector('.md-nav');if(a)a.focus();
+})});
 if(scrim)scrim.addEventListener('click',function(){set(false,true)});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&open&&!wide.matches)set(false,true)});
 /* on phones, picking a menu item closes the drawer; same-page links also light up as you pick them */

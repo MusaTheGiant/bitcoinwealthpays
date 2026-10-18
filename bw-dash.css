@@ -125,6 +125,7 @@
 .md-home{color:var(--md-acc-hi);background:rgba(255,255,255,.025);box-shadow:inset 0 0 0 1px rgba(var(--md-acc-rgb),.42),0 10px 24px rgba(0,0,0,.3)}
 .md-home:before,.md-home:after{animation-delay:-3s}
 .md-dash{color:var(--md-acc-ink);background:linear-gradient(100deg,transparent 38%,rgba(255,255,255,.5) 50%,transparent 62%) no-repeat,linear-gradient(180deg,var(--md-r1),var(--md-acc) 58%,var(--md-r2));background-size:260% 100%,100% 100%;background-position:180% 0,0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 4px 0 rgba(0,0,0,.35),0 12px 26px rgba(0,0,0,.35);animation:mdGlint 6.5s ease-in-out 2s infinite}
+button.md-btn{cursor:pointer;-webkit-appearance:none;appearance:none}
 .md-btn:hover{transform:translateY(-2px)}
 .md-btn:hover:before{filter:drop-shadow(0 0 9px var(--md-r2)) brightness(1.2)}
 .md-btn:hover:after{opacity:.55}
