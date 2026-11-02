@@ -23,7 +23,7 @@ var LABEL = {
 var CONTACT_EMAIL = "bitcoinaccumulating@gmail.com";
 
 var SOCIAL = {
-  whatsapp: "https://wa.me/27695465838",
+  whatsapp: "https://wa.me/27721714626",
   tiktok:   "https://www.tiktok.com/@bitcoinwealthpays",
   facebook: "https://www.facebook.com/bitcoinwealthexplained/"
 };
