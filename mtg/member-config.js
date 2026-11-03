@@ -4,6 +4,7 @@ window.MTG_MEMBER = {
   profileImage: '/logo.png',
   referralUrl: 'https://vowu.io/register?ref=14638',
   whatsappUrl: 'https://wa.me/27721714626',
+  tribeGroupUrl: 'https://mtgtribe.com/group',   // MTG TRIBE WhatsApp group button in the footer; leave empty on other members' copies to hide it
   tiktokUrl: 'https://www.tiktok.com/@bitcoinwealthpays',
   facebookUrl: 'https://www.facebook.com/bitcoinwealthexplained/',
   homeUrl: 'https://www.musathegiant.com/'

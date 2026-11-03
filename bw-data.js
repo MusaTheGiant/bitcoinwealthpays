@@ -24,6 +24,7 @@ var CONTACT_EMAIL = "bitcoinaccumulating@gmail.com";
 
 var SOCIAL = {
   whatsapp: "https://wa.me/27721714626",
+  tribe:    "https://mtgtribe.com/group",   /* MTG TRIBE WhatsApp group (a redirect page, so a reset invite is fixed in one place) */
   tiktok:   "https://www.tiktok.com/@bitcoinwealthpays",
   facebook: "https://www.facebook.com/bitcoinwealthexplained/"
 };

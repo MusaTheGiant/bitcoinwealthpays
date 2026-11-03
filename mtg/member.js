@@ -13,6 +13,10 @@
       anchor.removeAttribute('aria-disabled');
     });
   });
+  // MTG TRIBE WhatsApp group button: only shown when this copy sets tribeGroupUrl
+  if (member.tribeGroupUrl && /^https:\/\//.test(member.tribeGroupUrl)) {
+    document.querySelectorAll('[data-tribe-group]').forEach(function (anchor) { anchor.href = member.tribeGroupUrl; anchor.hidden = false; });
+  }
   if (member.referralUrl && /^https:\/\//.test(member.referralUrl)) {
     document.querySelectorAll('[data-referral-url]').forEach(function (el) { el.textContent = member.referralUrl; });
     document.querySelectorAll('[data-copy-referral]').forEach(function (el) { el.disabled = false; });
