@@ -80,7 +80,7 @@
   /* ---------- video player ----------
      Nothing touches YouTube until play is pressed. The API is loaded on
      demand so the end of the video can close the overlay by itself.   */
-  var vidState = { scrollY: 0, player: null, api: null, opener: null };
+  var vidState = { scrollY: 0, top: null, player: null, api: null, opener: null };
   function wireVideo(){
     var modal = document.getElementById('vidmodal');
     var mount = document.getElementById('vidmount');
@@ -92,10 +92,35 @@
       mount.innerHTML = '';
       vidState.player = null;
       document.body.style.overflow = '';
-      window.scrollTo(0, vidState.scrollY);
       modal.classList.remove('vertical');
       var back = vidState.opener || document.querySelector('.vidcard');
-      if(back && back.focus) back.focus();
+      if(back && back.focus){ try{ back.focus({preventScroll:true}); }catch(err){ back.focus(); } }
+      backToVideo(back);
+    }
+
+    /* Back to the video (MTG, 10 Nov 2026): when a video ends or is closed, the page goes back to exactly where the
+       visitor pressed play, with the video's card in the same place on screen, even if pictures above it finished
+       loading or full screen moved the page meanwhile. It stops as soon as the visitor scrolls on their own. */
+    function backToVideo(card){
+      var top = vidState.top, y = vidState.scrollY, moved = false;
+      function go(){
+        if(moved || !modal.hidden) return;
+        var root = document.documentElement, prev = root.style.scrollBehavior;
+        root.style.scrollBehavior = 'auto';
+        if(card && card.isConnected && card.getClientRects().length && top !== null){
+          var dy = card.getBoundingClientRect().top - top;
+          if(Math.abs(dy) > 2) window.scrollBy(0, dy);
+        }else if(Math.abs((window.scrollY || window.pageYOffset || 0) - y) > 2){
+          window.scrollTo(0, y);
+        }
+        root.style.scrollBehavior = prev;
+      }
+      function stop(){ moved = true; }
+      go();
+      ['wheel', 'touchmove', 'keydown'].forEach(function(t){
+        document.addEventListener(t, stop, {capture: true, passive: true, once: true});
+      });
+      [120, 400, 800, 1500, 2400].forEach(function(ms){ setTimeout(go, ms); });
     }
 
     function build(id){
@@ -164,6 +189,8 @@
 
     function open(id, vertical, localSrc, poster, label){
       vidState.scrollY = window.scrollY || window.pageYOffset || 0;
+      var o = vidState.opener;
+      vidState.top = (o && o.getBoundingClientRect) ? o.getBoundingClientRect().top : null;
       mount.innerHTML = '';
       modal.classList.toggle('vertical', !!vertical);
       if(localSrc){
